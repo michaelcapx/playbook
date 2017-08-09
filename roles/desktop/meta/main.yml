@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - { role: java }
+dependencies: []
 
 galaxy_info:
-  author:   PolyAlloy
+  author: PolyAlloy
   description: Installs and configures a variety of Ubuntu/Xfce desktop packages.
   license: MIT
   min_ansible_version: 2.0
