@@ -1,0 +1,71 @@
+---
+# tasks file for locales
+
+# Install dependencies
+- name: Install locales dependencies
+  apt:
+    name: "{{ item }}"
+    state: "{{ locales_apt_state }}"
+  with_items: "{{ locales_dependencies }}"
+
+- name: Install language packs
+  apt:
+    name: "{{ item }}"
+    state: "{{ locales_apt_state }}"
+  with_items: "{{ locales_language_packs }}"
+  notify: Update locales
+
+# Locale generation
+- name: Detect locale gen file
+  stat:
+    path: "{{ locales_gen_file }}"
+  register: _locales_gen_file_stats
+
+- name: Create locale gen file
+  file:
+    path: "{{ locales_gen_file }}"
+    state: touch
+  when: _locales_gen_file_stats.stat.exists == false
+
+# Locale configuration
+- name: Make sure (specified) locales are present
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ locales_present }}"
+
+- name: Make sure (specified) locales are present
+  locale_gen:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ locales_absent }}"
+
+- name: Set default locale
+  template:
+    src: locale.j2
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: 0644
+
+# - name: Set default locale
+#   command: "update-locale {{ item.key }}={{ item.value }}"
+#   with_items:
+#     - { key: LANG, value: "{{ locales_default_lang | default(locales_present[0]) }}" }
+#     - { key: LANGUAGE, value: "{{ locales_default_language }}" }
+#     - { key: LC_ADDRESS, value: "{{ locales_default_lc_address }}" }
+#     - { key: LC_ALL, value: "{{ locales_default_lc_all }}" }
+#     - { key: LC_COLLATE, value: "{{ locales_default_lc_collate }}" }
+#     - { key: LC_CTYPE, value: "{{ locales_default_lc_ctype }}" }
+#     - { key: LC_IDENTIFICATION, value: "{{ locales_default_lc_identification }}" }
+#     - { key: LC_MEASUREMENT, value: "{{ locales_default_lc_measurement }}" }
+#     - { key: LC_MESSAGES, value: "{{ locales_default_lc_messages }}" }
+#     - { key: LC_MONETARY, value: "{{ locales_default_lc_monetary }}" }
+#     - { key: LC_NAME, value: "{{ locales_default_lc_name }}" }
+#     - { key: LC_NUMERIC, value: "{{ locales_default_lc_numeric }}" }
+#     - { key: LC_PAPER, value: "{{ locales_default_lc_paper }}" }
+#     - { key: LC_RESPONSE, value: "{{ locales_default_lc_response }}" }
+#     - { key: LC_TELEPHONE, value: "{{ locales_default_lc_telephone }}" }
+#     - { key: LC_TIME, value: "{{ locales_default_lc_time }}" }
+#   when: item.value is defined and item.value != ""
+
