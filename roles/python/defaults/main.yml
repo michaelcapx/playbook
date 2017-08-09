@@ -1,0 +1,32 @@
+---
+# defaults file for python
+
+# Determines the state for packages installed on the system. Available values are `present` or `latest`.
+python_apt_state: present
+
+# Determines the state for packages installed on the system. Available values are `present` or `latest`.
+python_pip_state: latest
+
+# Build dependencies for packages (will be installed with apt).
+python_build_dependencies:
+  - build-essential
+  - libssl-dev
+  - libffi-dev
+
+# Array of python apt packages.
+python_packages:
+  - python
+  - python-dev
+  - python-setuptools
+  - python-pip
+  - python-apt
+  - python-pycurl
+
+# Array of python pip packages.
+pip_packages: []
+
+# Enable support for python 2.x.
+python_legacy_support: yes
+
+# Path to python pip executable.
+python_pip_executable: "/usr/bin/pip{{ 2 if python_legacy_support else 3 }}"

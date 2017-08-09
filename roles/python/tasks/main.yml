@@ -1,0 +1,24 @@
+---
+# tasks file for python
+
+- name: Install python build dependencies
+  apt:
+    name: "{{ item }}"
+    state: "{{ python_apt_state }}"
+  with_items: "{{ python_build_dependencies }}"
+  when: python_build_dependencies | length
+
+- name: Install python APT packages
+  apt:
+    name: "{{ item }}"
+    state: "{{ python_apt_state }}"
+  with_items: "{{ python_packages }}"
+  when: python_packages | length
+
+- name: Install python PIP packages
+  pip:
+    name: "{{ item }}"
+    state: "{{ python_pip_state }}"
+    executable: "{{ python_pip_executable }}"
+  with_items: "{{ pip_packages }}"
+  when: pip_packages | length
