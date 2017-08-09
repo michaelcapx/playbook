@@ -1,2 +1,76 @@
 ---
 # defaults file for common
+
+# The type of upgrade to perform before installing apt packages. Valid values include: yes, no, safe, full and dist.
+common_apt_upgrade_type: dist
+
+# If yes, forces upgrade
+common_apt_upgrade_force: no
+
+# The time (in seconds) to set the current apt cache. Current default is set for one day.
+common_apt_cache_time: 86400
+
+# Determines if apt should upgrade packages.
+common_apt_upgrade: yes
+
+# Determines if the apt cache should be updated.
+common_apt_update: yes
+
+# Array of packages to purge from system.
+common_apt_remove_packages: []
+
+# Determines the state for packages installed on the system. Available values are `present` or `latest`.
+common_apt_state: latest
+
+# Array of common apt package dependencies. These packages should be installed before all others.
+common_apt_dependencies:
+  - software-properties-common
+  - python-software-properties
+  - git
+  - curl
+  - nano
+  - sudo
+  - wget
+
+# Array of default apt packages.
+common_apt_packages_default:
+  - build-essential
+  - dos2unix
+  - libglib2.0-dev
+  - libmcrypt4
+  - mcrypt
+  - pwgen
+  - snapd
+  - supervisor
+  - whois
+
+# Array of archive apt packages. These packages should be able to zip and unzip most files and folders.
+common_apt_packages_archive:
+  - arj
+  - bzip2
+  - cabextract
+  - gzip
+  - mpack
+  - p7zip-full
+  - p7zip-rar
+  - rar
+  - sharutils
+  - tar
+  - unace
+  - unrar
+  - unzip
+  - uudeview
+  - zip
+
+# Array of disk utility apt packages. These packages should be able to read most Windows-oriented SD cards and file systems.
+common_apt_packages_disk:
+  - cifs-utils
+  - exfat-utils
+  - exfat-fuse
+  - ntfs-3g
+
+# Array of base apt packages to install.
+common_apt_add_packages: "{{ common_apt_packages_default + common_apt_packages_archive + common_apt_packages_disk }}"
+
+# Array of custom apt packages to install.
+common_apt_custom_packages: []
