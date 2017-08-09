@@ -1,0 +1,39 @@
+### Dotfiles ###
+*.box
+*.log
+*.out
+*.swp
+*.py[co]
+
+### OS-specific ###
+.DS_Store
+.DS_Store?
+.Trash-*
+
+### Editor ###
+.idea/
+.project/
+.bundle/
+
+### Ansible ###
+*.retry
+.galaxy_install_info
+
+### Vagrant ###
+.virtualbox
+.vagrant/
+vagrant_ansible_inventory_*
+
+### Vault ###
+.vault_pass
+
+### Roles & Variables ###
+vendor/roles
+group_vars/_*.yml
+
+### Scratchpad ###
+scratchpad.sh
+
+### Project-specific files ###
+local.config.yml
+secrets.yml

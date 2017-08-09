@@ -1,0 +1,23 @@
+---
+# Variables listed here are applicable to all host groups
+# http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
+
+# Playbook provision scripts
+pbook_pre_provision_scripts: []
+pbook_post_provision_scripts: []
+
+# The main provision user.
+pbook_user: "{{ ansible_env.USER }}"
+pbook_home: "{{ ansible_env.HOME }}"
+pbook_name: "{{ vault_name | default(none) }}"
+pbook_email: "{{ vault_email | default(none) }}"
+pbook_shell: bash
+
+# Github/Bitbucket credentials
+pbook_github_user: "{{ vault_github_user | default('') }}"
+pbook_github_password: "{{ vault_github_password | default('') }}"
+pbook_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
+pbook_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"
+
+# The web server software to use. Can be either 'apache' or 'nginx'.
+pbook_webserver: apache

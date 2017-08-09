@@ -1,0 +1,35 @@
+---
+- name: Test Suite
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - ../vars/config.yml
+
+  vars:
+    test_user: "{{ ansible_env.USER }}"
+    test_home: "{{ ansible_env.HOME }}"
+
+  pre_tasks:
+
+    - name: Display the Ansible version info
+      debug:
+        var: ansible_version
+        verbosity: 4
+
+    - name: Display all variables/facts known for a host
+      debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 4
+
+    - name: Print out the user facts.
+      become: yes
+      debug:
+        msg: "User: {{ ansible_env.USER }} Home: {{ ansible_env.HOME }}"
+        verbosity: 2
+
+  roles:
+    # - { role: ../roles/base, become: true }
+    - { role: ../roles/inkscape, become: true }
+
+  tasks:

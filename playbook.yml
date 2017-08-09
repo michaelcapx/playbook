@@ -1,0 +1,68 @@
+---
+- name: Desktop Playbook
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - vars/config.yml
+
+  pre_tasks:
+
+    - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
+      pause:
+        prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+      when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
+
+    - name: Run configured pre-provision shell scripts
+      script: "{{ item }}"
+      with_items: "{{ pbook_pre_provision_scripts | default([]) }}"
+      when: pbook_pre_provision_scripts | length
+
+    - name: Include optional configuration files
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - "{{ playbook_dir }}/vars/vault.yml"
+        - "{{ playbook_dir }}/local.config.yml"
+        - "{{ playbook_dir }}/secrets.yml"
+
+    - name: Upgrade packages
+      become: yes
+      apt:
+        upgrade: full
+        update_cache: yes
+        cache_valid_time: 300
+
+  roles:
+
+    # Base roles
+    - { role: common, become: true, tags: ['base'] }
+
+    # Shell roles
+
+    # Desktop roles
+
+    # Server roles
+
+    # Database roles
+
+    # Mail roles
+
+    # Utility roles
+
+    # Extra roles
+
+  tasks:
+
+    - name: Run configured post-provision shell scripts
+      script: "{{ item }}"
+      with_items: "{{ pbook_post_provision_scripts | default([]) }}"
+      when: pbook_post_provision_scripts | length
+
+    - name: Autoremove apt packages
+      become: yes
+      apt:
+        autoremove: yes
+
+    - name: Cleanup apt installation
+      become: yes
+      command: apt-get clean warn=no
