@@ -1,0 +1,10 @@
+---
+# defaults file for java
+
+# Sets the Java version to install. Version options include: java, openjdk-8-jdk, openjdk-9-jdk, default-jre, default-jdk.
+java_packages:
+  - default-jre
+  - default-jre-headless
+
+# If set, the role will set the global environment variable `JAVA_HOME` to this value.
+java_home: ""

@@ -36,6 +36,7 @@
 
     # Base roles
     - { role: common, become: true, tags: ['base'] }
+    - { role: java, become: true, tags: ['base'] }
 
     # Shell roles
 
