@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=/usr/bin/display.im6 %f
+Type=Application
+NoDisplay=true

@@ -1,0 +1,111 @@
+---
+# defaults file for desktop
+
+# Determines the state for packages installed on the system. Available values are `present` or `latest`.
+desktop_apt_state: latest
+
+# Array of desktop apt package dependencies. These packages should be installed before all others.
+desktop_apt_dependencies:
+  - xvfb
+  - acpid
+  - imagemagick
+
+# Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
+desktop_apt_ppa:
+  - ppa:yktooo/ppa
+  - ppa:otto-kesselgulasch/gimp
+  - ppa:inkscape.dev/stable
+  - ppa:nilarimogard/webupd8
+
+# Array of common desktop software packages to install
+desktop_apt_packages_common:
+  - albert
+  - bleachbit
+  - filezilla
+  - gpick
+  - meld
+  - mpv
+  - font-manager
+  - screenruler
+  - transmission
+  - typecatcher
+  - gimp
+  - gimp-plugin-registry
+  - gimp-data-extras
+  - inkscape
+  - lubuntu-software-center
+  - indicator-sound-switcher
+  - xfpanel-switch
+
+# Make sure Albert launcher is always on top.
+desktop_albert_always_on_top: true
+
+# Clear Albert results on hide.
+desktop_albert_clear_on_hide: false
+
+# Display icons on Albert results.
+desktop_albert_display_icons: true
+
+# Display scrollbar on Albert results.
+desktop_albert_display_scrollbar: false
+
+# Display shadow on Albert launcher.
+desktop_albert_display_shadow: false
+
+# Hides Albert on close.
+desktop_albert_hide_on_close: false
+
+# Hides Albert on focus loss.
+desktop_albert_hide_on_focus_loss: true
+
+# Sets the Albert launcher hotkey.
+desktop_albert_hotkey: Ctrl+`
+
+# Number of items to display from the Albert search results.
+desktop_albert_item_count: 5
+
+# Centers the Albert search box on the screen.
+desktop_albert_show_centered: true
+
+# Whether to show the Albert icon in the system tray.
+desktop_albert_show_tray: false
+
+# Determines the command used to launch the terminal.
+desktop_albert_terminal: xfce4-terminal -x
+
+# Sets the Albert launcher theme.
+desktop_albert_theme: Arc Grey
+
+# Path to Albert launcher extenstion SVG icons.
+desktop_albert_iconpath: "{{ ansible_env.HOME }}/.config/albert/icons"
+
+# Albert Websearch plugin JSON parameters. Determines search service, search string, trigger, and icon path.
+desktop_albert_websearch:
+  - name: "Google"
+    trigger: "gg "
+    url: "https://www.google.com/search?q=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/google.svg"
+  - name: "Youtube"
+    trigger: "yt "
+    url: "https://www.youtube.com/results?search_query=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/youtube.svg"
+  - name: "Amazon"
+    trigger: "ama "
+    url: "http://www.amazon.com/s/?field-keywords=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/amazon.svg"
+  - name: "Ebay"
+    trigger: "eb "
+    url: "http://www.ebay.com/sch/i.html?_nkw=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/ebay.svg"
+  - name: "GitHub"
+    trigger: "gh "
+    url: "https://github.com/search?utf8=✓&q=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/github.svg"
+  - name: "Wikipedia"
+    trigger: "wiki "
+    url: "https://en.wikipedia.org/w/index.php?search=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/wikipedia.svg"
+  - name: "Wolfram Alpha"
+    trigger: "="
+    url: "https://www.wolframalpha.com/input/?i=%s"
+    iconPath: "{{ desktop_albert_iconpath }}/wolfram.svg"
