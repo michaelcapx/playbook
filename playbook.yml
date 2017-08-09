@@ -37,6 +37,7 @@
     # Base roles
     - { role: common, become: true, tags: ['base'] }
     - { role: locales, become: true, tags: ['base'] }
+    - { role: git, become: true, tags: ['base'] }
     - { role: java, become: true, tags: ['base'] }
     - { role: python, become: true, tags: ['base'] }
 

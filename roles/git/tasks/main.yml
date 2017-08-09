@@ -1,0 +1,66 @@
+---
+# tasks file for git
+
+# Install Git
+- name: Ensure git is installed
+  apt:
+    name: "{{ item }}"
+    state: "{{ git_apt_state }}"
+  with_items: "{{ git_packages }}"
+
+# Configure Git
+- name: Configure .gitconfig file
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: git_config
+
+- name: Add .gitignore file
+  template:
+    src: gitignore.j2
+    dest: "{{ ansible_env.HOME }}/{{ git_config.core.excludesfile | basename }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: git_ignore and git_config.core is defined and git_config.core.excludesfile is defined
+
+# Git Known Hosts
+- name: Add Git Known hosts
+  known_hosts:
+    name: "{{ item.name }}"
+    key: "{{ item.key | default(omit) }}"
+    path: "{{ item.path | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+  become: no
+  with_items: "{{ git_known_hosts }}"
+
+# Git SSH Keys
+- name: Download ssh-keyreg script
+  get_url:
+    url: https://raw.githubusercontent.com/b4b4r07/ssh-keyreg/master/bin/ssh-keyreg
+    dest: /usr/local/bin/ssh-keyreg
+    mode: 0555
+
+- name: Check that the user ssh key exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+  register: git_ssh_key_exists
+
+- name: Add SSH Key to GitHub
+  shell: ssh-keyreg --path {{ ansible_env.HOME }}/.ssh/id_rsa.pub --user {{ git_github_user }}:{{ git_github_password }} github
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  when:
+    - git_github_user is defined and git_github_user != ''
+    - git_github_password is defined and git_github_password != ''
+    - git_ssh_key_exists.stat.exists == true
+
+- name: Add SSH Key to Bitbucket
+  shell: ssh-keyreg --path {{ ansible_env.HOME }}/.ssh/id_rsa.pub --user {{ git_bitbucket_user }}:{{ git_bitbucket_password }} bitbucket
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  when:
+    - git_bitbucket_user is defined and git_bitbucket_user != ''
+    - git_bitbucket_password is defined and git_bitbucket_password != ''
+    - git_ssh_key_exists.stat.exists == true
