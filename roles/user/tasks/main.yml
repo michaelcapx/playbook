@@ -1,0 +1,101 @@
+---
+# tasks file for user
+
+# Setup Admin User
+- name: Create admin user account
+  user:
+    name: "{{ ansible_env.USER }}"
+    comment: "{{ user_fullname | default(omit) }}"
+    group: "{{ ansible_env.USER }}"
+    groups: "{{ user_groups | default([]) | join(',') }}"
+    state: present
+    shell: "/bin/{{ user_shell | default('bash') }}"
+    append: yes
+
+- name: Setting admin user's home permission
+  file:
+    dest: "{{ ansible_env.HOME }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0755
+
+# Configure XDG Directories
+- name: Configure XDG user directories
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.config/user-dirs.dirs"
+    regexp: "^XDG_{{ item.name }}_DIR="
+    line: "XDG_{{ item.name }}_DIR=\"{{ item.path }}\""
+  with_items : "{{ user_xdg_directories }}"
+
+- name: Build XDG directories
+  file:
+    path: "{{ ansible_env.HOME }}/{{ item.dir }}"
+    force: yes
+    state: "{{ item.state }}"
+  with_items: "{{ user_xdg_directories }}"
+
+- name : Run xdg-user-dirs-update
+  shell: xdg-user-dirs-update
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+
+# Generate SSH Keys
+- name: Ensure SSH home directory exists.
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    state: directory
+    mode: 0700
+
+- name: Check that the user private ssh key exists
+  stat:
+    path: "{{ user_ssh_privkey }}"
+  register: ssh_private_key_exists
+
+- name: Generate SSH Key
+  user:
+    name: "{{ ansible_env.USER }}"
+    generate_ssh_key: yes
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+    ssh_key_comment: "{{ user_ssh_key_comment | default(inventory_hostname) }}"
+  when: ssh_private_key_exists.stat.exists == false
+
+- name: Ensure the keys have restricted permissions
+  file:
+    path: "{{ item }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0600
+  with_items:
+  - "{{ user_ssh_privkey }}"
+  - "{{ user_ssh_pubkey }}"
+
+- name: Check that the user ssh key generated
+  stat:
+    path: "{{ user_ssh_pubkey }}"
+  register: ssh_key_generated
+
+- name: Add local SSH public key to admin account authorized_keys
+  authorized_key:
+    user: "{{ ansible_env.USER }}"
+    key: "{{ lookup('file', user_ssh_pubkey) }}"
+    exclusive: no
+    manage_dir: yes
+  when: ssh_key_generated.stat.exists == true
+
+- name: Install SSH agent helper
+  copy:
+    src: start-agent
+    dest: "{{ ansible_env.HOME }}/.ssh/start-agent"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0600
+
+- name: Start ssh-agent in the background
+  shell: eval "$(ssh-agent -s)" && ssh-add {{ user_ssh_privkey }}
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  when: ssh_key_generated.stat.exists == true
