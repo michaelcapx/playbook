@@ -23,7 +23,6 @@ locales_absent: []
 # Determines the locale gen file.
 locales_gen_file: "{{ '/var/lib/locales/supported.d/local' if ansible_distribution == 'Ubuntu' else '/etc/locale.gen' }}"
 
-
 # Provides default value for LC_* variables that have not been explicitly set. Default locales_present[0]
 locales_default_lang: en_US.UTF-8
 
