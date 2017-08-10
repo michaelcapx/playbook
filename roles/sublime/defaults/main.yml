@@ -1,0 +1,31 @@
+---
+# defaults file for sublime
+
+# Sublime text configuration directory.
+sublime_config_dir: "{{ ansible_env.HOME }}/.config/sublime-text-3"
+
+# Sublime text installed packages directory.
+sublime_installed_pkgs_dir: "{{ sublime_config_dir }}/Installed Packages"
+
+# Sublime text user packages and preferences directory.
+sublime_user_preferences_dir: "{{ sublime_config_dir }}/Packages/User"
+
+# Sublime text local license directory.
+sublime_local_license_dir: "{{ sublime_config_dir }}/Local"
+
+# URL to install Sublime Package Control.
+sublime_package_control_url: "https://packagecontrol.io/Package%20Control.sublime-package"
+
+# Whether to backup package control preferences.
+sublime_package_control_backup: yes
+
+# Array of packages to install via packagecontrol.io.
+sublime_packages:
+  - "A File Icon"
+  - "Material Theme"
+  - "Package Control"
+  - "SideBarEnhancements"
+
+# Array of Github repositories to install.
+sublime_git_repos:
+  - { name: Arc Dark Theme, repo: https://github.com/madeindjs/Sublime-Text-3-Arc-Dark-theme }

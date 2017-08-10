@@ -1,0 +1,63 @@
+---
+# tasks file for sublime
+
+# Sublime Installation
+- name: Add sublime repository
+  apt_repository:
+    repo: "ppa:webupd8team/sublime-text-3"
+    state: present
+  register: sublime_add_repo
+
+- name: Install latest sublime package
+  apt:
+    name: sublime-text-installer
+    state: latest
+  when: sublime_add_repo | succeeded
+
+# Sublime Directories
+- name: Ensure sublime config directory permissions
+  file:
+    state: directory
+    path: "{{ sublime_config_dir }}"
+    recurse: true
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Ensure sublime directories exist
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 0774
+    recurse: true
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items:
+    - "{{ sublime_installed_pkgs_dir }}"
+    - "{{ sublime_user_preferences_dir }}"
+    - "{{ sublime_local_license_dir }}"
+
+# Sublime Package Control
+- name: Ensure Package Control.sublime-package present
+  get_url:
+    url: "{{ sublime_package_control_url }}"
+    dest: "{{ sublime_installed_pkgs_dir }}/Package Control.sublime-package"
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Generate Package Control settings template for auto-install
+  template:
+    src: "Package Control.sublime-settings.j2"
+    dest: "{{ sublime_user_preferences_dir }}/Package Control.sublime-settings"
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    backup: "{{ sublime_package_control_backup }}"
+
+# Sublime Install User Packages
+- name: Clone Sublime Packages from Github
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ sublime_user_preferences_dir }}/{{ item.name }}"
+  with_items: "{{ sublime_git_repos }}"
