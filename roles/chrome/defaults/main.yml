@@ -1,0 +1,36 @@
+---
+# defaults file for chrome
+
+chrome_packages:
+  - chromium-browser
+  - chromium-browser-l10n
+  - chromium-codecs-ffmpeg-extra
+
+chrome_set_default: true
+chrome_set_policies: true
+chrome_set_extensions: true
+
+chrome_policies_filename: user-policy.json
+
+chrome_policies_managed: []
+
+chrome_policies_recommended:
+  PasswordManagerEnabled: false
+  AutoFillEnabled: false
+  WelcomePageOnOSUpgradeEnabled: false
+  DefaultBrowserSettingEnabled: true
+
+chrome_extensions_json:
+  external_update_url: "https://clients2.google.com/service/update2/crx"
+
+chrome_extensions:
+  - cjpalhdlnbpafiamejdnhcphjbkeiagm # uBlock
+  - pgdnlhfefecpicbbihgmbmffkjpaplco # uBlock extra
+  - hdokiejnpimakedhajhdlcegeplioahd # Lastpass
+  - bcjindcccaagfpapjjmafapmmgkkhgoa # JSON Formatter
+  - ldpochfccmkkmhdbclfhpagapcfdljkj # DecentralEyes
+  - fhbjgbiflinjbdggehcddcbncdddomop # Postman
+  - gieohaicffldbmiilohhggbidhephnjj # Cookie Manager
+  - cppjkneekbjaeellbfkmgnhonkkjfpdn # Clear Cache
+  - bhlhnicpbhignbdhedgjhgdocnmhomnp # ColorZilla
+  - gcbommkclmclpchllfjekcdonpmejbdp # HTTPs Everywhere

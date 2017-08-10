@@ -1,0 +1,86 @@
+---
+# tasks file for chrome
+
+# Install Chromium
+- name: Ensure Chromium is installed
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ chrome_packages }}"
+
+# Gnome Keyring
+- name: Check gnome-keyring-daemon exists
+  stat:
+    path: /usr/bin/gnome-keyring-daemon
+  register: chrome_gnome_keyring_daemon_exists
+
+- name: Copy gnome-keyring-daemon
+  copy:
+    remote_src: true
+    src: /usr/bin/gnome-keyring-daemon
+    dest: /usr/bin/gnome-keyring-daemon-old
+  when: chrome_gnome_keyring_daemon_exists.stat.exists == true
+
+- name: Remove gnome-keyring-daemon
+  file:
+    path: /usr/bin/gnome-keyring-daemon
+    state: absent
+
+- name: Check if gnome-keyring-daemon is running
+  shell: ps aux | grep gnome-keyring-daemon | grep -v grep
+  ignore_errors: yes
+  changed_when: false
+  register: chrome_gnome_keyring_daemon_status
+
+- name: Kill chrome keyring
+  command: killall gnome-keyring-daemon
+  when: chrome_gnome_keyring_daemon_status.rc == 0
+
+# Set Default Browser
+- name: Set Chromium as default browser
+  command: update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chromium-browser 250
+  when: chrome_set_default
+
+# Set Chromium Policies
+- name: Create Chromium policies directory for all users
+  file:
+    path: "/etc/chromium-browser/policies/{{ item }}"
+    state: directory
+    recurse: true
+  when: chrome_set_policies
+  with_items:
+    - managed
+    - recommended
+
+- name: Set Chromium policies
+  copy:
+    dest: "/etc/chromium-browser/policies/{{ item.key }}/{{ chrome_policies_filename }}"
+    mode: 0644
+    content: "{{ item.value|to_nice_json }}"
+  when: chrome_set_policies and item.value|length > 0
+  with_dict:
+    managed: "{{ chrome_policies_managed }}"
+    recommended: "{{ chrome_policies_recommended }}"
+
+- name: Delete Chromium policy file if no policies are defined
+  file:
+    path: "/etc/chromium-browser/policies/{{ item.key }}/{{ chrome_policies_filename }}"
+    state: absent
+  when: chrome_set_policies and item.value|length == 0
+  with_dict:
+    managed: "{{ chrome_policies_managed }}"
+    recommended: "{{ chrome_policies_recommended }}"
+
+# Chromium Extensions
+- name: Create Chromium extensions directory for all users
+  file:
+    path: /usr/share/chromium-browser/extensions
+    state: directory
+  when: chrome_set_extensions
+
+- name: Create Chromium JSON file to install extensions for all users
+  copy:
+    dest: "/usr/share/chromium-browser/extensions/{{ item }}.json"
+    content: "{{ chrome_extensions_json | to_nice_json }}"
+  with_items: "{{ chrome_extensions }}"
+  when: chrome_set_extensions
