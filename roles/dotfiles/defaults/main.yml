@@ -1,0 +1,30 @@
+---
+# defaults file for dotfiles
+
+# URL to the dotfiles Github repo.
+dotfiles_repo: "https://github.com/michaelcapx/dotfiles.git"
+
+# Should git repo update.
+dotfiles_repo_update: yes
+
+# Should git repo accept hostkey.
+dotfiles_repo_accept_hostkey: yes
+
+# Path to cloned repo destination.
+dotfiles_repo_local_destination: "{{ ansible_env.HOME }}/.dotfiles"
+
+# Name for local dotfiles gitconfig.
+dotfiles_repo_name: "{{ pbook_name | default(none) }}"
+
+# Email for local dotfiles gitconfig.
+dotfiles_repo_email: "{{ pbook_email | default(none) }}"
+
+# Main home directory.
+dotfiles_home: "{{ ansible_env.HOME }}"
+
+# Array of dotfile objects contained in repo.
+dotfiles_files:
+  - { src: "sublime/Default.sublime-mousemap", dest: ".config/sublime-text-3/Packages/User/Default.sublime-mousemap", state: link }
+  - { src: "sublime/Preferences.sublime-settings", dest: ".config/sublime-text-3/Packages/User/Preferences.sublime-settings", state: link }
+  - { src: "sublime/Side Bar.sublime-settings", dest: ".config/sublime-text-3/Packages/User/Side Bar.sublime-settings", state: link }
+  - { src: "sublime/License.sublime_license", dest: ".config/sublime-text-3/Local/License.sublime_license", state: link }

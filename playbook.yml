@@ -58,6 +58,7 @@
     # Utility roles
 
     # Extra roles
+    - { role: dotfiles, become: true, tags: ['extra'] }
 
   tasks:
 

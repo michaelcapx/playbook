@@ -1,0 +1,69 @@
+---
+# tasks file for dotfiles
+
+- name: Create dotfiles directory
+  file:
+    path: "{{ dotfiles_repo_local_destination }}"
+    state: directory
+  register: dotfiles_create
+
+- name: Ensure dotfiles repository is cloned locally
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_repo_local_destination }}"
+    update: "{{ dotfiles_repo_update }}"
+    accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
+  become: no
+
+- name: Configure dotfiles repository name
+  git_config:
+    name: user.name
+    scope: local
+    repo: "{{ dotfiles_repo_local_destination }}"
+    value: "{{ dotfiles_repo_name }}"
+  when: dotfiles_create.changed
+
+- name: Configure dotfiles repository email
+  git_config:
+    name: user.email
+    scope: local
+    repo: "{{ dotfiles_repo_local_destination }}"
+    value: "{{ dotfiles_repo_email }}"
+  when: dotfiles_create.changed
+
+- name: Fix dotfiles directory owner
+  file:
+    path: "{{ dotfiles_repo_local_destination }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    recurse: yes
+
+- name: Ensure all configured dotfiles are links
+  shell: "ls -F {{ dotfiles_home }}/{{ item.dest }}"
+  register: existing_dotfile_info
+  failed_when: false
+  check_mode: no
+  changed_when: false
+  with_items: "{{ dotfiles_files }}"
+
+- name: Remove existing dotfiles file if a replacement is being linked
+  file:
+    path: "{{ dotfiles_home }}/{{ dotfiles_files[item.0].dest }}"
+    state: absent
+  when: "'@' not in item.1.stdout"
+  with_indexed_items: "{{ existing_dotfile_info.results }}"
+
+- name: Ensure parent folders of link dotfiles exist
+  file:
+    path: "{{ (dotfiles_home ~ '/' ~ item.dest) | dirname }}"
+    state: directory
+    follow: yes
+  with_items: "{{ dotfiles_files }}"
+
+- name: Link dotfiles into home folder
+  file:
+    src: "{{ dotfiles_repo_local_destination }}/{{ item.src }}"
+    dest: "{{ dotfiles_home }}/{{ item.dest }}"
+    state: "{{ item.state }}"
+  become: no
+  with_items: "{{ dotfiles_files }}"

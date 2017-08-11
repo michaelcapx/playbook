@@ -30,6 +30,6 @@
 
   roles:
     # - { role: ../roles/base, become: true }
-    - { role: ../roles/inkscape, become: true }
 
   tasks:
+
