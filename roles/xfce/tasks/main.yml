@@ -1,0 +1,51 @@
+---
+# tasks file for xfce
+
+# GTK Bookmarks
+- name: Create GTK bookmarks
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/gtk-3.0/bookmarks"
+    line: "{{ item }}"
+    state: present
+    create: yes
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items:
+    - "file://{{ ansible_env.HOME }}/Documents"
+    - "file://{{ ansible_env.HOME }}/Downloads"
+
+# GTK File Chooser
+- name: Configure GTK file chooser
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.config/gtk-2.0/gtkfilechooser.ini"
+    regexp: "{{ item.param }}"
+    line: "{{ item.value }}"
+    state: present
+  with_items :
+    - { param: "StartupMode=", value: "StartupMode=cwd" }
+    - { param: "DefaultFolder=", value: "DefaultFolder=cwd" }
+
+# Weather icons
+- name: Clone weather icons
+  git:
+    repo: https://github.com/kevlar1818/xfce4-weather-mono-icons
+    dest: "{{ ansible_env.HOME }}/.cache/xfce4-weather-mono-icons"
+  register: xfce_weather_icons_git
+
+- name: Copy weather icons
+  copy:
+    src: "{{ ansible_env.HOME }}/.cache/xfce4-weather-mono-icons/{{ item }}"
+    dest: /usr/share/xfce4/weather/icons
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items:
+    - WSky-Light
+    - WSky
+  when: xfce_weather_icons_git.changed
+
+- name: Copy weather preferences file
+  copy:
+    src: weather.rc
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/weather-13.rc"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
