@@ -74,6 +74,8 @@
     src: "{{ dotfiles_repo_local_destination }}/{{ item.src }}"
     dest: "{{ dotfiles_home }}/{{ item.dest }}"
     force: yes
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   become: no
   when: "item.state == 'copy'"
   with_items: "{{ dotfiles_files }}"

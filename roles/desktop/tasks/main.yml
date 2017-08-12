@@ -57,64 +57,6 @@
     - display-im6.q16.desktop
     - display-im6.desktop
 
-# Gimp Configuration
-- name: Add Gimp configuration
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.gimp-2.8/sessionrc"
-    regexp: "{{ item.param }}"
-    line: "{{ item.value }}"
-    create: true
-  with_items :
-    - { param: "single-window-mode", value: "(single-window-mode yes)" }
-    - { param: "default-snap-to-canvas", value: "(default-snap-to-canvas yes)" }
-    - { param: "default-snap-to-grid", value: "(default-snap-to-grid yes)" }
-
-# Albert Configuration
-- name: Add Albert startup entry
-  template:
-    src: albert.desktop.j2
-    dest: "{{ ansible_env.HOME }}/.config/autostart/albert.desktop"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-
-- name: Create Albert icons directory
-  file:
-    path: "{{ ansible_env.HOME }}/.config/albert/icons"
-    state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-
-- name: Copy Albert websearch icons
-  copy:
-    src: "{{ item }}"
-    dest: "{{ ansible_env.HOME }}/.config/albert/icons"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-  with_items:
-    - amazon.svg
-    - ebay.svg
-    - github.svg
-    - google.svg
-    - wikipedia.svg
-    - wolfram.svg
-    - youtube.svg
-
-- name: Configure Albert websearch extension
-  copy:
-    dest: "{{ ansible_env.HOME }}/.config/albert/org.albert.extension.websearch.json"
-    content: "{{ desktop_albert_websearch | to_nice_json }}"
-    mode: 0664
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-
-- name: Configure Albert
-  template:
-    src: albert.conf.j2
-    dest: "{{ ansible_env.HOME }}/.config/albert.conf"
-    mode: 0664
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-
 # Minecraft Installation
 - name: Check if Java is installed
   command: java -version
@@ -140,8 +82,8 @@
     dest: /usr/share/pixmaps/minecraft.png
 
 - name: Create Minecraft desktop file
-  template:
-    src: minecraft.desktop.j2
+  copy:
+    src: minecraft.desktop
     dest: /usr/local/share/applications/minecraft.desktop
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
