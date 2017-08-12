@@ -64,6 +64,16 @@
   file:
     src: "{{ dotfiles_repo_local_destination }}/{{ item.src }}"
     dest: "{{ dotfiles_home }}/{{ item.dest }}"
-    state: "{{ item.state }}"
+    state: link
   become: no
+  when: "item.state == 'link'"
+  with_items: "{{ dotfiles_files }}"
+
+- name: Copy dotfiles into home folder
+  copy:
+    src: "{{ dotfiles_repo_local_destination }}/{{ item.src }}"
+    dest: "{{ dotfiles_home }}/{{ item.dest }}"
+    force: yes
+  become: no
+  when: "item.state == 'copy'"
   with_items: "{{ dotfiles_files }}"
