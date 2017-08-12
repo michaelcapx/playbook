@@ -49,3 +49,16 @@
     dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/weather-13.rc"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
+
+# Whiskermenu
+- name: Copy menu icon
+  copy:
+    src: ubuntu-logo-menu.png
+    dest: /usr/share/pixmaps/ubuntu-logo-menu.png
+
+- name: Copy whiskermenu preferences file
+  copy:
+    src: whiskermenu.rc
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/whiskermenu-7.rc"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
