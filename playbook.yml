@@ -57,6 +57,7 @@
     # Mail roles
 
     # Utility roles
+    - { role: docker, become: true, tags: ['utility'] }
 
     # Extra roles
     - { role: dotfiles, become: true, tags: ['extra'] }
