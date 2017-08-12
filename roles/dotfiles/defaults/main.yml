@@ -38,7 +38,10 @@ dotfiles_files:
   # Sublime preferences
   - { src: "sublime/Default.sublime-mousemap", dest: ".config/sublime-text-3/Packages/User/Default.sublime-mousemap", state: link }
   - { src: "sublime/Preferences.sublime-settings", dest: ".config/sublime-text-3/Packages/User/Preferences.sublime-settings", state: link }
+  - { src: "sublime/ColorHighlighter.sublime-settings", dest: ".config/sublime-text-3/Packages/User/ColorHighlighter.sublime-settings", state: link }
   - { src: "sublime/Side Bar.sublime-settings", dest: ".config/sublime-text-3/Packages/User/Side Bar.sublime-settings", state: link }
   - { src: "sublime/License.sublime_license", dest: ".config/sublime-text-3/Local/License.sublime_license", state: link }
   # Gimp preferences
   - { src: "gimp/sessionrc", dest: ".gimp-2.8/sessionrc", state: link }
+  # Misc preferences
+  - { src: "misc/avatar.jpg", dest: ".face", state: copy }
