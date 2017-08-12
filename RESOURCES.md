@@ -323,6 +323,7 @@ Theming
 - [OSX Arc Shadow](https://github.com/LinxGem33/OSX-Arc-Shadow)
 - [OSX Arc Darker](https://github.com/LinxGem33/OSX-Arc-Darker)
 - [Install Gnome Themes](https://github.com/tliron/install-gnome-themes)
+- [GitHub Universe](https://githubuniverse.com/)
 
 ### Icons Themes
 
@@ -376,6 +377,9 @@ Theming
 - [Edit Places in XFCE](https://ubuntuforums.org/showthread.php?t=1346162)
 - [Hide drives & bind folder from nautilus](https://bbs.archlinux.org/viewtopic.php?id=156371)
 - [Disable “Recently used” in GTK file/directory selector](http://unix.stackexchange.com/questions/74031/disable-recently-used-in-gtk-file-directory-selector)
+- [Modify XFCE Panel](https://forum.xfce.org/viewtopic.php?id=8619)
+- [Maintain XFCE Panel elements](https://forum.xfce.org/viewtopic.php?id=11117)
+- [UnixPorn Compiz Emerald](https://www.reddit.com/r/unixporn/comments/5j8l87/xfce_compiz_emerald_final_rice/)
 
 Sublime Text
 ------------
@@ -580,6 +584,14 @@ Dotfiles
 - [MilanAryal](https://github.com/MilanAryal/config)
 - [Shagabutdinov](https://github.com/shagabutdinov/dotfiles)
 - [Meitoncz](https://github.com/Meitoncz/dotfiles)
+- [jgkim](https://github.com/jgkim/ansible-role-dotfiles)
+- [issmirnov](https://github.com/issmirnov/ansible-role-dotfiles)
+- [swasher](https://github.com/swasher/ansible_dotfiles)
+- [benigls](https://github.com/benigls/dotfiles)
+- [dirn](https://github.com/dirn/ansible-dotfiles)
+- [serialdoom](https://github.com/serialdoom/ansible-dotfiles)
+- [aljoscha](https://github.com/aljoscha/ansible-role-dotfiles)
+- [gunzy83](https://github.com/gunzy83/ansible-role-dotfiles)
 
 Commands
 --------
@@ -635,6 +647,12 @@ Source: https://askubuntu.com/q/49578
 
 ```bash
 apt-cache show scons | grep --color -E "Description-en|$"
+```
+
+### Get list of XFCE panel plugins
+
+```bash
+xfconf-query -c xfce4-panel -p /plugins -l | egrep -v '[0-9]/' | sed -e 's#/plugins/plugin-##g' | sort -rn | head -n 1
 ```
 
 Misc

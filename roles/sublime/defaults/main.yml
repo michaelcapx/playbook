@@ -25,6 +25,22 @@ sublime_packages:
   - "Material Theme"
   - "Package Control"
   - "SideBarEnhancements"
+  - "GitGutter"
+  - "EditorConfig"
+  - "DocBlockr"
+  - "Color Highlighter"
+  - "Jinja2"
+  - "TodoReview"
+  - "Vue Syntax Highlight"
+  - "LESS"
+  - "SCSS"
+  - "Laravel 5 Artisan"
+  - "Laravel 5 Snippets"
+  - "Laravel Blade Highlighter"
+  - "Nodejs"
+  - "PlainTasks"
+  - "HyperClick"
+  - "BracketHighlighter"
 
 # Array of Github repositories to install.
 sublime_git_repos:
