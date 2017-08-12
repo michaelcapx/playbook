@@ -25,6 +25,19 @@
     - { param: "StartupMode=", value: "StartupMode=cwd" }
     - { param: "DefaultFolder=", value: "DefaultFolder=cwd" }
 
+# XFCE panel
+- name: Clean panel config directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/xfce4/panel"
+    state: absent
+
+- name: Create panel config directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/xfce4/panel"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
 # Weather icons
 - name: Clone weather icons
   git:
@@ -62,3 +75,97 @@
     dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/whiskermenu-7.rc"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
+
+# XFCE Panel launchers
+- name: Create panel launcher directories
+  file:
+    path: "{{ ansible_env.HOME }}/.config/xfce4/panel/{{ item }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items:
+    - launcher-1
+    - launcher-2
+    - launcher-9
+    - launcher-12
+
+- name: Copy chromium launcher file
+  copy:
+    src: chromium.desktop
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-1/chromium.desktop"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Copy thunar launcher file
+  copy:
+    src: thunar.desktop
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-2/thunar.desktop"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Copy sublime launcher file
+  copy:
+    src: sublime.desktop
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-9/sublime.desktop"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Copy terminal launcher file
+  copy:
+    src: terminal.desktop
+    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-12/terminal.desktop"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+# Xfconf Settings
+- name: Setup Thunar
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c thunar -p /misc-single-click -n -t bool -s false
+    - xfconf-query -c thunar -p /hidden-bookmarks -n -a -t string -s "network:///"
+
+- name: Set Desktop Wallpaper
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -n -t string -s /usr/share/xfce4/backdrops/galliumos-trianglify-blue.png
+
+- name: Setup Panel plugins
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids -n -a -t int -s 7 -t int -s 2 -t int -s 12 -t int -s 1 -t int -s 9 -t int -s 3 -t int -s 15 -t int -s 4 -t int -s 11 -t int -s 6 -t int -s 13 -t int -s 8 -t int -s 5
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-5/digital-format -n -t string -s "%I:%M %p"
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-5/timezone -n -t string -s "America/New_York"
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-13 -n -t string -s weather
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-1 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-2 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-12 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-9 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-1/items -n -a -t string -s chromium.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -n -a -t string -s thunar.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-9/items -n -a -t string -s sublime.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-12/items -n -a -t string -s terminal.desktop
+
+- name: Set Power Manager
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c xfce4-power-manager -p /show-tray-icon -n -t int -s 0
+
+- name: Set XFCE Session
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c xfce4-session -p /compat/LaunchGNOME -n -t bool -s true
+
+- name: Restart xfce4 panel
+  shell: xfce4-panel --restart
+  become: true
+  become_user: "{{ ansible_env.USER }}"
