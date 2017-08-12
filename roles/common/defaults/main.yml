@@ -17,7 +17,9 @@ common_apt_upgrade: yes
 common_apt_update: yes
 
 # Array of packages to purge from system.
-common_apt_remove_packages: []
+common_apt_remove_packages:
+  - xterm
+  - simple-scan
 
 # Determines the state for packages installed on the system. Available values are `present` or `latest`.
 common_apt_state: latest
