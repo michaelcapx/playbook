@@ -13,7 +13,6 @@ desktop_apt_dependencies:
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
 desktop_apt_ppa:
   - ppa:yktooo/ppa
-  - ppa:inkscape.dev/stable
   - ppa:nilarimogard/webupd8
 
 # Array of common desktop software packages to install
@@ -27,7 +26,6 @@ desktop_apt_packages_common:
   - screenruler
   - transmission
   - typecatcher
-  - inkscape
   - lubuntu-software-center
   - indicator-sound-switcher
   - xfpanel-switch
