@@ -1,0 +1,25 @@
+---
+# defaults file for firefox
+
+firefox_dependencies:
+  - python-xmltodict
+  - python-requests
+
+firefox_packages:
+  - firefox
+  - firefox-locale-en
+
+firefox_profiles:
+  - name: default
+    extensions:
+      - lastpass-password-manager
+      - ublock-origin
+
+firefox_preferences:
+  geo.ip: 'false'
+  browser.safebrowsing.enabled: 'false'
+  browser.safebrowsing.malware.enabled: 'false'
+
+firefox_profile_preferences:
+  default:
+    browser.search.defaultenginename: "'DuckDuckGo'"

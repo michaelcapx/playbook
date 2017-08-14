@@ -1,0 +1,48 @@
+---
+# tasks file for firefox
+
+- name: Ensure Firefox dependencies are installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ firefox_dependencies | list }}"
+
+- name: Add Firefox repository
+  apt_repository:
+    repo: ppa:mozillateam/firefox-next
+    state: present
+    update_cache: yes
+  register: firefox_add_apt_repo
+
+- name: Ensure Firefox packages are installed
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ firefox_packages | list }}"
+  when: firefox_add_apt_repo | succeeded
+
+- name: Create Firefox profiles
+  firefox_profile:
+    name: "{{ item.name }}"
+    state: present
+  become: no
+  with_items: "{{ firefox_profiles }}"
+  register: profiles
+
+- name: Install Firefox extensions
+  firefox_addon:
+    name: "{{ item.1 }}"
+    state: present
+    profile: "{{ item.0.name }}"
+  become: no
+  with_subelements:
+    - "{{ firefox_profiles }}"
+    - extensions
+
+- name: Set Firefox preferences
+  template:
+    src: user.js.j2
+    dest: "{{ item.profile_path }}/user.js"
+  with_items: "{{ profiles.results }}"
+  when: firefox_preferences or firefox_profile_preferences[item.profile_name] is defined
+  become: no
