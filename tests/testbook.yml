@@ -30,7 +30,6 @@
 
   roles:
     # - { role: ../roles/base, become: true }
-    - { role: ../roles/docker, become: true }
 
   tasks:
 

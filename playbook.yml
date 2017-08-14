@@ -47,7 +47,9 @@
     # Desktop roles
     - { role: desktop, become: true, tags: ['desktop'] }
     - { role: chrome, become: true, tags: ['desktop'] }
+    - { role: firefox, become: true, tags: ['desktop'] }
     - { role: sublime, become: true, tags: ['desktop'] }
+    - { role: minecraft, become: true, tags: ['desktop'] }
     - { role: xfce, become: true, tags: ['desktop'] }
 
     # Server roles
