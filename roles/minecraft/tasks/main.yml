@@ -1,0 +1,33 @@
+---
+# tasks file for minecraft
+
+# Minecraft Installation
+- name: Check if Java is installed
+  command: java -version
+  register: minecraft_check_java
+  ignore_errors: yes
+  failed_when: minecraft_check_java.rc > 1
+  changed_when: minecraft_check_java.rc == 1
+
+- name: Ensure Java is installed
+  apt:
+    name: default-jre
+    state: present
+  when: minecraft_check_java.rc > 1
+
+- name: Copy Minecraft launcher
+  copy:
+    src: Minecraft.jar
+    dest: /usr/local/bin/Minecraft.jar
+
+- name: Copy Minecraft icon
+  copy:
+    src: minecraft.png
+    dest: /usr/share/pixmaps/minecraft.png
+
+- name: Create Minecraft desktop file
+  copy:
+    src: minecraft.desktop
+    dest: /usr/local/share/applications/minecraft.desktop
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
