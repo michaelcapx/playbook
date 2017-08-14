@@ -1,0 +1,39 @@
+---
+# tasks file for gimp
+
+- name: Add Gimp repository
+  apt_repository:
+    repo: ppa:otto-kesselgulasch/gimp
+    state: present
+  register: gimp_add_apt_repo
+
+- name: Install Gimp
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gimp
+    - gimp-plugin-registry
+    - gimp-data-extras
+  when: gimp_add_apt_repo | succeeded
+
+- name: Ensure Gimp directory exists
+  file:
+    state: directory
+    path: "{{ ansible_env.HOME }}/.gimp-2.8"
+    mode: 0755
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Add Gimp configuration
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.gimp-2.8/sessionrc"
+    regexp: "{{ item.param }}"
+    line: "{{ item.value }}"
+    create: true
+  with_items :
+    - { param: "single-window-mode", value: "(single-window-mode yes)" }
+    - { param: "default-snap-to-canvas", value: "(default-snap-to-canvas yes)" }
+    - { param: "default-snap-to-grid", value: "(default-snap-to-grid yes)" }
+  become: true
+  become_user: "{{ ansible_env.USER }}"

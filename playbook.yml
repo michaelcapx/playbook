@@ -50,6 +50,7 @@
     - { role: firefox, become: true, tags: ['desktop'] }
     - { role: sublime, become: true, tags: ['desktop'] }
     - { role: albert, become: true, tags: ['desktop'] }
+    - { role: gimp, become: true, tags: ['desktop'] }
     - { role: minecraft, become: true, tags: ['desktop'] }
     - { role: xfce, become: true, tags: ['desktop'] }
 
