@@ -20,7 +20,7 @@
   apt:
     name: "{{ item }}"
     state: "{{ desktop_apt_state }}"
-  with_items: "{{ desktop_apt_packages_common | list }}"
+  with_items: "{{ desktop_apt_packages | list }}"
   when: desktop_add_apt_repo | succeeded
 
 # Create Directories

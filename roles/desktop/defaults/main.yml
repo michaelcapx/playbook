@@ -14,9 +14,10 @@ desktop_apt_dependencies:
 desktop_apt_ppa:
   - ppa:yktooo/ppa
   - ppa:nilarimogard/webupd8
+  - ppa:dawidd0811/neofetch
 
-# Array of common desktop software packages to install
-desktop_apt_packages_common:
+# Array of gui desktop software packages to install
+desktop_apt_packages_gui:
   - bleachbit
   - filezilla
   - gpick
@@ -29,3 +30,19 @@ desktop_apt_packages_common:
   - lubuntu-software-center
   - indicator-sound-switcher
   - xfpanel-switch
+
+# Array of cli desktop software packages to install
+desktop_apt_packages_cli:
+  - colortest
+  - diffutils
+  - htop
+  - httping
+  - iftop
+  - iotop
+  - xclip
+  - lastpass-cli
+  - trash-cli
+  - neofetch
+
+# Array of desktop apt packages to install.
+desktop_apt_packages: "{{ desktop_apt_packages_gui + desktop_apt_packages_cli }}"
