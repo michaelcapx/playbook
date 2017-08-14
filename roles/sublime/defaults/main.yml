@@ -45,3 +45,7 @@ sublime_packages:
 # Array of Github repositories to install.
 sublime_git_repos:
   - { name: Arc Dark Theme, repo: https://github.com/madeindjs/Sublime-Text-3-Arc-Dark-theme }
+
+sublime_plugin_prefs:
+  - "ColorHighlighter.sublime-settings"
+  - "Side Bar.sublime-settings"

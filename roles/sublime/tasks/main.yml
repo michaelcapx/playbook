@@ -61,3 +61,39 @@
     repo: "{{ item.repo }}"
     dest: "{{ sublime_user_preferences_dir }}/{{ item.name }}"
   with_items: "{{ sublime_git_repos }}"
+
+# Sublime License
+- name: Copy Sublime license file
+  copy:
+    src: "License.sublime_license"
+    dest: "{{ sublime_local_license_dir }}/License.sublime_license"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+# Sublime Preferences
+- name: Copy Sublime preference file
+  copy:
+    src: "Preferences.sublime-settings"
+    dest: "{{ sublime_user_preferences_dir }}/Preferences.sublime-settings"
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+# Sublime Mousemap
+- name: Copy Sublime mousemap file
+  copy:
+    src: "Default.sublime-mousemap"
+    dest: "{{ sublime_user_preferences_dir }}/Default.sublime-mousemap"
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+# Sublime Plugin Preferences
+- name: Copy Sublime plugin preferences
+  copy:
+    src: "{{ item }}"
+    dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
+    mode: 0774
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items: "{{ sublime_plugin_prefs }}"
