@@ -1,0 +1,50 @@
+---
+# defaults file for albert
+
+albert_set_icons: true
+albert_manage_config: true
+albert_autostart: true
+
+albert_always_on_top: true
+albert_clear_on_hide: false
+albert_display_icons: true
+albert_display_scrollbar: false
+albert_display_shadow: false
+albert_hide_on_close: false
+albert_hide_on_focus_loss: true
+albert_hotkey: Ctrl+`
+albert_item_count: 5
+albert_show_centered: true
+albert_show_tray: false
+albert_terminal: xfce4-terminal -x
+albert_theme: Arc Grey
+
+albert_websearch:
+  - name: "Google"
+    trigger: "gg "
+    url: "https://www.google.com/search?q=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/google.svg"
+  - name: "Youtube"
+    trigger: "yt "
+    url: "https://www.youtube.com/results?search_query=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/youtube.svg"
+  - name: "Amazon"
+    trigger: "ama "
+    url: "http://www.amazon.com/s/?field-keywords=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/amazon.svg"
+  - name: "Ebay"
+    trigger: "eb "
+    url: "http://www.ebay.com/sch/i.html?_nkw=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/ebay.svg"
+  - name: "GitHub"
+    trigger: "gh "
+    url: "https://github.com/search?utf8=✓&q=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/github.svg"
+  - name: "Wikipedia"
+    trigger: "wiki "
+    url: "https://en.wikipedia.org/w/index.php?search=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/wikipedia.svg"
+  - name: "Wolfram Alpha"
+    trigger: "="
+    url: "https://www.wolframalpha.com/input/?i=%s"
+    iconPath: "{{ ansible_env.HOME }}/.config/albert/icons/wolfram.svg"

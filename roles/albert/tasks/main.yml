@@ -1,0 +1,76 @@
+---
+# tasks file for albert
+
+- name: Configure the Albert PPA
+  apt_repository:
+    repo: ppa:nilarimogard/webupd8
+    state: present
+  register: albert_add_apt_repo
+
+- name: Ensure Albert is installed
+  apt:
+    name: albert
+    state: latest
+  when: albert_add_apt_repo | succeeded
+
+# Albert autostart
+- name: Create startup application directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/autostart"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: albert_autostart
+
+- name: Add new albert startup entry
+  template:
+    src: albert.desktop.j2
+    dest: "{{ ansible_env.HOME }}/.config/autostart/albert.desktop"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: albert_autostart
+
+# Albert icons
+- name: Create albert icons directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/albert/icons"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: albert_set_icons
+
+- name: Copy albert websearch icons
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/albert/icons"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  with_items:
+    - amazon.svg
+    - ebay.svg
+    - github.svg
+    - google.svg
+    - wikipedia.svg
+    - wolfram.svg
+    - youtube.svg
+  when: albert_set_icons
+
+# Albert Websearch JSON
+- name: Configure albert websearch extension
+  copy:
+    dest: "{{ ansible_env.HOME }}/.config/albert/org.albert.extension.websearch.json"
+    content: "{{ albert_websearch|to_nice_json }}"
+    mode: 0664
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: albert_set_icons
+
+# Albert Configuration
+- name: Configure albert
+  template:
+    src: albert.conf.j2
+    dest: "{{ ansible_env.HOME }}/.config/albert.conf"
+    mode: 0664
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  when: albert_manage_config

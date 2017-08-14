@@ -19,7 +19,6 @@ desktop_apt_ppa:
 
 # Array of common desktop software packages to install
 desktop_apt_packages_common:
-  - albert
   - bleachbit
   - filezilla
   - gpick
