@@ -68,6 +68,7 @@
     - { role: composer, become: true, tags: ['utility'] }
     - { role: node, become: true, tags: ['utility'] }
     - { role: blackfire, become: true, tags: ['utility'] }
+    - { role: beanstalkd, become: true, tags: ['utility'] }
     - { role: ngrok, become: true, tags: ['utility'] }
     - { role: flyway, become: true, tags: ['utility'] }
 

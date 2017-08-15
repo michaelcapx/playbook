@@ -1,0 +1,16 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: PolyAlloy
+  description: Installs Beanstalkd network work queue.
+  license: MIT
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+      - xenial
+  galaxy_tags:
+    - chromebook
+    - galliumos
+    - beanstalkd
