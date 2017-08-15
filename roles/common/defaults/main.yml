@@ -37,14 +37,23 @@ common_apt_dependencies:
 # Array of default apt packages.
 common_apt_packages_default:
   - build-essential
+  - unattended-upgrades
   - dos2unix
+  - gcc
   - libglib2.0-dev
   - libmcrypt4
+  - libpcre3-dev
+  - libnotify-bin
+  - make
   - mcrypt
+  - ntp
   - pwgen
+  - pv
+  - re2c
   - snapd
   - supervisor
   - whois
+  - vim
 
 # Array of archive apt packages. These packages should be able to zip and unzip most files and folders.
 common_apt_packages_archive:

@@ -15,6 +15,7 @@ python_build_dependencies:
 
 # Array of python apt packages.
 python_packages:
+  - python2.7-dev
   - python
   - python-dev
   - python-setuptools
