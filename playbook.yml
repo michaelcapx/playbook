@@ -67,6 +67,7 @@
     - { role: docker, become: true, tags: ['utility'] }
     - { role: composer, become: true, tags: ['utility'] }
     - { role: node, become: true, tags: ['utility'] }
+    - { role: memcached, become: true, tags: ['utility'] }
     - { role: blackfire, become: true, tags: ['utility'] }
     - { role: redis, become: true, tags: ['utility'] }
     - { role: beanstalkd, become: true, tags: ['utility'] }
