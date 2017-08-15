@@ -65,6 +65,7 @@
     # Utility roles
     - { role: docker, become: true, tags: ['utility'] }
     - { role: node, become: true, tags: ['utility'] }
+    - { role: blackfire, become: true, tags: ['utility'] }
 
     # Extra roles
 
