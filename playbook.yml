@@ -62,6 +62,7 @@
     - { role: sqlite, become: true, tags: ['database'] }
 
     # Mail roles
+    - { role: mailhog, become: true, tags: ['mail'] }
 
     # Utility roles
     - { role: docker, become: true, tags: ['utility'] }
