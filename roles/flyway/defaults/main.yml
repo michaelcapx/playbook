@@ -1,0 +1,12 @@
+---
+# defaults file for flyway
+
+flyway_version: "4.2.0"
+flyway_name: "flyway-{{flyway_version}}"
+
+flyway_tgz: "flyway-commandline-{{ flyway_version }}-linux-x64.tar.gz"
+flyway_tgz_url: "https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/{{ flyway_version }}/{{flyway_tgz}}"
+
+flyway_parent_install_dir: /usr/local
+flyway_install_dir: "{{flyway_parent_install_dir}}/{{flyway_name}}"
+flyway_install_link_dir: "{{ flyway_parent_install_dir }}/flyway"

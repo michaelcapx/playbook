@@ -69,6 +69,7 @@
     - { role: node, become: true, tags: ['utility'] }
     - { role: blackfire, become: true, tags: ['utility'] }
     - { role: ngrok, become: true, tags: ['utility'] }
+    - { role: flyway, become: true, tags: ['utility'] }
 
     # Extra roles
 
