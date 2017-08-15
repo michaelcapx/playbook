@@ -58,6 +58,7 @@
     # Server roles
 
     # Database roles
+    - { role: sqlite, become: true, tags: ['database'] }
 
     # Mail roles
 
