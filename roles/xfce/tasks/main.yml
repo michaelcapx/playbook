@@ -132,6 +132,10 @@
   become: true
   become_user: "{{ ansible_env.USER }}"
   with_items:
+    - xfconf-query -c thunar -p /last-view -n -t string -s ThunarIconView
+    - xfconf-query -c thunar -p /last-icon-view-zoom-level -n -t string -s THUNAR_ZOOM_LEVEL_NORMAL
+    - xfconf-query -c thunar -p /last-separator-position -n -t int -s 170
+    - xfconf-query -c thunar -p /last-show-hidden -n -t bool -s true
     - xfconf-query -c thunar -p /misc-single-click -n -t bool -s false
     - xfconf-query -c thunar -p /hidden-bookmarks -n -a -t string -s "network:///"
 
@@ -142,23 +146,50 @@
   with_items:
     - xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -n -t string -s /usr/share/xfce4/backdrops/galliumos-trianglify-blue.png
 
+- name: Set Notify settings
+  shell: "{{ item }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  with_items:
+    - xfconf-query -c xfce4-notifyd -p /notify-location -n -t uint -s 2
+    - xfconf-query -c xfce4-notifyd -p /theme -n -t string -s Arc-GalliumOS
+    - xfconf-query -c xfce4-notifyd -p /expire-timeout -n -t int -s 3
+
 - name: Setup Panel plugins
   shell: "{{ item }}"
   become: true
   become_user: "{{ ansible_env.USER }}"
   with_items:
     - xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids -n -a -t int -s 7 -t int -s 2 -t int -s 12 -t int -s 1 -t int -s 9 -t int -s 3 -t int -s 15 -t int -s 4 -t int -s 11 -t int -s 6 -t int -s 13 -t int -s 8 -t int -s 5
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-3 -n -t string -s tasklist
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-3/flat-buttons -n -t bool -s true
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-3/window-scrolling -n -t bool -s false
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-3/show-handle -n -t bool -s true
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-15 -n -t string -s separator
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-15/expand -n -t bool -s true
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-15/style -n -t uint -s 0
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-4 -n -t string -s pager
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-4/rows -n -t uint -s 1
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-4/workspace-scrolling -n -t bool -s false
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-5 -n -t string -s clock
     - xfconf-query -c xfce4-panel -p /plugins/plugin-5/digital-format -n -t string -s "%I:%M %p"
     - xfconf-query -c xfce4-panel -p /plugins/plugin-5/timezone -n -t string -s "America/New_York"
-    - xfconf-query -c xfce4-panel -p /plugins/plugin-13 -n -t string -s weather
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-6 -n -t string -s systray
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-6/show-frame -n -t bool -s false
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-6/size-max -n -t uint -s 26
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-7 -n -t string -s whiskermenu
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-8 -n -t string -s power-manager-plugin
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-11 -n -t string -s separator
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-11/style -n -t uint -s 0
     - xfconf-query -c xfce4-panel -p /plugins/plugin-1 -n -t string -s launcher
-    - xfconf-query -c xfce4-panel -p /plugins/plugin-2 -n -t string -s launcher
-    - xfconf-query -c xfce4-panel -p /plugins/plugin-12 -n -t string -s launcher
-    - xfconf-query -c xfce4-panel -p /plugins/plugin-9 -n -t string -s launcher
     - xfconf-query -c xfce4-panel -p /plugins/plugin-1/items -n -a -t string -s chromium.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-2 -n -t string -s launcher
     - xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -n -a -t string -s thunar.desktop
-    - xfconf-query -c xfce4-panel -p /plugins/plugin-9/items -n -a -t string -s sublime.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-12 -n -t string -s launcher
     - xfconf-query -c xfce4-panel -p /plugins/plugin-12/items -n -a -t string -s terminal.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-9 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-9/items -n -a -t string -s sublime.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-13 -n -t string -s weather
 
 - name: Set Power Manager
   shell: "{{ item }}"
