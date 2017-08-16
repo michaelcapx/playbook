@@ -56,6 +56,8 @@
     - { role: xfce, become: true, tags: ['desktop'] }
 
     # Server roles
+    - { role: nginx, become: true, tags: ['server'] }
+    - { role: php, become: true, tags: ['server'] }
 
     # Database roles
     - { role: mysql, become: true, tags: ['database'] }
@@ -78,6 +80,7 @@
     - { role: flyway, become: true, tags: ['utility'] }
 
     # Extra roles
+    - { role: supervisor, become: true, tags: ['extra'] }
 
   tasks:
 

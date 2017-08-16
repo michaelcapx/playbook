@@ -1,0 +1,10 @@
+---
+# defaults file for nginx
+
+nginx_ppa_version: development
+
+# The name of the nginx package to install.
+nginx_package_name: "nginx"
+
+nginx_user: www-data
+nginx_server_hash_bucket_size: 64

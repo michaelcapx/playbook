@@ -20,4 +20,4 @@ pbook_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
 pbook_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"
 
 # The web server software to use. Can be either 'apache' or 'nginx'.
-pbook_webserver: apache
+pbook_webserver: nginx

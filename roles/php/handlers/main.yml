@@ -1,9 +1,9 @@
 ---
-# handlers file for mssql
+# handlers file for php
 
 - name: restart webserver
   service:
-    name: "{{ mssql_webserver_daemon }}"
+    name: "{{ php_webserver_daemon }}"
     state: restarted
   notify: restart php-fpm
 

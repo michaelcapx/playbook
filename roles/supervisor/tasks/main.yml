@@ -1,0 +1,9 @@
+---
+# tasks file for supervisor
+
+- name: Enable supervisor
+  service:
+    name: supervisor
+    state: started
+    enabled: yes
+  ignore_errors: true

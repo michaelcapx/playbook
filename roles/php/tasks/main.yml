@@ -1,0 +1,101 @@
+---
+# tasks file for php
+
+- name: Set the PHP webserver daemon correctly when nginx is in use
+  set_fact:
+    php_webserver_daemon: nginx
+  when: pbook_webserver == 'nginx'
+
+- name: Set the PHP webserver daemon correctly when apache is in use
+  set_fact:
+    php_webserver_daemon: apache2
+  when: pbook_webserver == 'apache'
+
+- name: Add repository for PHP versions
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    update_cache: yes
+
+- name: Ensure PHP packages are installed
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ php_packages }}"
+
+- name: Configure PHP settings
+  lineinfile:
+    dest: /etc/php/7.1/cli/php.ini
+    regexp: "^{{ item.param }} ="
+    line: "{{ item.param }} = {{ item.value }}"
+  with_items :
+    - { param: error_reporting, value: "E_ALL" }
+    - { param: display_errors, value: "On" }
+    - { param: memory_limit, value: "512M" }
+    - { param: date.timezone , value: "UTC" }
+
+- name: Configure PHP xdebug
+  lineinfile:
+    dest: /etc/php/7.1/mods-available/xdebug.ini
+    regexp: "^{{ item.param }} ="
+    line: "{{ item.param }} = {{ item.value }}"
+    create: yes
+    mode: 0644
+  with_items :
+    - { param: xdebug.remote_enable, value: "1" }
+    - { param: xdebug.remote_connect_back, value: "1" }
+    - { param: xdebug.remote_port , value: "9000" }
+    - { param: xdebug.max_nesting_level , value: "512" }
+
+- name: Configure PHP opcache
+  lineinfile:
+    dest: /etc/php/7.1/mods-available/opcache.ini
+    regexp: "^{{ item.param }} ="
+    line: "{{ item.param }} = {{ item.value }}"
+    create: yes
+    mode: 0644
+  with_items :
+    - { param: opcache.revalidate_freq, value: "0" }
+
+- name: Configure PHP-FPM settings
+  lineinfile:
+    dest: /etc/php/7.1/fpm/php.ini
+    regexp: "^{{ item.param }} ="
+    line: "{{ item.param }} = {{ item.value }}"
+  with_items :
+    - { param: error_reporting, value: "E_ALL" }
+    - { param: display_errors, value: "On" }
+    - { param: cgi.fix_pathinfo, value: "0" }
+    - { param: memory_limit, value: "512M" }
+    - { param: upload_max_filesize, value: "100M" }
+    - { param: post_max_size, value: "100M" }
+    - { param: date.timezone , value: "UTC" }
+
+- name: Disable XDebug for CLI
+  command: phpdismod -s cli xdebug
+
+- name: Configure php-fpm pool
+  lineinfile:
+    dest: /etc/php/7.1/fpm/pool.d/www.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: "^user.?=.+$"
+      line: "user = {{ php_fpm_pool_user }}"
+    - regexp: "^group.?=.+$"
+      line: "group = {{ php_fpm_pool_group }}"
+    - regexp: '^listen\.owner.?=.+$'
+      line: "listen.owner = {{ php_fpm_listen_owner }}"
+    - regexp: '^listen\.group.?=.+$'
+      line: "listen.group = {{ php_fpm_listen_group }}"
+    - regexp: '^listen\.mode.?=.+$'
+      line: "listen.mode = {{ php_fpm_listen_mode }}"
+  notify: restart webserver
+
+- name: Ensure php-fpm is started and enabled at boot
+  service:
+    name: php7.1-fpm
+    state: started
+    enabled: yes
+    use: service
