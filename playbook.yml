@@ -58,6 +58,7 @@
     # Server roles
 
     # Database roles
+    - { role: mysql, become: true, tags: ['database'] }
     - { role: postgresql, become: true, tags: ['database'] }
     - { role: mssql, become: true, tags: ['database'] }
     - { role: sqlite, become: true, tags: ['database'] }
