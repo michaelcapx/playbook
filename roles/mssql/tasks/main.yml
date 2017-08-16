@@ -1,0 +1,45 @@
+---
+# tasks file for mssql
+
+- name: Add Microsoft gpg key
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+
+# - name: Add Ubuntu repository
+#   apt_repository:
+#     repo: deb [arch=amd64] https://packages.microsoft.com/ubuntu/16.04/mssql-server xenial main
+#     state: present
+#   register: mssql_repo
+
+- name: Add Ubuntu repository
+  apt_repository:
+    repo: deb [arch=amd64] https://packages.microsoft.com/config/ubuntu/16.04/prod xenial main
+    state: present
+    filename: mssql-release
+  register: mssql_repo
+
+- name: Update cache with repository
+  apt:
+    update_cache: yes
+  when: mssql_repo.changed
+
+- name: Install MSSQL Tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - msodbcsql
+    - mssql-tools
+  environment:
+    ACCEPT_EULA: Y
+
+- name: Add MSSQL tools to environment PATH
+  lineinfile:
+    path: /etc/environment
+    line: 'PATH="$PATH:/opt/mssql-tools/bin"'
+
+- name: Install UnixODBC
+  apt:
+    name: unixodbc-dev
+    state: present
