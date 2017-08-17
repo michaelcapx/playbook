@@ -1,0 +1,100 @@
+---
+- name: Desktop Playbook
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - vars/config.yml
+
+  pre_tasks:
+
+    - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
+      pause:
+        prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+      when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
+
+    - name: Run configured pre-provision shell scripts
+      script: "{{ item }}"
+      with_items: "{{ pbook_pre_provision_scripts | default([]) }}"
+      when: pbook_pre_provision_scripts | length
+
+    - name: Include optional configuration files
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - "{{ playbook_dir }}/vars/vault.yml"
+        - "{{ playbook_dir }}/local.config.yml"
+        - "{{ playbook_dir }}/secrets.yml"
+
+    - name: Upgrade packages
+      become: yes
+      apt:
+        upgrade: full
+        update_cache: yes
+        cache_valid_time: 300
+
+  roles:
+
+    # Base roles
+    - { role: common, become: true, tags: ['base'] }
+    # - { role: locales, become: true, tags: ['base'] }
+    # - { role: user, become: true, tags: ['base'] }
+    # - { role: git, become: true, tags: ['base'] }
+    # - { role: java, become: true, tags: ['base'] }
+    # - { role: python, become: true, tags: ['base'] }
+    # - { role: ruby, become: true, tags: ['base'] }
+
+    # Shell roles
+
+    # Desktop roles
+    # - { role: desktop, become: true, tags: ['desktop'] }
+    # - { role: chrome, become: true, tags: ['desktop'] }
+    # - { role: firefox, become: true, tags: ['desktop'] }
+    # - { role: sublime, become: true, tags: ['desktop'] }
+    # - { role: albert, become: true, tags: ['desktop'] }
+    # - { role: gimp, become: true, tags: ['desktop'] }
+    # - { role: inkscape, become: true, tags: ['desktop'] }
+    # - { role: minecraft, become: true, tags: ['desktop'] }
+    # - { role: xfce, become: true, tags: ['desktop'] }
+
+    # Server roles
+    # - { role: nginx, become: true, tags: ['server'] }
+    # - { role: php, become: true, tags: ['server'] }
+
+    # Database roles
+    # - { role: mysql, become: true, tags: ['database'] }
+    # - { role: postgresql, become: true, tags: ['database'] }
+    # - { role: mssql, become: true, tags: ['database'] }
+    # - { role: sqlite, become: true, tags: ['database'] }
+
+    # Mail roles
+    # - { role: mailhog, become: true, tags: ['mail'] }
+
+    # Utility roles
+    # - { role: docker, become: true, tags: ['utility'] }
+    # - { role: composer, become: true, tags: ['utility'] }
+    # - { role: node, become: true, tags: ['utility'] }
+    # - { role: memcached, become: true, tags: ['utility'] }
+    # - { role: blackfire, become: true, tags: ['utility'] }
+    # - { role: redis, become: true, tags: ['utility'] }
+    # - { role: beanstalkd, become: true, tags: ['utility'] }
+    # - { role: ngrok, become: true, tags: ['utility'] }
+    # - { role: flyway, become: true, tags: ['utility'] }
+
+    # Extra roles
+    # - { role: supervisor, become: true, tags: ['extra'] }
+
+  tasks:
+
+    - name: Run configured post-provision shell scripts
+      script: "{{ item }}"
+      with_items: "{{ pbook_post_provision_scripts | default([]) }}"
+      when: pbook_post_provision_scripts | length
+
+    - name: Autoremove apt packages
+      become: yes
+      apt:
+        autoremove: yes
+
+    - name: Cleanup apt installation
+      become: yes
+      command: apt-get clean warn=no

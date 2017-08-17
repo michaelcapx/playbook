@@ -43,7 +43,7 @@
 - name: Configure MySQL Password Lifetime
   lineinfile:
     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-    regexp: "default_password_lifetime\s*=.*"
+    regexp: "default_password_lifetime =.*"
     line: "default_password_lifetime = 0"
     state: present
     backrefs: yes
@@ -51,7 +51,7 @@
 - name: Configure MySQL listen IP address
   lineinfile:
     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-    regexp: "bind-address\s*=.*"
+    regexp: "bind-address =.*"
     line: "bind-address = {{ mysql_bind_address }}"
     state: present
     backrefs: yes
