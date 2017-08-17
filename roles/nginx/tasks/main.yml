@@ -13,14 +13,14 @@
     name: "{{ nginx_package_name }}"
     state: latest
 
-- name: Remove the default configuration
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items :
-    - /etc/nginx/sites-enabled/default
-    - /etc/nginx/sites-available/default
-  notify: restart nginx
+# - name: Remove the default configuration
+#   file:
+#     path: "{{ item }}"
+#     state: absent
+#   with_items :
+#     - /etc/nginx/sites-enabled/default
+#     - /etc/nginx/sites-available/default
+#   notify: restart nginx
 
 - name: Copy fastcgi_params
   template:
