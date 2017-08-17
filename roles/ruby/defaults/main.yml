@@ -1,0 +1,11 @@
+---
+# defaults file for ruby
+
+# Default should usually work, but this will be overridden on Ubuntu 14.04.
+ruby_rubygems_package_name: rubygems
+
+# A list of Ruby gems to install.
+ruby_install_gems:
+  - rails
+  - sass
+  - boom

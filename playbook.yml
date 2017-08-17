@@ -41,6 +41,7 @@
     - { role: git, become: true, tags: ['base'] }
     - { role: java, become: true, tags: ['base'] }
     - { role: python, become: true, tags: ['base'] }
+    - { role: ruby, become: true, tags: ['base'] }
 
     # Shell roles
 

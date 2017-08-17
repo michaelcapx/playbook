@@ -1,0 +1,31 @@
+---
+# tasks file for ruby
+
+- name: Install ruby and rubygems
+  apt:
+    name: "{{ item }}"
+    state: present"
+  with_items:
+    - ruby-full
+    - "{{ ruby_rubygems_package_name }}"
+
+- name: Add user installed RubyGems bin directory to global $PATH
+  copy:
+    src: rubygems.sh
+    dest: /etc/profile.d/rubygems.sh
+    mode: 0644
+
+# Install Bundler and configured gems.
+- name: Install Bundler
+  gem:
+    name: bundler
+    state: present
+    user_install: no
+
+- name: Install configured gems
+  gem:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  become_user: "{{ ansible_env.USER }}"
+  with_items: "{{ ruby_install_gems }}"
