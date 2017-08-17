@@ -55,6 +55,11 @@
     name: unixodbc-dev
     state: present
 
+- name: Ensure PHP Pear is installed
+  apt:
+    name: php-pear
+    state: present
+
 - name: Set Pear config
   command: pear config-set php_ini `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` system
 
