@@ -12,11 +12,11 @@ user_shell: "{{ pbook_shell }}"
 
 # XDG user directories. To remove a folder, set its value to "$HOME".
 user_xdg_directories:
-  - { name: DESKTOP,     path: "$HOME/Desktop",   dir: Desktop,   state: present }
-  - { name: DOWNLOAD,    path: "$HOME/Downloads", dir: Downloads, state: present }
-  - { name: TEMPLATES,   path: "$HOME/Templates", dir: Templates, state: present }
-  - { name: PUBLICSHARE, path: "$HOME/Public",    dir: Public,    state: present }
-  - { name: DOCUMENTS,   path: "$HOME/Documents", dir: Documents, state: present }
+  - { name: DESKTOP,     path: "$HOME/Desktop",   dir: Desktop,   state: directory }
+  - { name: DOWNLOAD,    path: "$HOME/Downloads", dir: Downloads, state: directory }
+  - { name: TEMPLATES,   path: "$HOME/Templates", dir: Templates, state: directory }
+  - { name: PUBLICSHARE, path: "$HOME/Public",    dir: Public,    state: directory }
+  - { name: DOCUMENTS,   path: "$HOME/Documents", dir: Documents, state: directory }
   - { name: MUSIC,       path: "$HOME",           dir: Music,     state: absent  }
   - { name: PICTURES,    path: "$HOME",           dir: Pictures,  state: absent  }
   - { name: VIDEOS,      path: "$HOME",           dir: Videos,    state: absent  }

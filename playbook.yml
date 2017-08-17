@@ -57,13 +57,13 @@
     - { role: xfce, become: true, tags: ['desktop'] }
 
     # Server roles
-    - { role: nginx, become: true, tags: ['server'] }
-    - { role: php, become: true, tags: ['server'] }
+    # - { role: nginx, become: true, tags: ['server'] }
+    # - { role: php, become: true, tags: ['server'] }
 
     # Database roles
     - { role: mysql, become: true, tags: ['database'] }
     - { role: postgresql, become: true, tags: ['database'] }
-    - { role: mssql, become: true, tags: ['database'] }
+    # - { role: mssql, become: true, tags: ['database'] }
     - { role: sqlite, become: true, tags: ['database'] }
 
     # Mail roles

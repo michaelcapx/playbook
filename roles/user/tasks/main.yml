@@ -62,6 +62,7 @@
     ssh_key_file: .ssh/id_rsa
     ssh_key_comment: "{{ user_ssh_key_comment | default(inventory_hostname) }}"
   when: ssh_private_key_exists.stat.exists == false
+  register: ssh_key_generated
 
 - name: Ensure the keys have restricted permissions
   file:
@@ -73,10 +74,9 @@
   - "{{ user_ssh_privkey }}"
   - "{{ user_ssh_pubkey }}"
 
-- name: Check that the user ssh key generated
-  stat:
-    path: "{{ user_ssh_pubkey }}"
-  register: ssh_key_generated
+# - name: Check that the user ssh key generated
+#   stat:
+#     path: "{{ user_ssh_pubkey }}"
 
 - name: Add local SSH public key to admin account authorized_keys
   authorized_key:
@@ -84,7 +84,7 @@
     key: "{{ lookup('file', user_ssh_pubkey) }}"
     exclusive: no
     manage_dir: yes
-  when: ssh_key_generated.stat.exists == true
+  when: ssh_key_generated.changed
 
 - name: Install SSH agent helper
   copy:
@@ -93,9 +93,10 @@
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
     mode: 0600
+  when: ssh_key_generated.changed
 
 - name: Start ssh-agent in the background
   shell: eval "$(ssh-agent -s)" && ssh-add {{ user_ssh_privkey }}
   become: true
   become_user: "{{ ansible_env.USER }}"
-  when: ssh_key_generated.stat.exists == true
+  when: ssh_key_generated.changed

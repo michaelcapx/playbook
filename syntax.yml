@@ -35,7 +35,7 @@
   roles:
 
     # Base roles
-    - { role: common, become: true, tags: ['base'] }
+    # - { role: common, become: true, tags: ['base'] }
     # - { role: locales, become: true, tags: ['base'] }
     # - { role: user, become: true, tags: ['base'] }
     # - { role: git, become: true, tags: ['base'] }
@@ -64,7 +64,7 @@
     # - { role: mysql, become: true, tags: ['database'] }
     # - { role: postgresql, become: true, tags: ['database'] }
     # - { role: mssql, become: true, tags: ['database'] }
-    # - { role: sqlite, become: true, tags: ['database'] }
+    - { role: sqlite, become: true, tags: ['database'] }
 
     # Mail roles
     # - { role: mailhog, become: true, tags: ['mail'] }
