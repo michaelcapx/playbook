@@ -53,6 +53,7 @@
     - { role: inkscape, become: true, tags: ['desktop'] }
     - { role: minecraft, become: true, tags: ['desktop'] }
     - { role: docker, become: true, tags: ['utility'] }
+    - { role: themes, become: true, tags: ['utility'] }
     - { role: xfce, become: true, tags: ['desktop'] }
 
   tasks:

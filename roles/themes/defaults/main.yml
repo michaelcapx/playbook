@@ -1,0 +1,22 @@
+---
+# defaults file for themes
+
+theme_dependencies:
+  - autoconf
+  - automake
+  - gtk2-engines-murrine
+  - gtk2-engines-pixbuf
+  - gnome-themes-standard
+  - libgtk-3-dev
+  - optipng
+
+theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme
+
+theme_enable: true
+
+theme_name: "Arc-Grey-Flatabulous-Darker"
+theme_window: "Arc-Grey-Flatabulous-Darker"
+theme_icons: "Numix-Circle-GalliumOS"
+theme_cursor: "DMZ-Black"
+theme_notify: "Numix"
+theme_wallpaper: "/usr/share/xfce4/backdrops/Untitled_0026_by_Mike_Sinko.jpg"

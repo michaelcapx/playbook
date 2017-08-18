@@ -139,22 +139,6 @@
     - xfconf-query -c thunar -p /misc-single-click -n -t bool -s false
     - xfconf-query -c thunar -p /hidden-bookmarks -n -a -t string -s "network:///"
 
-- name: Set Desktop Wallpaper
-  shell: "{{ item }}"
-  become: true
-  become_user: "{{ ansible_env.USER }}"
-  with_items:
-    - xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -n -t string -s /usr/share/xfce4/backdrops/galliumos-trianglify-blue.png
-
-- name: Set Notify settings
-  shell: "{{ item }}"
-  become: true
-  become_user: "{{ ansible_env.USER }}"
-  with_items:
-    - xfconf-query -c xfce4-notifyd -p /notify-location -n -t uint -s 2
-    - xfconf-query -c xfce4-notifyd -p /theme -n -t string -s Arc-GalliumOS
-    - xfconf-query -c xfce4-notifyd -p /expire-timeout -n -t int -s 3
-
 - name: Setup Panel plugins
   shell: "{{ item }}"
   become: true
