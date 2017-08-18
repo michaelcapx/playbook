@@ -1,6 +1,0 @@
----
-# defaults file for mssql
-
-mssql_pecl_extensions:
-  - sqlsrv
-  - pdo_sqlsrv

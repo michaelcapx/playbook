@@ -1,9 +1,0 @@
----
-# defaults file for sqlite
-
-sqlite_packages:
-  - libsqlite3-dev
-  - sqlite3
-
-sqlite_dir: /var/lib/sqlite
-sqlite_dbs: []

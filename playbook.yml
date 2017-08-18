@@ -43,8 +43,6 @@
     - { role: python, become: true, tags: ['base'] }
     - { role: ruby, become: true, tags: ['base'] }
 
-    # Shell roles
-
     # Desktop roles
     - { role: desktop, become: true, tags: ['desktop'] }
     - { role: chrome, become: true, tags: ['desktop'] }
@@ -54,34 +52,8 @@
     - { role: gimp, become: true, tags: ['desktop'] }
     - { role: inkscape, become: true, tags: ['desktop'] }
     - { role: minecraft, become: true, tags: ['desktop'] }
-    - { role: xfce, become: true, tags: ['desktop'] }
-
-    # Server roles
-    # - { role: nginx, become: true, tags: ['server'] }
-    # - { role: php, become: true, tags: ['server'] }
-
-    # Database roles
-    - { role: mysql, become: true, tags: ['database'] }
-    - { role: postgresql, become: true, tags: ['database'] }
-    # - { role: mssql, become: true, tags: ['database'] }
-    - { role: sqlite, become: true, tags: ['database'] }
-
-    # Mail roles
-    - { role: mailhog, become: true, tags: ['mail'] }
-
-    # Utility roles
     - { role: docker, become: true, tags: ['utility'] }
-    - { role: composer, become: true, tags: ['utility'] }
-    - { role: node, become: true, tags: ['utility'] }
-    - { role: memcached, become: true, tags: ['utility'] }
-    - { role: blackfire, become: true, tags: ['utility'] }
-    - { role: redis, become: true, tags: ['utility'] }
-    - { role: beanstalkd, become: true, tags: ['utility'] }
-    - { role: ngrok, become: true, tags: ['utility'] }
-    - { role: flyway, become: true, tags: ['utility'] }
-
-    # Extra roles
-    - { role: supervisor, become: true, tags: ['extra'] }
+    - { role: xfce, become: true, tags: ['desktop'] }
 
   tasks:
 

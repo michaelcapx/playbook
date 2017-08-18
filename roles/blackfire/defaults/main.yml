@@ -1,6 +1,0 @@
----
-# defaults file for blackfire
-
-blackfire_packages:
-  - blackfire-agent
-  - blackfire-php
