@@ -57,6 +57,20 @@
     state: started
     enabled: yes
 
+- name: Ensure that the docker service is functional
+  docker_ping:
+  register: docker_result
+  retries: 5
+  delay: 10
+  until: docker_result|success
+  become: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: docker
+    append: yes
+
 # Docker Compose
 - name: Check current docker-compose version.
   command: docker-compose --version
@@ -79,11 +93,11 @@
     mode: 0755
 
 # Docker indicator
-# - name: Install Docker PIP module
-#   pip:
-#     name: docker
-#     state: present
-#     executable: /usr/bin/pip3
+- name: Install Docker PIP module
+  pip:
+    name: docker
+    state: present
+    executable: /usr/bin/pip3
 
 - name: Add Docker indicator PPA repository
   apt_repository:
