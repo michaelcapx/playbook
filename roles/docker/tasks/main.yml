@@ -110,3 +110,11 @@
     name: indicator-docker
     state: present
   when: docker_add_indicator
+
+- name: Change default Docker indicator icon
+  get_url:
+    url: https://raw.githubusercontent.com/yktoo/indicator-docker/master/icons/ubuntu-mono-dark/indicator-docker.svg
+    dest: /usr/share/icons/hicolor/22x22/status/indicator-docker.svg
+    mode: 0644
+    force: yes
+  when: docker_add_indicator
