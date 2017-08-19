@@ -6,13 +6,10 @@ theme_dependencies:
   - automake
   - gtk2-engines-murrine
   - gtk2-engines-pixbuf
-  - gnome-themes-standard
   - libgtk-3-dev
   - optipng
 
 theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme
-
-theme_enable: true
 
 theme_name: "Arc-Grey-Flatabulous-Darker"
 theme_window: "Arc-Grey-Flatabulous-Darker"

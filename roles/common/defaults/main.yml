@@ -51,7 +51,6 @@ common_apt_packages_default:
   - pwgen
   - pv
   - re2c
-  - snapd
   - supervisor
   - whois
   - vim
