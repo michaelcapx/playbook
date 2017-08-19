@@ -21,6 +21,7 @@
     regexp: "{{ item.param }}"
     line: "{{ item.value }}"
     state: present
+    create: yes
   with_items :
     - { param: "StartupMode=", value: "StartupMode=cwd" }
     - { param: "DefaultFolder=", value: "DefaultFolder=cwd" }
