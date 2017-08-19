@@ -26,6 +26,12 @@ Make sure all dependencies have been installed before moving on:
 
 These requirements can be automagically installed using the provided [install.sh](https://github.com/playbook/blob/master/install.sh) script.
 
+## Installation
+
+This assumes a base ubuntu 16.04 LTS with xfce installed. From an XFCE session, open the terminal and run:
+
+    $ bash <(wget -qO - https://raw.github.com/michaelcapx/playbook/master/install.sh)
+
 ## Customizing the Playbook
 
 To customize the installation, install Git and Ansible [via pip](http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-pip)

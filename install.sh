@@ -35,7 +35,7 @@ readonly GIT_DEST="$HOME/Downloads/playbook"
 function e_header() { echo -e "\033[1;32m✔  $@\033[0m"; }
 function e_error()  { echo -e "\033[1;31m✖  $@\033[0m"; }
 function e_info()   { echo -e "\033[1;34m$@\033[0m"; }
-function e_prompt() { printf "\033[1;33m$@\033[0m"; }
+function e_prompt() { echo -e "\033[1;33m$@\033[0m"; }
 
 ###########################################################################
 # Install Core Packages
@@ -110,10 +110,10 @@ prep_playbook() {
     local PLAYBOOK_CMD="ansible-playbook -i "$GIT_DEST"/hosts "$GIT_DEST"/playbook.yml -v --ask-become-pass"
   fi
 
-  e_prompt "Would you like to customize the playbook? (y/n): "
-  read CUSTOMIZE_PLAYBOOK
+  e_prompt "Would you like to run the playbook now? (y/n): "
+  read RUN_PLAYBOOK
 
-  if [ $CUSTOMIZE_PLAYBOOK != "y" ]; then
+  if [ "$RUN_PLAYBOOK" = "y" ] || [ "$RUN_PLAYBOOK" = "Y" ]; then
     e_header "Running the playbook......."
     $PLAYBOOK_CMD
   else
@@ -123,7 +123,6 @@ prep_playbook() {
     echo ""
     exit
   fi
-
 }
 
 ###########################################################################
