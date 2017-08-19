@@ -1,7 +1,7 @@
 favorites=galliumos-update.desktop,exo-web-browser.desktop,exo-file-manager.desktop,exo-terminal-emulator.desktop,sublime-text.desktop
 recent=xfpanel-switch.desktop,mpv.desktop,meld.desktop,font-manager.desktop,xfce-settings-manager.desktop,gimp.desktop,inkscape.desktop,gpick.desktop,hexchat.desktop,gtk-theme-config.desktop
 button-title=Applications Menu
-button-icon=/usr/share/pixmaps/ubuntu.png
+button-icon=/usr/share/pixmaps/ubuntu-logo-menu.png
 button-single-row=false
 show-button-title=false
 show-button-icon=true
