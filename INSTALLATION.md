@@ -147,7 +147,7 @@ Before you proceed, you may wish to investigate [*chrx*'s options](https://chrx.
 
 > The second time you run this command you may want to include a few flags to customize your username and/or hostname. You can do that by running:
 
-    curl -Os https://chrx.org/go && sh go -U yourname -H foobarhost
+    cd ; curl -Os https://chrx.org/go && sh go -U yourname -H foobarhost
 
 > By default it will create a user `chrx` with a password of `chrx`. If you supply a custom username with -U yourname then your password will be yourname.
 > For a full list of install options check out the [chrx option documentation](https://chrx.org/#options).
