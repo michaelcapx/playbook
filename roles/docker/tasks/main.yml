@@ -65,6 +65,12 @@
   until: docker_result|success
   become: yes
 
+- name: Ensure docker group is present
+  group:
+    name: docker
+    state: present
+    system: yes
+
 - name: Add user to docker group
   user:
     name: "{{ ansible_env.USER }}"
