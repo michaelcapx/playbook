@@ -1,0 +1,12 @@
+---
+# defaults file for selenium
+
+# Install directory
+selenium_install_dir: /opt
+
+# Install version
+selenium_version: "2.53.0"
+
+# xvfb package
+selenium_xvfb_package: xvfb
+selenium_xvfb_args: "--server-args='-screen 0, 1920x1080x24'"

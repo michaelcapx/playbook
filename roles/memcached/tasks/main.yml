@@ -1,0 +1,25 @@
+---
+# tasks file for memcached
+
+# Setup/install tasks
+- name: Install Memcached
+  apt:
+    name: memcached
+    state: latest
+  register: memcached_install
+
+# Configure Memcached
+- name: Copy Memcached configuration
+  template:
+    src: memcached.conf.j2
+    dest: "{{ memcached_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart memcached
+
+- name: Ensure Memcached is started and set to run on startup
+  service:
+    name: memcached
+    state: started
+    enabled: yes

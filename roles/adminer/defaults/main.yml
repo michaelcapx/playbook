@@ -1,0 +1,8 @@
+---
+# defaults file for adminer
+
+# The directory in which Adminer will be downloaded/installed.
+adminer_install_dir: /opt/adminer
+
+# The filename for the downloaded Adminer application. If you're managing virtualhosts or server directives manually, it might be simpler to set the document root to your configured `adminer_install_dir`, and the filename to `index.php`, so you don't have to enter `/adminer.php` in the URL to access Adminer.
+adminer_install_filename: index.php

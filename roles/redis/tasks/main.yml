@@ -1,0 +1,33 @@
+---
+# tasks file for redis
+
+- name: Add PPA for Redis
+  apt_repository:
+    repo: ppa:chris-lea/redis-server
+    state: present
+    update_cache: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  changed_when: false
+
+# Setup/install tasks
+- name: Ensure Redis is installed
+  apt:
+    name: "{{ redis_package }}"
+    state: present
+
+- name: Ensure Redis is configured
+  template:
+    src: redis.conf.j2
+    dest: "{{ redis_conf_path }}"
+    mode: 0644
+  notify: restart redis
+
+- name: Ensure Redis is running and enabled on boot
+  service:
+    name: "{{ redis_daemon }}"
+    state: started
+    enabled: yes

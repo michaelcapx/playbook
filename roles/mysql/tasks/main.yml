@@ -1,0 +1,63 @@
+---
+# tasks file for mysql
+
+# Setup/install tasks
+- name: Check if MySQL is already installed
+  stat:
+    path: /etc/init.d/mysql
+  register: mysql_installed
+
+- name: Ensure MySQL packages are installed
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ mysql_packages }}"
+  register: mysql_deb_install_packages
+
+- name: Ensure MySQL is stopped after initial install
+  service:
+    name: "{{ mysql_daemon }}"
+    state: stopped
+  when: mysql_installed.stat.exists == false
+
+- name: Delete innodb log files created by apt package after initial install
+  file:
+    path: "/var/lib/mysql/{{item}}"
+    state: absent
+  with_items:
+    - "ib_logfile0"
+    - "ib_logfile1"
+  when: mysql_installed.stat.exists == false
+
+# Configure MySQL
+- name: Copy my.cnf global MySQL configuration
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify: restart mysql
+
+- name: Create error log file (if configured)
+  command: "touch {{ mysql_log_error }}"
+  args:
+    creates: "{{ mysql_log_error }}"
+    warn: no
+  when: mysql_log == "" and mysql_log_error != ""
+
+- name: Set ownership on error log file (if configured)
+  file:
+    path: "{{ mysql_log_error }}"
+    state: file
+    owner: mysql
+    group: mysql
+    mode: 0640
+  when: mysql_log == "" and mysql_log_error != ""
+
+- name: Ensure MySQL is started and enabled on boot
+  service:
+    name: "{{ mysql_daemon }}"
+    state: started
+    enabled: yes

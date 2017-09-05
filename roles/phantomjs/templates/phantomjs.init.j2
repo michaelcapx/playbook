@@ -1,0 +1,60 @@
+#! /bin/sh
+# /etc/init.d/phantomjs
+#
+# phantomjs webdriver init script.
+
+### BEGIN INIT INFO
+# Provides:          phantomjs
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start phantomjs webdriver at boot time.
+# Description:       Enable phantomjs webdriver.
+### END INIT INFO
+
+PID=/var/run/phanthom.pid
+LOCK=/var/lock/phanthom.lock
+USER=nobody
+BIN="{{ phantomjs_bin_path }}"
+PORT="{{ phantomjs_webdriver_port }}"
+DAEMONIZE_BIN="/usr/sbin/daemonize"
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting phantomjs."
+    $DAEMONIZE_BIN -p $PID -l $LOCK -u $USER $BIN --webdriver=$PORT
+    ;;
+  stop)
+    if [ -f $PID ]; then
+      echo "Stopping phantomjs.";
+      kill -TERM $(cat $PID);
+      rm -f $PID;
+    else
+      echo "phantomjs is not running.";
+    fi
+    ;;
+  restart)
+    echo "Restarting phantomjs."
+    if [ -f $PID ]; then
+      kill -TERM $(cat $PID);
+      rm -f $PID;
+    fi
+    $DAEMONIZE_BIN -p $PID -l $LOCK -u $USER $BIN
+    ;;
+  status)
+    if [ -f $PID ]; then
+      echo "phantomjs is running.";
+    else
+      echo "phantomjs is not running.";
+      exit 3
+    fi
+    ;;
+  *)
+    echo "Usage: /etc/init.d/phantomjs {start|stop|status|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

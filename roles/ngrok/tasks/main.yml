@@ -1,0 +1,47 @@
+---
+# tasks file for ngrok
+
+- name: Check for existing ngrok binary
+  stat:
+    path: "{{ ngrok_path_bin }}"
+  register: ngrok_bin
+
+- name: Download ngrok binary
+  get_url:
+    url: "{{ ngrok_download }}"
+    dest: "{{ ngrok_path_download_tmp }}/ngrok.zip"
+  when: not ngrok_bin.stat.exists
+
+- name: Unzip ngrok binary
+  unarchive:
+    src: "{{ ngrok_path_download_tmp }}/ngrok.zip"
+    dest: "{{ ngrok_path_download_tmp }}"
+    creates: "{{ ngrok_path_download_tmp }}/ngrok"
+    copy: no
+  when: not ngrok_bin.stat.exists
+
+- name: Install ngrok binary
+  command: "mv ./ngrok {{ ngrok_path_bin }}"
+  args:
+    chdir: "{{ ngrok_path_download_tmp }}"
+    creates: "{{ ngrok_path_bin }}"
+  when: not ngrok_bin.stat.exists
+
+- name: Set ngrok binary permissions
+  file:
+    path: "{{ ngrok_path_bin }}"
+    mode: 0755
+    state: file
+  when: not ngrok_bin.stat.exists
+
+- name: Clean Ngrok zip file
+  file:
+    path: "{{ ngrok_path_download_tmp }}/ngrok.zip"
+    state: absent
+  when: not ngrok_bin.stat.exists
+
+- name: Clean Ngrok temp folder
+  file:
+    path: "{{ ngrok_path_download_tmp }}/ngrok"
+    state: absent
+  when: not ngrok_bin.stat.exists

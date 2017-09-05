@@ -1,0 +1,9 @@
+---
+# defaults file for blackfire
+
+blackfire_gpg_key_url: https://packagecloud.io/gpg.key
+
+# The Blackfire packages this role will install on the server. Note that `blackfire-php` may not work well with XHProf and/or XDebug.
+blackfire_packages:
+  - blackfire-agent
+  - blackfire-php

@@ -1,0 +1,11 @@
+---
+# defaults file for pimpmylog
+
+# The location where Pimp my Log will be installed. You should configure a virtual host or server entry pointing to this directory so you can access the interface. Otherwise, you could choose a location that's within an existing docroot, e.g. the default docroot `/var/www/html/pimpmylog`, and access Pimp my Log at `http://localhost/pimpmylog/`.
+pimpmylog_install_dir: /usr/share/php/pimpmylog
+
+# The git repository URL from which Pimp my Log will be cloned.
+pimpmylog_repo: https://github.com/potsky/PimpMyLog.git
+
+# The version of Pimp my Log to install. Can be any valid tag, branch, or `HEAD`.
+pimpmylog_version: master

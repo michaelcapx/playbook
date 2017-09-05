@@ -1,0 +1,54 @@
+---
+# tasks file for selenium
+
+# Download tasks
+- name: Create Selenium directory
+  file:
+    path: "{{ selenium_install_dir }}/selenium"
+    state: directory
+    recurse: yes
+
+- name: Download Selenium
+  get_url:
+    url: "http://selenium-release.storage.googleapis.com/{{ selenium_version | regex_replace('\\.[0-9]+$', '') }}/selenium-server-standalone-{{ selenium_version }}.jar"
+    dest: "{{ selenium_install_dir }}/selenium/selenium-server-standalone-{{ selenium_version }}.jar"
+
+# Chromedriver tasks
+- name: Get the latest release for chromedriver
+  uri:
+    url: http://chromedriver.storage.googleapis.com/LATEST_RELEASE
+    return_content: yes
+  register: chromedriver_latest
+
+- name: Install chromedriver
+  unarchive:
+    src: "http://chromedriver.storage.googleapis.com/{{ chromedriver_latest.content | trim }}/chromedriver_linux64.zip"
+    dest: /usr/bin
+    mode: 0755
+    copy: no
+
+# Configuration tasks
+- name: Install xvfb
+  package:
+    name: "{{ selenium_xvfb_package }}"
+
+# Service tasks
+- name: Install systemd unit file (for systemd systems)
+  template:
+    src: "selenium-unit.j2"
+    dest: /etc/systemd/system/selenium.service
+    owner: root
+    group: root
+    mode: 0755
+  when: "ansible_service_mgr == 'systemd'"
+
+- name: Register systemd service status (for systemd systems)
+  shell: 'systemctl status selenium | grep "active (running)"'
+  when: "ansible_service_mgr == 'systemd'"
+  register: selenium_running
+  ignore_errors: yes
+  changed_when: false
+
+- name: Ensure selenium is running
+  service: name=selenium state=started enabled=yes
+  when: selenium_running.failed is defined and selenium_running.failed == true

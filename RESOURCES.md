@@ -32,6 +32,7 @@ Contents
   - [Crouton Scripts](#crouton-scripts)
   - [Shell Scripts](#shell-scripts)
   - [Scripting Guides](#scripting-guides)
+  - [Lamp Scripts](#lamp-scripts)
 - [Browsers](#browsers)
   - [Firefox](#firefox)
   - [Chrome](#chrome)
@@ -468,6 +469,17 @@ Scripting
 - [how to install imagemagick for php7 on ubuntu 16.04?](http://askubuntu.com/questions/769396/how-to-install-imagemagick-for-php7-on-ubuntu-16-04)
 - [Is there a link to GitHub for downloading a file in the latest release of a repository?](http://stackoverflow.com/questions/24987542/is-there-a-link-to-github-for-downloading-a-file-in-the-latest-release-of-a-repo)
 - [Bash Script Testing Library (BSTL)](https://github.com/rafritts/BashScriptTestingLibrary)
+
+### Lamp Scripts
+
+- [lnmp](https://github.com/lj2007331/lnmp)
+- [lamp](https://github.com/lj2007331/lamp)
+- [lemp](https://github.com/lj2007331/lempstack)
+- [teddysun](https://github.com/teddysun/lamp)
+- [Perfect Apache Configuration](https://github.com/gregrickaby/The-Perfect-Apache-Configuration)
+- [vHost Manager](https://github.com/Marko-M/lamp-vhost-manager)
+- [Laravel lemp installation](https://github.com/naveenyagati/Laravel-Lemp-Installation)
+- [Lemp Stack](https://github.com/lucien144/lemp-stack)
 
 Browsers
 --------

@@ -43,9 +43,6 @@
     - { role: python, become: true, tags: ['base'] }
     - { role: ruby, become: true, tags: ['base'] }
 
-    # Server roles
-    # - { role: apache, when: pbook_webserver == 'apache', become: true, tags: ['server']  }
-
     # Desktop roles
     - { role: desktop, become: true, tags: ['desktop'] }
     - { role: chrome, become: true, tags: ['desktop'] }
@@ -58,6 +55,30 @@
     - { role: docker, become: true, tags: ['utility'] }
     - { role: themes, become: true, tags: ['utility'] }
     - { role: xfce, become: true, tags: ['desktop'] }
+
+    # Server roles
+    # - { role: postfix, become: true, tags: ['base'] }
+    # - { role: daemonize, become: true, tags: ['base'] }
+    # - { role: apache, when: pbook_webserver == 'apache', become: true, tags: ['server']  }
+    # - { role: php, become: true, tags: ['server'] }
+    # - { role: composer, become: true, tags: ['server'] }
+
+    # Database roles
+    - { role: mysql, when: pbook_database == 'mysql', become: true, tags: ['database']  }
+    - { role: sqlite, become: true, tags: ['database'] }
+
+    # Utility roles
+    - { role: node, become: true, tags: ['utility']  }
+    - { role: adminer, become: true, tags: ['utility']  }
+    - { role: beanstalkd, become: true, tags: ['utility']  }
+    - { role: memcached, become: true, tags: ['utility']  }
+    - { role: pimpmylog, become: true, tags: ['utility']  }
+    - { role: redis, become: true, tags: ['utility']  }
+    - { role: blackfire, become: true, tags: ['utility']  }
+    - { role: selenium, become: true, tags: ['utility']  }
+    - { role: phantomjs, become: true, tags: ['utility']  }
+    - { role: mailhog, become: true, tags: ['utility']  }
+    - { role: ngrok, become: true, tags: ['utility']  }
 
   tasks:
 

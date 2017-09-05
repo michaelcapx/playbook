@@ -1,0 +1,13 @@
+---
+# tasks file for postfix
+
+- name: Ensure postfix is installed
+  apt:
+    name: "{{ postfix_package }}"
+    state: latest
+
+- name: Ensure postfix is started and enabled at boot
+  service:
+    name: "{{ postfix_service_name }}"
+    state: "{{ postfix_service_state }}"
+    enabled: "{{ postfix_service_enabled }}"

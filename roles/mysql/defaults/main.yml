@@ -1,0 +1,11 @@
+---
+# defaults file for mysql
+
+mysql_packages:
+  - mysql-common
+  - mysql-server
+  - mysql-client
+  - python-mysqldb
+  - mytop
+
+mysql_daemon: mysql

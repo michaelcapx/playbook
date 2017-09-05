@@ -1,0 +1,4 @@
+---
+# defaults file for beanstalkd
+
+beanstalkd_package: beanstalkd

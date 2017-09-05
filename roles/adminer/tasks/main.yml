@@ -1,0 +1,24 @@
+---
+# tasks file for adminer
+
+# Install Adminer
+- name: Ensure Adminer directory exists
+  file:
+    path: "{{ adminer_install_dir }}"
+    state: directory
+    recurse: yes
+
+- name: Download Adminer to configured directory
+  get_url:
+    url: https://www.adminer.org/latest.php
+    dest: "{{ adminer_install_dir }}/{{ adminer_install_filename }}"
+    mode: 0644
+    timeout: 60
+
+# Add Apache configuration (if configured)
+- name: Add Apache configuration file for Adminer
+  template:
+    src: adminer.conf.j2
+    dest: /etc/apache2/conf-enabled/adminer.conf
+  when: pbook_webserver == 'apache'
+  notify: restart apache
