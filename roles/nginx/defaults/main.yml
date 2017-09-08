@@ -1,0 +1,15 @@
+---
+# defaults file for nginx
+
+# Use the official Nginx PPA for Ubuntu, and the version to use if so.
+nginx_ppa_version: development
+
+# The name of the nginx package to install.
+nginx_package_name: "nginx"
+
+# Configuration of the default error and access logs. Set to `off` to disable a log entirely.
+nginx_error_log: "/var/log/nginx/error.log warn"
+nginx_access_log: "/var/log/nginx/access.log main buffer=16k"
+
+nginx_vhost_template: "vhosts.conf.j2"
+nginx_vhost_path: /etc/nginx/sites-enabled

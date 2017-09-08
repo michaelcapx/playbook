@@ -27,9 +27,18 @@
     state: present
   notify: restart apache
 
+- name: Configure Apache user and group
+  lineinfile:
+    dest: /etc/apache2/envvars
+    regexp: "^export {{ item.param }}="
+    line: "export {{ item.param }}={{ item.value }}"
+  with_items :
+    - { param: APACHE_RUN_USER, value: "www-data" }
+    - { param: APACHE_RUN_GROUP, value: "www-data" }
+
 - name: Set nicer permissions on Apache log directory
   file:
-    path: "/var/log/{{ apache_service }}"
+    path: /var/log/apache2
     state: directory
     mode: 0755
     recurse: true
@@ -71,10 +80,9 @@
 
 - name: Remove default vhost in sites-enabled
   file:
-    path: "/etc/apache2/sites-enabled/{{ apache_default_vhost_filename }}"
+    path: /etc/apache2/sites-enabled/000-default.conf
     state: absent
   notify: restart apache
-  when: apache_remove_default_vhost
 
 # Enable Apache
 - name: Ensure Apache has selected state and enabled on boot

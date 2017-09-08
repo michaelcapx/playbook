@@ -2,4 +2,7 @@
 # handlers file for mysql
 
 - name: restart mysql
-  service: "name={{ mysql_daemon }} state=restarted sleep=5"
+  service:
+    name: mysql
+    state: restarted
+    sleep: 5

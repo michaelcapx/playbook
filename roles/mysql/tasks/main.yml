@@ -2,62 +2,98 @@
 # tasks file for mysql
 
 # Setup/install tasks
-- name: Check if MySQL is already installed
-  stat:
-    path: /etc/init.d/mysql
-  register: mysql_installed
-
 - name: Ensure MySQL packages are installed
   apt:
     name: "{{ item }}"
     state: latest
   with_items: "{{ mysql_packages }}"
-  register: mysql_deb_install_packages
 
-- name: Ensure MySQL is stopped after initial install
-  service:
-    name: "{{ mysql_daemon }}"
-    state: stopped
-  when: mysql_installed.stat.exists == false
-
-- name: Delete innodb log files created by apt package after initial install
-  file:
-    path: "/var/lib/mysql/{{item}}"
-    state: absent
-  with_items:
-    - "ib_logfile0"
-    - "ib_logfile1"
-  when: mysql_installed.stat.exists == false
-
-# Configure MySQL
-- name: Copy my.cnf global MySQL configuration
-  template:
-    src: my.cnf.j2
+# Configuration tasks
+- name: Configure MySQL Password Lifetime
+  lineinfile:
     dest: /etc/mysql/my.cnf
+    regexp: "default_password_lifetime\s*=.*"
+    line: "default_password_lifetime = 0"
+    state: present
+    backrefs: yes
+
+- name: Configure MySQL listen IP address
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    regexp: "bind-address\s*=.*"
+    line: "bind-address = {{ mysql_bind_address }}"
+    state: present
+    backrefs: yes
+
+- name: Ensure MySQL is started to change root password
+  service:
+    name: mysql
+    state: started
+
+- name: Set MySQL root user password
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    priv: "*.*:ALL,GRANT"
+    state: present
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: Configure MySQL for easy access as root user
+  template:
+    src: root-my.cnf.j2
+    dest: "{{ mysql_root_home }}/.my.cnf"
     owner: root
     group: root
-    mode: 0644
-    force: yes
+    mode: 0600
   notify: restart mysql
 
-- name: Create error log file (if configured)
-  command: "touch {{ mysql_log_error }}"
-  args:
-    creates: "{{ mysql_log_error }}"
-    warn: no
-  when: mysql_log == "" and mysql_log_error != ""
+# Secure installation tasks
+- name: Delete anonymous MySQL server users
+  mysql_user:
+    user: ""
+    host: "{{ item }}"
+    state: absent
+  with_items:
+    - localhost
+    - "{{ inventory_hostname }}"
+    - "{{ ansible_hostname }}"
 
-- name: Set ownership on error log file (if configured)
-  file:
-    path: "{{ mysql_log_error }}"
-    state: file
-    owner: mysql
-    group: mysql
-    mode: 0640
-  when: mysql_log == "" and mysql_log_error != ""
+- name: Remove the MySQL test database
+  mysql_db:
+    db: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
 
+# Databases tasks
+- name: Ensure MySQL databases are present
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: present
+  with_items: "{{ mysql_databases }}"
+
+# Users tasks
+- name: Ensure MySQL users are present
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:USAGE') }}"
+    state: "{{ item.state | default('present') }}"
+    append_privs: "{{ item.append_privs | default('no') }}"
+    encrypted: "{{ item.encrypted | default('no') }}"
+  with_items: "{{ mysql_users }}"
+  no_log: true
+
+# Enable tasks
 - name: Ensure MySQL is started and enabled on boot
   service:
-    name: "{{ mysql_daemon }}"
+    name: mysql
     state: started
     enabled: yes

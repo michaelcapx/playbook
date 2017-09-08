@@ -1,6 +1,6 @@
-# Ansible Role: PHP
+# Ansible Role: PostgreSQL
 
-Installs PHP on Debian/Ubuntu servers.
+Installs and configures PostgreSQL server on Debian/Ubuntu servers.
 
 ## Requirements
 
@@ -19,7 +19,7 @@ This is an example playbook that demonstrates how you would use the role:
 
     - hosts: localhost
       roles:
-         - { role: php, become: true }
+         - { role: postgresql, become: true }
 
 ## Credits
 
