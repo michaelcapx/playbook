@@ -1,0 +1,18 @@
+---
+# defaults file for www
+
+dashboard_install_dir: /var/www/dashboard
+dashboard_site_title: Drupal VM
+dashboard_site_favicon: //cdn.rawgit.com/geerlingguy/drupalvm.github.io/master/favicon.ico
+
+www_vhosts:
+  - template: standard
+    vhost: "default71.dev"
+    path: "{{ ansible_env.HOME }}/Public/default-7.0"
+    php: "7.1"
+
+# Other configuration.
+_devtool_docroots:
+  - "{{ adminer_install_dir }}"
+  - "{{ pimpmylog_install_dir }}"
+  - "{{ dashboard_install_dir|default('') }}"

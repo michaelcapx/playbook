@@ -1,0 +1,32 @@
+---
+# tasks file for www
+
+- name: Add user to www-data group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: www-data
+    append: yes
+
+- name: Ensure the dashboard directory exists
+  file:
+    path: "{{ dashboard_install_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Copy dashboard page into place
+  template:
+    src: dashboard.html.j2
+    dest: "{{ dashboard_install_dir }}/index.html"
+    mode: 0644
+
+- name: Copy phpinfo file into place
+  copy:
+    src: server-info.php.j2
+    dest: "{{ dashboard_install_dir }}/server-info.php"
+    mode: 0644
+
+- include: apache.yml
+  when: pbook_webserver == 'apache'
+
+- include: nginx.yml
+  when: pbook_webserver == 'nginx'
