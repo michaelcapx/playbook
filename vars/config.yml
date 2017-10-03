@@ -36,6 +36,8 @@ pbook_db_name: homestead
 pbook_db_user: homestead
 pbook_db_password: secret
 
+pbook_extras: [ "adminer", "pimpmylog", "mailhog" ] 
+
 #####################################################################
 ### ROLE VARS ###
 #####################################################################
