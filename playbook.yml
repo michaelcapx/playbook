@@ -78,7 +78,7 @@
     - { role: redis, become: true, tags: ['utility']  }
     - { role: blackfire, become: true, tags: ['utility']  }
     - { role: selenium, become: true, tags: ['utility']  }
-    - { role: phantomjs, become: true, tags: ['utility']  }
+    # - { role: phantomjs, become: true, tags: ['utility']  }
     - { role: mailhog, become: true, tags: ['utility']  }
     - { role: ngrok, become: true, tags: ['utility']  }
 
