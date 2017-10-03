@@ -13,7 +13,7 @@
   args:
     creates: "{{ composer_path }}"
     warn: false
-  when: composer_installed | failed
+  # when: composer_installed | failed
 
 - name: Make Composer executable
   file:
