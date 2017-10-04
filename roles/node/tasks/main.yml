@@ -36,6 +36,22 @@
     group: "{{ ansible_env.USER }}"
     state: directory
 
+- name: Set npm global packages path
+  command: npm config set prefix "{{ npm_config_prefix }}"
+  changed_when: false
+
+- name: Add npm_config_prefix bin directory to global $PATH
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.profile"
+    line: "export {{ item.key }}={{ item.value }}"
+    create: yes
+  with_items:
+    - { key: "PATH", value: "{{ npm_config_prefix }}/bin:$PATH" }
+
+# - name: Source the profile
+#   command: source "{{ ansible_env.HOME }}/.profile"
+#   changed_when: false
+
 - name: Add npm_config_prefix bin directory to global $PATH
   copy:
     dest: /etc/profile.d/npm.sh
