@@ -23,6 +23,14 @@
     regexp: '.* \# apache2 vhost\n'
     replace: ''
 
+- name: Build /etc/hosts file for tools
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.servername }} \# apache2 vhost$'
+    line: "127.0.0.1   {{ item.servername }} {{ '#' }} apache2 vhost"
+    state: present
+  with_items: "{{ www_apache_vhosts }}"
+
 - name: Build /etc/hosts file
   lineinfile:
     dest: /etc/hosts
@@ -30,3 +38,4 @@
     line: "127.0.0.1   {{ item.vhost }} {{ '#' }} apache2 vhost"
     state: present
   with_items: "{{ www_vhosts }}"
+

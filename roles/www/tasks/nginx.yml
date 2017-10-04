@@ -13,6 +13,14 @@
     regexp: '.* \# nginx vhost\n'
     replace: ''
 
+- name: Build /etc/hosts file for tools
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.server_name }} \# nginx vhost$'
+    line: "127.0.0.1   {{ item.server_name }} {{ '#' }} nginx vhost"
+    state: present
+  with_items: "{{ www_nginx_vhosts }}"
+
 - name: Build /etc/hosts file
   lineinfile:
     dest: /etc/hosts
