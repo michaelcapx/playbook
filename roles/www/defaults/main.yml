@@ -1,10 +1,40 @@
 ---
 # defaults file for www
 
-dashboard_install_dir: /var/www/dashboard
-dashboard_site_title: Machina
-dashboard_site_favicon: //cdn.rawgit.com/geerlingguy/drupalvm.github.io/master/favicon.ico
+# Dashboard Details
+www_dashboard_install_dir: /var/www/dashboard
+www_dashboard_site_title: Machina
+www_dashboard_site_favicon: //cdn.rawgit.com/geerlingguy/drupalvm.github.io/master/favicon.ico
 
+# Webserver Details
+www_domain: "{{ pbook_domain | default('dashboard.dev') }}"
+www_webserver: "{{ pbook_webserver | default('apache') }}"
+www_apache_vhosts: "{{ apache_vhosts | default([]) }}"
+www_nginx_vhosts: "{{ nginx_vhosts | default([]) }}"
+
+# Extra Details
+www_extras: "{{ pbook_extras | default([]) }}"
+
+# Adminer Details
+www_adminer_install_dir: "{{ adminer_install_dir | default('/opt/adminer') }}"
+www_adminer_install_filename: "{{ adminer_install_filename | default('index.php') }}"
+
+# Pimpmylog Details
+www_pimpmylog_install_dir: "{{ pimpmylog_install_dir | default('/usr/share/php/pimpmylog') }}"
+
+# PHP Details
+www_php_version: "{{ php_version | default('N/A') }}"
+www_php_memory_limit: "{{ php_memory_limit | default('N/A') }}"
+www_php_enable_php_fpm: "{{ php_enable_php_fpm | default(false) }}"
+
+# MySQL Details
+www_mysql_port: "{{ mysql_port | default('3306') }}"
+www_mysql_root_username: "{{ mysql_root_username | default('root') }}"
+www_mysql_root_password: "{{ mysql_root_password | default('root') }}"
+www_mysql_databases: "{{ mysql_databases | default([]) }}"
+www_mysql_users: "{{ mysql_users | default([]) }}"
+
+# vHosts Details
 www_vhosts:
   - template: standard
     vhost: "default71.dev"
@@ -17,6 +47,6 @@ www_vhosts:
 
 # Other configuration.
 _devtool_docroots:
-  - "{{ adminer_install_dir }}"
-  - "{{ pimpmylog_install_dir }}"
-  - "{{ dashboard_install_dir|default('') }}"
+  - "{{ www_adminer_install_dir }}"
+  - "{{ www_pimpmylog_install_dir }}"
+  - "{{ www_dashboard_install_dir|default('') }}"

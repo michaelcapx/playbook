@@ -36,7 +36,7 @@ pbook_db_name: homestead
 pbook_db_user: homestead
 pbook_db_password: secret
 
-pbook_extras: [ "adminer", "pimpmylog", "mailhog" ] 
+pbook_extras: [ "adminer", "pimpmylog", "mailhog" ]
 
 #####################################################################
 ### ROLE VARS ###
@@ -66,7 +66,7 @@ apache_vhosts:
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "dashboard.{{ pbook_domain }}"
-    documentroot: "{{ dashboard_install_dir }}"
+    documentroot: "{{ www_dashboard_install_dir }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
 # Nginx hosts. Each site will get a server entry using the configuration defined
@@ -85,7 +85,7 @@ nginx_vhosts:
     is_php: true
 
   - server_name: "dashboard.{{ pbook_domain }}"
-    root: "{{ dashboard_install_dir }}"
+    root: "{{ www_dashboard_install_dir }}"
     is_php: true
 
 # MySQL databases and users.

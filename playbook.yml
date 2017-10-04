@@ -8,10 +8,10 @@
 
   pre_tasks:
 
-    # - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
-    #   pause:
-    #     prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-    #   when: ansible_distribution != "Ubuntu" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
+    - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
+      pause:
+        prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+      when: ansible_distribution != "GalliumOS" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
 
     - name: Run configured pre-provision shell scripts
       script: "{{ item }}"

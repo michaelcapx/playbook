@@ -1,8 +1,8 @@
 <!DOCTYPE html>
   <head>
-    <title>{{ dashboard_site_title }}</title>
+    <title>{{ www_dashboard_site_title | default("Dashboard") }}</title>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="{{ dashboard_site_favicon }}" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="{{ www_dashboard_site_favicon | default('') }}" type="image/vnd.microsoft.icon" />
     <style>
       .section-host {
         font-family: monospace;
@@ -25,14 +25,14 @@
 
     {# Returns the hosts server name based on the document root #}
     {%- macro getServernameFromDocroot(path) -%}
-      {%- if pbook_webserver == 'apache' -%}
-        {%- for host in apache_vhosts -%}
+      {%- if www_webserver == 'apache' -%}
+        {%- for host in www_apache_vhosts -%}
           {%- if host.documentroot == path -%}
             {{ host.servername }}
           {%- endif -%}
         {%- endfor -%}
-      {%- elif pbook_webserver == 'nginx' -%}
-        {%- for host in nginx_vhosts -%}
+      {%- elif www_webserver == 'nginx' -%}
+        {%- for host in www_nginx_vhosts -%}
           {%- if host.root == path -%}
             {{ host.server_name }}
           {%- endif -%}
@@ -58,14 +58,14 @@
             <th>Document Root</th>
         </thead>
         <tbody>
-          {% if pbook_webserver == 'apache' -%}
-            {%- for host in apache_vhosts -%}
+          {% if www_webserver == 'apache' -%}
+            {%- for host in www_apache_vhosts -%}
               {%- if host.documentroot is defined -%}
                 {{ printSite(host.servername, host.documentroot) }}
               {%- endif -%}
             {%- endfor -%}
-          {%- elif pbook_webserver == 'nginx' -%}
-            {%- for host in nginx_vhosts -%}
+          {%- elif www_webserver == 'nginx' -%}
+            {%- for host in www_nginx_vhosts -%}
               {%- if host.root is defined -%}
                 {%- for hostname in host.server_name.split() -%}
                   {{ printSite(hostname, host.root) }}
@@ -79,14 +79,14 @@
 
     {%- macro sectionDevelopmentTools() -%}
       <table class="table">
-        {% if not pbook_extras -%}
+        {% if not www_extras -%}
           <tr>
             <td>There are no development tools installed.</td>
           </tr>
         {%- endif -%}
-        {% if 'adminer' in pbook_extras -%}
-          {% macro servername() %}{{ getServernameFromDocroot(adminer_install_dir) }}/{{ adminer_install_filename }}{% endmacro %}
-          {%- if servername() != "/{{ adminer_install_filename }}" -%}
+        {% if 'adminer' in www_extras -%}
+          {% macro servername() %}{{ getServernameFromDocroot(www_adminer_install_dir) }}/{{ www_adminer_install_filename | default('index.php') }}{% endmacro %}
+          {%- if servername() != "/{{ www_adminer_install_filename | default('index.php') }}" -%}
             <tr>
               <th>Adminer</th>
               <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
@@ -97,8 +97,8 @@
             </tr>
           {%- endif -%}
         {%- endif %}
-        {% if 'mailhog' in pbook_extras -%}
-          {% macro servername() %}{{ pbook_domain }}:8025{% endmacro %}
+        {% if 'mailhog' in www_extras -%}
+          {% macro servername() %}{{ www_domain | default("dashboard.dev") }}:8025{% endmacro %}
           {%- if servername() != ":8025" -%}
             <tr>
               <th>MailHog</th>
@@ -110,8 +110,8 @@
             </tr>
           {%- endif -%}
         {%- endif %}
-        {% if 'pimpmylog' in pbook_extras -%}
-          {% macro servername() %}{{ getServernameFromDocroot(pimpmylog_install_dir) }}{% endmacro %}
+        {% if 'pimpmylog' in www_extras -%}
+          {% macro servername() %}{{ getServernameFromDocroot(www_pimpmylog_install_dir) }}{% endmacro %}
           {%- if servername() -%}
             <tr>
               <th>PimpMyLog</th>
@@ -130,19 +130,19 @@
       <table class="table">
         <tr>
           <th>PHP Version</th>
-          <td><code>{{ php_version }}</code></td>
+          <td><code>{{ www_php_version }}</code></td>
         </tr>
         <tr>
           <th>Webserver</th>
-          <td><code>{{ pbook_webserver|capitalize }}</code></td>
+          <td><code>{{ www_webserver|capitalize }}</code></td>
         </tr>
         <tr>
           <th>Memory limit</th>
-          <td><code>{{ php_memory_limit }}</code></td>
+          <td><code>{{ www_php_memory_limit }}</code></td>
         </tr>
         <tr>
           <th>PHP-FPM enabled</th>
-          <td><code>{{ 'yes' if php_enable_php_fpm else 'no' }}</code></td>
+          <td><code>{{ 'yes' if www_php_enable_php_fpm else 'no' }}</code></td>
         </tr>
         <tr><td colspan=2><small><a href="/server-info.php">View more details in the server's phpinfo() report</a>.</small></td></tr>
       </table>
@@ -156,15 +156,15 @@
         </tr>
         <tr>
           <th>MySQL Port</th>
-          <td><code>{{ mysql_port }}</code></td>
+          <td><code>{{ www_mysql_port }}</code></td>
         </tr>
         <tr>
           <th>MySQL Username</th>
-          <td><code>{{ mysql_root_username }}</code></td>
+          <td><code>{{ www_mysql_root_username }}</code></td>
         </tr>
         <tr>
           <th>MySQL Password</th>
-          <td><code>{{ mysql_root_password }}</code></td>
+          <td><code>{{ www_mysql_root_password }}</code></td>
         </tr>
       </table>
     {%- endmacro -%}
@@ -174,18 +174,18 @@
         <thead>
           <tr>
             <th>Database name</th>
-            {% if 'adminer' in pbook_extras -%}
+            {% if 'adminer' in www_extras -%}
               <th></th>
             {%- endif %}
           </tr>
         </thead>
         <tbody>
-          {% for database in mysql_databases -%}
+          {% for database in www_mysql_databases -%}
             <tr>
               <td><code>{{ database.name }}</code></td>
-              {% if 'adminer' in pbook_extras -%}
+              {% if 'adminer' in www_extras -%}
               <td>
-                <a href="http://{{ getServernameFromDocroot(adminer_install_dir) }}/{{ adminer_install_filename }}?username={{ mysql_root_username }}&db={{ database.name }}" class="btn btn-success btn-xs" role="button">Adminer</a>
+                <a href="http://{{ getServernameFromDocroot(www_adminer_install_dir) }}/{{ www_adminer_install_filename | default('index.php') }}?username={{ www_mysql_root_username }}&db={{ database.name }}" class="btn btn-success btn-xs" role="button">Adminer</a>
               </td>
               {%- endif %}
             </tr>
@@ -203,7 +203,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for user in mysql_users -%}
+          {% for user in www_mysql_users -%}
             <tr>
               <td><code>{{ user.name }}</code></td>
               <td><code>{{ user.password }}</code></td>

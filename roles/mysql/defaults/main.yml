@@ -10,6 +10,7 @@ mysql_packages:
 
 # MySQL connection settings
 mysql_bind_address: '0.0.0.0'
+mysql_port: "3306"
 
 # The default root user installed by mysql - almost always root
 mysql_root_home: /root
