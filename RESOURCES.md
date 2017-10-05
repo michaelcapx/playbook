@@ -701,6 +701,7 @@ Misc
 
 - [Devilbox](http://devilbox.org/)
 - [Laradock](http://laradock.io/)
+- [Streisand](https://github.com/jlund/streisand)
 - [Ubuntu After Install](https://www.thefanclub.co.za/software-selection)
 - [Awesome Linux Software](https://github.com/LewisVo/Awesome-Linux-Software)
 - [Material MKDocs Theme](https://github.com/squidfunk/mkdocs-material)
