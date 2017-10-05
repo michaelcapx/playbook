@@ -20,7 +20,7 @@
     mode: 0644
 
 - name: Copy phpinfo file into place
-  copy:
+  template:
     src: server-info.php.j2
     dest: "{{ www_dashboard_install_dir }}/server-info.php"
     mode: 0644
