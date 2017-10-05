@@ -42,6 +42,10 @@ Contents
   - [Terminal Themes](#terminal-themes)
   - [Terminal Plugins](#terminal-plugins)
   - [Terminal Guides](#terminal-guides)
+- [Development](#development)
+  - [Laravel](#laravel)
+  - [Vue](#vue)
+  - [Other Dev](#other-dev)
 - [GalliumOS](#galliumos)
 - [Dotfiles](#dotfiles)
 - [Commands](#commands)
@@ -547,6 +551,31 @@ Terminal
 - [Terminals are Sexy](https://github.com/k4m4/terminals-are-sexy)
 - [How to change the theme of XFCE terminal](https://simplyian.com/2014/03/29/how-to-change-the-theme-of-the-xfce-terminal)
 - [A curated list of awesome Shell frameworks, libraries and software](https://github.com/uhub/awesome-shell)
+
+Development
+-----------
+
+### Laravel
+
+- [Laravel Blade Directives](https://github.com/appstract/laravel-blade-directives)
+- [Laravel Page Speed](https://github.com/renatomarinho/laravel-page-speed)
+- [Fixhub](https://github.com/Fixhub/Fixhub)
+
+### Vue
+
+- [VueJS Styleguide](https://github.com/jackbarham/vuejs-style-guide)
+- [VueBoot](https://github.com/Morgul/vueboot)
+
+### Other Dev
+
+- [Sass Boilerplate](https://github.com/HugoGiraudel/sass-boilerplate)
+- [Roose](http://gentolab.com/demo/roosa/latest/index.html)
+- [Coloring SVGs](https://codepen.io/noahblon/post/coloring-svgs-in-css-background-images)
+- [Draggable](https://github.com/Shopify/draggable)
+- [Marketing for Engineers](https://github.com/LisaDziuba/Marketing-for-Engineers)
+- [Instagram API](https://github.com/mgp25/Instagram-API)
+- [Mailspring](https://github.com/Foundry376/Mailspring)
+
 
 GalliumOS
 ---------
