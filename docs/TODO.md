@@ -11,3 +11,4 @@ Todo
 - [ ] Add projects installer capabilities
 - [ ] Update dashboard
 - [ ] Remove deprecated includes
+- [ ] Remove default www vhosts
