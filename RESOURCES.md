@@ -711,4 +711,5 @@ Misc
 - [Lamp Installer](https://gist.github.com/aamnah/f03c266d715ed479eb46)
 - [Ubuntu Post Install](https://gist.github.com/waleedahmad/a5b17e73c7daebdd048f823c68d1f57a)
 - [Linode Lamp Install Guide](https://www.linode.com/docs/web-servers/lamp/install-lamp-stack-on-ubuntu-16-04)
+- [Digital Ocean Lamp Install Guide](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
 - [How to Install Virtualmin with Webmin, LAMP, BIND, and PostFix on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-virtualmin-with-webmin-lamp-bind-and-postfix-on-ubuntu-16-04)
