@@ -342,6 +342,126 @@ install_blackfire() {
 }
 
 ###########################################################################
+# Install Go
+# https://www.digitalocean.com/community/tutorials/how-to-install-go-1-6-on-ubuntu-16-04
+###########################################################################
+
+install_golang() {
+  e_header "Installing Go......."
+
+  # Installing Go
+  curl -O https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz
+  tar xvf go1.9.1.linux-amd64.tar.gz
+  sudo chown -R root:root ./go
+  sudo mv go /usr/local
+  rm go1.9.1.linux-amd64.tar.gz
+
+  # Setting Go Paths
+  echo "export GOPATH=\$HOME/Templates" >> ~/.profile
+  echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" >> ~/.profile
+  source ~/.profile
+}
+
+###########################################################################
+# Install Mailhog
+# https://agiletesting.blogspot.com/2016/02/setting-up-mailinator-like-test-mail.html
+###########################################################################
+
+install_mailhog() {
+  e_header "Installing Mailhog......."
+
+  sudo wget --quiet -O /usr/local/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
+  sudo chmod +x /usr/local/bin/mailhog
+
+  sudo tee /etc/systemd/system/mailhog.service <<EOL
+[Unit]
+Description=Mailhog
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env /usr/local/bin/mailhog > /dev/null 2>&1 &
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+  # Install mhsendmail
+  go get github.com/mailhog/mhsendmail
+  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mhsendmail
+  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/sendmail
+  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mail
+
+  sudo sed -i "s/;sendmail_path.*/sendmail_path = \/usr\/local\/bin\/mhsendmail/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;sendmail_path.*/sendmail_path = \/usr\/local\/bin\/mhsendmail/" /etc/php/7.1/cli/php.ini
+
+  # Reload daemon
+  sudo systemctl daemon-reload
+
+  # Start on reboot
+  sudo systemctl enable mailhog
+
+  # Start background service now
+  sudo systemctl start mailhog
+}
+
+###########################################################################
+# Install nGrok
+###########################################################################
+
+install_ngrok() {
+  e_header "Installing Ngrok......."
+  wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+  sudo unzip ngrok-stable-linux-amd64.zip -d /usr/local/bin
+  rm -rf ngrok-stable-linux-amd64.zip
+}
+
+###########################################################################
+# Install Flyway
+###########################################################################
+
+install_flyway() {
+  e_header "Installing Flyway......."
+  wget https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.2.0/flyway-commandline-4.2.0-linux-x64.tar.gz
+  sudo tar -zxvf flyway-commandline-4.2.0-linux-x64.tar.gz -C /usr/local
+  sudo ln -s /usr/local/flyway-4.2.0/flyway /usr/local/bin/flyway
+  rm -rf flyway-commandline-4.2.0-linux-x64.tar.gz
+}
+
+###########################################################################
+# Install WP-CLI
+###########################################################################
+
+install_wpcli() {
+  e_header "Installing WP-CLI......."
+  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  chmod +x wp-cli.phar
+  sudo mv wp-cli.phar /usr/local/bin/wp
+}
+
+###########################################################################
+# Configure Supervisor
+###########################################################################
+
+configure_supervisor() {
+  e_header "Configure Supervisor......."
+  sudo systemctl enable supervisor.service
+  sudo service supervisor start
+}
+
+###########################################################################
+# Cleanup LAMP
+###########################################################################
+
+cleanup_lamp() {
+  e_header "Cleaning Up......."
+  sudo apt-get -y autoremove
+  sudo apt-get -y clean
+  sudo systemctl restart apache2
+  sudo systemctl restart mysql
+}
+
+###########################################################################
 # Program Start
 ###########################################################################
 
@@ -357,6 +477,13 @@ setup_lamp() {
   install_memcached
   install_beanstalkd
   install_blackfire
+  install_golang
+  install_mailhog
+  install_ngrok
+  install_flyway
+  install_wpcli
+  configure_supervisor
+  cleanup_lamp
 }
 
 setup_lamp
