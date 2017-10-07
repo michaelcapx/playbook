@@ -250,6 +250,38 @@ install_composer() {
 
 install_node() {
   e_header "Installing Node......."
+
+  # Install NodeJS
+  curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+
+  # Configure NodeJS Permissions
+  npm config get prefix
+  mkdir ~/.npm-global
+  npm config set prefix '~/.npm-global'
+  echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.profile
+  source ~/.profile
+
+  # Install NodeJS Global Packages
+  npm install -g npm
+  npm install -g gulp
+  npm install -g bower
+  npm install -g yarn
+  npm install -g grunt-cli
+
+  # Update NPM
+  npm update -g
+}
+
+###########################################################################
+# Install SQLite
+###########################################################################
+
+install_sqlite() {
+  e_header "Installing SQLite......."
+
+  # Install SQLite
+  sudo apt-get install -y sqlite3 libsqlite3-dev
 }
 
 ###########################################################################
@@ -264,6 +296,49 @@ install_redis() {
     sudo apt-add-repository -y ppa:chris-lea/redis-server
     sudo apt-get update
   fi
+
+  sudo apt-get install -y redis-server
+}
+
+###########################################################################
+# Install Memcached
+###########################################################################
+
+install_memcached() {
+  e_header "Installing Memcached......."
+  sudo apt-get install -y memcached
+}
+
+###########################################################################
+# Install Beanstalkd
+###########################################################################
+
+install_beanstalkd() {
+  e_header "Installing Beanstalkd......."
+  sudo apt-get install -y beanstalkd
+
+  # Configure Beanstalkd
+  sudo sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
+  sudo /etc/init.d/beanstalkd start
+}
+
+###########################################################################
+# Install Blackfire
+###########################################################################
+
+install_blackfire() {
+  e_header "Installing Blackfire......."
+
+  curl -s https://packagecloud.io/gpg.key | sudo apt-key add -
+  echo "deb http://packages.blackfire.io/debian any main" | sudo tee /etc/apt/sources.list.d/blackfire.list
+  sudo apt-get update
+
+  sudo apt-get install -y blackfire-agent blackfire-php
+
+  # sudo blackfire-agent --register
+  # sudo /etc/init.d/blackfire-agent start
+
+  sudo systemctl restart apache2
 }
 
 ###########################################################################
@@ -277,7 +352,11 @@ setup_lamp() {
   install_php
   install_composer
   install_node
+  install_sqlite
   install_redis
+  install_memcached
+  install_beanstalkd
+  install_blackfire
 }
 
 setup_lamp
