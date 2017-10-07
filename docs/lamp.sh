@@ -5,6 +5,11 @@
 # LAMP Bootstrap
 # https://github.com/michaelcapx/playbook/docs/lamp.sh
 #
+# https://www.linode.com/docs/web-servers/lamp/install-lamp-stack-on-ubuntu-16-04
+# https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
+# https://gist.github.com/Otienoh/6431b247d1bddfddb12f3dda436615d0
+# https://gist.github.com/edouard-lopez/10008944
+#
 # Command:
 # sudo ./lamp.sh
 #
@@ -38,6 +43,17 @@ update_system() {
   sudo apt-get -y update
   sudo apt-get -y upgrade
   sudo apt-get install -y software-properties-common curl
+}
+
+###########################################################################
+# Setup User
+###########################################################################
+
+setup_user() {
+  e_header "Setup User......."
+  usermod -a -G www-data $MACHINE_USER
+  id $MACHINE_USER
+  groups $MACHINE_USER
 }
 
 ###########################################################################
@@ -117,12 +133,12 @@ install_php() {
 
   php_pkgs=(
     php7.1
-    libapache2-mod-php7.1
+    # libapache2-mod-php7.1
     # php7.1-apcu
     php7.1-bcmath
     php7.1-bz2
     php7.1-cgi
-    php7.1-cli
+    # php7.1-cli
     # php7.1-common
     php7.1-curl
     php7.1-dev
@@ -131,7 +147,7 @@ install_php() {
     php7.1-intl
     php7.1-imagick
     php7.1-imap
-    php7.1-json
+    # php7.1-json
     php7.1-ldap
     php7.1-mbstring
     php7.1-mcrypt
@@ -140,29 +156,92 @@ install_php() {
     php7.1-mysql
     # php7.1-opcache
     php7.1-pgsql
-    php7.1-readline
+    # php7.1-readline
     # php7.1-redis
     php7.1-soap
     php7.1-sqlite3
     # php7.1-xdebug
-    php7.1-xml
+    # php7.1-xml
     php7.1-xmlrpc
     php7.1-yaml
     php7.1-zip
     php-xdebug
-    php-pear
+    # php-pear
   )
 
   # Install PHP Packages
   sudo apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages "${php_pkgs[@]}"
+
+  # Set Apache DirectoryIndex
+  sudo sed -i "s/ index.php / /" /etc/apache2/mods-enabled/dir.conf
+  sudo sed -i "s/index.html /index.php index.html /" /etc/apache2/mods-enabled/dir.conf
+  sudo systemctl restart apache2
+  # sudo systemctl status apache2
+
+  # Set Some PHP CLI Settings
+  sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/cli/php.ini
+
+  # Set Some PHP Apache Settings
+  sudo sed -i "s/error_reporting = .*/error_reporting = E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_ERROR | E_CORE_ERROR/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/upload_max_filesize = .*/upload_max_filesize = 100M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/max_input_time = .*/max_input_time = 30/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;error_log = syslog/error_log = \/var\/log\/php\/error.log/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/apache2/php.ini
+
+  # Configure PHP Xdebug options
+  echo 'xdebug.remote_enable = 1' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.remote_connect_back = 1' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.remote_port = 9000' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.max_nesting_level = 512' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+
+  # Configure PHP Opcache options
+  echo 'opcache.revalidate_freq = 0' | sudo tee --append /etc/php/7.1/mods-available/opcache.ini > /dev/null
+
+  # Create the log directory for PHP and give ownership to the Apache system user
+  sudo mkdir /var/log/php
+  sudo chown www-data /var/log/php
+
+  # Disable XDebug On The CLI
+  sudo phpdismod -s cli xdebug
+
+  # Setup Permissions
+  sudo chown -R www-data:www-data /var/www
+
+  # Setup Info page
+  sudo touch /var/www/html/info.php
+  echo '<?php phpinfo(); ?>' | sudo tee --append /var/www/html/info.php > /dev/null
+
+  # Restart Apache
+  sudo systemctl restart apache2
 }
 
 ###########################################################################
 # Install Composer
+# https://gist.github.com/davebarnwell/e6a5cd13381caef104317b45f7115846
 ###########################################################################
 
 install_composer() {
   e_header "Installing Composer......."
+
+  # Install Composer
+  curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+  sudo chown -Rv $USER ~/.composer
+
+  # Add Composer Global Bin To Path
+  echo "export PATH=~/.composer/vendor/bin:\$PATH" >> ~/.bashrc
+  source ~/.bashrc
+
+  # Require Global Composer Packages
+  composer global require "laravel/installer=~1.1"
+  composer global require "laravel/envoy=~1.0"
+
 }
 
 ###########################################################################
