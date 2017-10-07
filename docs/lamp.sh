@@ -224,7 +224,6 @@ install_php() {
 
 ###########################################################################
 # Install Composer
-# https://gist.github.com/davebarnwell/e6a5cd13381caef104317b45f7115846
 ###########################################################################
 
 install_composer() {
@@ -241,7 +240,16 @@ install_composer() {
   # Require Global Composer Packages
   composer global require "laravel/installer=~1.1"
   composer global require "laravel/envoy=~1.0"
-
+  composer global require "phpunit/phpunit=@stable"
+  composer global require "phpunit/dbunit=@stable"
+  # composer global require "phpdocumentor/phpdocumentor=@stable"
+  composer global require "sebastian/phpcpd=@stable"
+  composer global require "phploc/phploc=@stable"
+  composer global require "phpmd/phpmd=@stable"
+  composer global require "squizlabs/php_codesniffer=@stable"
+  composer global require "hirak/prestissimo=^0.3"
+  composer global require "friendsofphp/php-cs-fixer=@stable"
+  composer global require "codeception/codeception=@stable"
 }
 
 ###########################################################################
@@ -268,6 +276,20 @@ install_node() {
   npm install -g bower
   npm install -g yarn
   npm install -g grunt-cli
+  npm install -g browser-sync
+  npm install -g webpack
+  npm install -g webpack-dev-server
+  npm install -g yo
+  npm install -g npm-check-updates
+  # npm install -g phantomjs-prebuilt
+  npm install -g casperjs
+  npm install -g simplehttpserver
+  npm install -g xlsx
+  npm install -g webfont-dl
+  npm install -g diff-so-fancy
+  npm install -g less
+  npm install -g node-sass
+  npm install -g jslint
 
   # Update NPM
   npm update -g
@@ -468,6 +490,31 @@ install_phpmyadmin() {
 }
 
 ###########################################################################
+# Install Adminer
+###########################################################################
+
+install_adminer() {
+  e_header "Installing Adminer......."
+  sudo mkdir /usr/share/adminer
+  sudo wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/latest.php
+  sudo ln -s /usr/share/adminer/latest.php /usr/share/adminer/adminer.php
+  echo "Alias /adminer.php /usr/share/adminer/adminer.php" | sudo tee /etc/apache2/conf-available/adminer.conf
+  sudo a2enconf adminer.conf
+  sudo systemctl restart apache2
+}
+
+###########################################################################
+# Install PhantomJS
+# https://www.vultr.com/docs/how-to-install-phantomjs-on-ubuntu-16-04
+# https://gist.github.com/julionc/7476620
+# https://gist.github.com/telbiyski/ec56a92d7114b8631c906c18064ce620
+###########################################################################
+
+install_phantomjs() {
+  e_header "Installing PhantomJS......."
+}
+
+###########################################################################
 # Configure Supervisor
 ###########################################################################
 
@@ -511,6 +558,8 @@ setup_lamp() {
   install_flyway
   install_wpcli
   install_phpmyadmin
+  install_adminer
+  install_phantomjs
   configure_supervisor
   cleanup_lamp
 }
