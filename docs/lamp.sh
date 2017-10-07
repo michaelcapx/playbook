@@ -75,6 +75,9 @@ install_apache() {
   sudo sed -i "s/MaxRequestWorkers\s\{2,\}[0-9]*/MaxRequestWorkers   200/" /etc/apache2/mods-available/mpm_prefork.conf
   sudo sed -i "s/MaxConnectionsPerChild\s\{2,\}[0-9]*/MaxConnectionsPerChild   10000/" /etc/apache2/mods-available/mpm_prefork.conf
 
+  # Set nicer permissions on Apache log directory
+  sudo chmod -R 0755 /var/log/apache2/
+
   # Disable the event module and enable prefork
   sudo a2dismod mpm_event
   sudo a2enmod mpm_prefork
@@ -207,6 +210,8 @@ install_php() {
   # Create the log directory for PHP and give ownership to the Apache system user
   sudo mkdir /var/log/php
   sudo chown www-data /var/log/php
+  sudo touch /var/log/php/error.log
+  sudo chmod -R 0755 /var/log/php/
 
   # Disable XDebug On The CLI
   sudo phpdismod -s cli xdebug
@@ -329,6 +334,7 @@ install_redis() {
 install_memcached() {
   e_header "Installing Memcached......."
   sudo apt-get install -y memcached
+  sudo systemctl restart memcached
 }
 
 ###########################################################################
@@ -387,6 +393,7 @@ install_golang() {
 ###########################################################################
 # Install Mailhog
 # https://agiletesting.blogspot.com/2016/02/setting-up-mailinator-like-test-mail.html
+# https://pascalbaljetmedia.com/en/blog/setup-mailhog-with-laravel-valet
 ###########################################################################
 
 install_mailhog() {
@@ -398,21 +405,26 @@ install_mailhog() {
   sudo tee /etc/systemd/system/mailhog.service <<EOL
 [Unit]
 Description=Mailhog
-After=network.target
+After=syslog.target network.target
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/env /usr/local/bin/mailhog > /dev/null 2>&1 &
+StandardOutput=journal
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
 EOL
 
   # Install mhsendmail
-  go get github.com/mailhog/mhsendmail
-  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mhsendmail
-  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/sendmail
-  sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mail
+  # go get github.com/mailhog/mhsendmail
+  # sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mhsendmail
+  # sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/sendmail
+  # sudo ln -s ~/Templates/bin/mhsendmail /usr/local/bin/mail
+
+  sudo wget --quiet -O /usr/local/bin/mhsendmail https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64
+  sudo chmod +x /usr/local/bin/mhsendmail
 
   sudo sed -i "s/;sendmail_path.*/sendmail_path = \/usr\/local\/bin\/mhsendmail/" /etc/php/7.1/apache2/php.ini
   sudo sed -i "s/;sendmail_path.*/sendmail_path = \/usr\/local\/bin\/mhsendmail/" /etc/php/7.1/cli/php.ini
@@ -512,6 +524,26 @@ install_adminer() {
 
 install_phantomjs() {
   e_header "Installing PhantomJS......."
+
+  sudo apt-get install -y build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1
+
+  sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+  sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/
+  sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/
+  phantomjs --version
+  rm -fr phantomjs-2.1.1-linux-x86_64.tar.bz2
+
+}
+
+###########################################################################
+# Install PimpMyLog
+###########################################################################
+
+install_pimpmylog() {
+  e_header "Installing PimpMyLog......."
+  sudo git clone https://github.com/potsky/PimpMyLog.git /var/www/html/pimpmylog
+  sudo chmod -R 0777 /var/www/html/pimpmylog/
+  sudo systemctl restart apache2
 }
 
 ###########################################################################
@@ -560,6 +592,7 @@ setup_lamp() {
   install_phpmyadmin
   install_adminer
   install_phantomjs
+  install_pimpmylog
   configure_supervisor
   cleanup_lamp
 }
