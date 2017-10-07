@@ -1,112 +1,108 @@
-###########################################################
-###########################################################
+#!/bin/bash
+
+###########################################################################
 #
-# INSTALL LARAVEL
+# Laravel Project Installer
+# https://github.com/michaelcapx/playbook/docs/laravel.sh
 #
-###########################################################
-###########################################################
+# Command:
+# sudo ./laravel.sh
+#
+###########################################################################
 
-###########################################################
-# Setup Laravel
-###########################################################
+export DEBIAN_FRONTEND=noninteractive
 
-# Go to documents directory
-cd ~/Documents
+###########################################################################
+# Constants and Global Variables
+###########################################################################
 
-# Install laravel
-laravel new <PROJECTNAME>
+readonly PROJECTNAME="machina"
+readonly PROJECTPATH="home/$USER/Public"
+readonly DBUSER="homestead"
+readonly DBPASS="secret"
+readonly DBNAME="machina"
 
-# Create apache config
-sudo cp /etc/apache2/sites-available/laramail.conf /etc/apache2/sites-available/<PROJECTNAME>.conf
+###########################################################################
+# Basic Functions
+###########################################################################
 
-```
-<VirtualHost *:80>
-  ServerName PROJECTNAME.dev
-  ServerAlias *.PROJECTNAME.dev
+# Output Echoes
+# https://github.com/cowboy/dotfiles
+function e_header() { echo -e "\033[1;32m✔  $@\033[0m"; }
+function e_error()  { echo -e "\033[1;31m✖  $@\033[0m"; }
+function e_info()   { echo -e "\033[1;34m$@\033[0m"; }
+function e_prompt() { echo -e "\033[1;33m$@\033[0m"; }
 
-  ServerAdmin webmaster@localhost
-  DocumentRoot /home/user/Documents/PROJECTNAME/public
+###########################################################################
+# Install Laravel
+###########################################################################
 
-  <Directory /home/user/Documents/PROJECTNAME/public/>
-    Options Indexes Includes FollowSymLinks  MultiViews
-    AllowOverride All
-    Require all granted
-  </Directory>
-
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-</VirtualHost>
-```
-
-# Enable apache configuration file
-sudo a2ensite <PROJECTNAME>.conf
-sudo service apache2 restart
-
-# Setup hosts file
-sudo nano /etc/hosts
-127.0.0.1 PROJECTNAME.dev
-
-###########################################################
-# Spark install
-###########################################################
-
-# Add the `spark` directory as a repository to the project's `composer.json` file
-```
-"repositories": [
-    {
-        "type": "path",
-        "url": "./spark"
-    }
-]
-```
-
-# Add the `laravel/spark` requirement to your composer.json file
-```
-"require": {
-    "php": ">=5.5.9",
-    "laravel/framework": "5.2.*",
-    "laravel/cashier": "~6.0",
-    "laravel/spark": "*@dev"
+install_laravel() {
+  e_header "Installing Laravel......."
+  cd $PROJECTPATH
+  # composer create-project --prefer-dist laravel/laravel $PROJECTNAME
+  laravel new $PROJECTNAME
 }
-```
-# Run composer update in project root.
-composer update
 
-###########################################################
-# Setup Laravel Permissions
-###########################################################
+###########################################################################
+# Apache Config
+###########################################################################
 
-sudo chown -R www-data:www-data /home/user/Documents/PROJECTNAME
-sudo chmod -R 775 /home/user/Documents/PROJECTNAME/.
+apache_config() {
+  e_header "Configure Apache......."
+
+  if [ -f /etc/apache2/sites-available/laravel.conf ]; then
+    sudo cp /etc/apache2/sites-available/laravel.conf /etc/apache2/sites-available/$PROJECTNAME.conf
+    sudo sed -i "s/{{ PROJECTNAME }}/$PROJECTNAME/" /etc/apache2/sites-available/$PROJECTNAME.conf
+    sudo sed -i "s/{{ PROJECTPATH }}/$PROJECTPATH/" /etc/apache2/sites-available/$PROJECTNAME.conf
+    sudo a2ensite $PROJECTNAME.conf
+    sudo systemctl restart apache2
+  fi
+
+  echo "127.0.0.1 $PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
+}
+
+###########################################################################
+# Setup Permissions
+###########################################################################
+
+setup_permissions() {
+  e_header "Setting Permissions......."
+
+  sudo chown -R www-data:www-data /$PROJECTPATH/$PROJECTNAME
+  sudo chmod -R 775 /$PROJECTPATH/$PROJECTNAME/.
+}
+
+###########################################################################
+# Create MySQL Database
+###########################################################################
+
+create_db() {
+  e_header "Create DB......."
+
+  # Create the Database
+  # mysql --user="root" --password="secret" -e "CREATE USER '$DBUSER'@'localhost' IDENTIFIED BY '$DBPASS';"
+  mysql --user="root" --password="secret" -e "CREATE DATABASE $DBNAME character set UTF8mb4 collate utf8mb4_bin;"
+  mysql --user="root" --password="secret" -e "GRANT ALL PRIVILEGES ON $DBNAME.* TO '$DBUSER'@'localhost';"
+  mysql --user="root" --password="secret" -e "FLUSH PRIVILEGES;"
+
+  # Setup database credentials
+  sed -i "s/DB_DATABASE=homestead/DB_DATABASE=$DBNAME/" /$PROJECTPATH/$PROJECTNAME/.env
+  sed -i "s/DB_USERNAME=homestead/DB_USERNAME=$DBUSER/" /$PROJECTPATH/$PROJECTNAME/.env
+  sed -i "s/DB_PASSWORD=secret/DB_PASSWORD=$DBPASS/" /$PROJECTPATH/$PROJECTNAME/.env
+
+}
 
 
-###########################################################
-# Create a MySQL database
-###########################################################
+###########################################################################
+# Program Start
+###########################################################################
 
-# Log into MySQL root
-mysql -u root -p
+setup_laravel() {
+  install_laravel
+  apache_config
+  setup_permissions
+  create_db
+}
 
-# Create database
-CREATE DATABASE <PROJECTNAME>;
-
-# Create user
-CREATE USER machinauser@localhost IDENTIFIED BY 'password';
-
-# Add user to database
-GRANT ALL PRIVILEGES ON machina.* TO machinauser@localhost;
-
-# flush privledges
-FLUSH PRIVILEGES;
-
-# exit
-exit
-
-# Setup database credentials
-sed -i 's/DB_DATABASE=homestead/DB_DATABASE=machina/' ~/Documents/machina/.env
-sed -i 's/DB_USERNAME=homestead/DB_USERNAME=machinauser/' ~/Documents/machina/.env
-sed -i 's/DB_PASSWORD=secret/DB_PASSWORD=password/' ~/Documents/machina/.env
-
-# Migrate the DB tables
-php artisan migrate
+setup_laravel
