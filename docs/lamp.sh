@@ -440,6 +440,34 @@ install_wpcli() {
 }
 
 ###########################################################################
+# Install phpMyAdmin
+###########################################################################
+
+install_phpmyadmin() {
+  e_header "Installing phpMyAdmin......."
+
+  if ! grep -q "nijel/phpmyadmin" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    e_header "Adding phpMyAdmin PPA......."
+    sudo apt-add-repository -y ppa:nijel/phpmyadmin
+    sudo apt-get update
+  fi
+
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/dbconfig-install boolean true'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/app-password-confirm password secret'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/password-confirm password secret'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/admin-pass password secret'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/setup-password password secret'
+  sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/app-pass password secret'
+  sudo apt-get install -y phpmyadmin
+
+  sudo phpenmod mcrypt
+  sudo phpenmod mbstring
+
+  sudo systemctl restart apache2
+}
+
+###########################################################################
 # Configure Supervisor
 ###########################################################################
 
@@ -482,6 +510,7 @@ setup_lamp() {
   install_ngrok
   install_flyway
   install_wpcli
+  install_phpmyadmin
   configure_supervisor
   cleanup_lamp
 }
