@@ -13,6 +13,7 @@
   with_items:
     - "file://{{ ansible_env.HOME }}/Documents"
     - "file://{{ ansible_env.HOME }}/Downloads"
+    - "file://{{ ansible_env.HOME }}/Public"
 
 # GTK File Chooser
 - name: Configure GTK file chooser
