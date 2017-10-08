@@ -3,10 +3,10 @@
 ###########################################################################
 #
 # Laravel Project Installer
-# https://github.com/michaelcapx/playbook/docs/laravel.sh
+# https://github.com/michaelcapx/playbook/docs/laravel/laravel.sh
 #
 # Command:
-# sudo ./laravel.sh
+# sudo bash laravel.sh
 #
 ###########################################################################
 
@@ -16,11 +16,14 @@ export DEBIAN_FRONTEND=noninteractive
 # Constants and Global Variables
 ###########################################################################
 
-# readonly PROJECTNAME="machina"
-# readonly PROJECTPATH="home/$USER/Public"
+readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# readonly PROJECTNAME="laraveltest"
+# readonly PROJECTPATH="/home/$USER/Public"
 # readonly DBUSER="homestead"
 # readonly DBPASS="secret"
-readonly DBNAME="homestead"
+# readonly DBNAME="laraveltest"
+readonly MIGRATE_DB="N"
 
 ###########################################################################
 # Basic Functions
@@ -38,33 +41,54 @@ function e_prompt() { echo -e "\033[1;33m$@\033[0m"; }
 ###########################################################################
 
 install_prompts() {
-  e_prompt "What is the name of your project?: "
-  read PROJECTNAME
-  PROJECTNAME=${PROJECTNAME:-machina}
-  # echo $PROJECTNAME
 
-  e_prompt "Where would you like to install the project?: "
-  read PROJECTPATH
-  PROJECTPATH=${PROJECTPATH:-home/$USER/Public}
-  # echo $PROJECTPATH
+  if ! [[ -v PROJECTNAME ]]; then
+    e_prompt "What is the name of your project?: "
+    read PROJECTNAME
+    PROJECTNAME=${PROJECTNAME:-machina}
+  else
+    e_error "The project name is set to: $PROJECTNAME"
+  fi
 
-  e_prompt "What is the MySQL database?: "
-  read DBNAME
-  DBNAME=${DBNAME:-machina}
-  # echo $DBNAME
+  if ! [[ -v PROJECTPATH ]]; then
+    e_prompt "Where would you like to install the project?: "
+    read PROJECTPATH
+    PROJECTPATH=${PROJECTPATH:-/home/$USER/Public}
+  else
+    e_error "The project path is set to: $PROJECTPATH"
+  fi
 
-  e_prompt "Who is the MySQL user?: "
-  read DBUSER
-  DBUSER=${DBUSER:-homestead}
-  # echo $DBUSER
+  if ! [[ -v DBNAME ]]; then
+    e_prompt "What is the MySQL database?: "
+    read DBNAME
+    DBNAME=${DBNAME:-machina}
+  else
+    e_error "The database is set to: $DBNAME"
+  fi
 
-  e_prompt "What is the MySQL password?: "
-  read DBPASS
-  DBPASS=${DBPASS:-secret}
-  # echo $DBPASS
+  if ! [[ -v DBUSER ]]; then
+    e_prompt "Who is the MySQL user?: "
+    read DBUSER
+    DBUSER=${DBUSER:-homestead}
+  else
+    e_error "The db user is set to: $DBUSER"
+  fi
 
-  e_prompt "Would you like to migrate the database? (y/n): "
-  read MIGRATE_DB
+  if ! [[ -v DBPASS ]]; then
+    e_prompt "What is the MySQL password?: "
+    read DBPASS
+    DBPASS=${DBPASS:-secret}
+  else
+    e_error "The db password is set to: $DBPASS"
+  fi
+
+  if ! [[ -v MIGRATE_DB ]]; then
+    e_prompt "Would you like to migrate the database? (y/n): "
+    read MIGRATE_DB
+    MIGRATE_DB=${MIGRATE_DB:-N}
+  else
+    e_error "Database migration is set to: $MIGRATE_DB"
+  fi
 }
 
 ###########################################################################
@@ -73,9 +97,15 @@ install_prompts() {
 
 install_laravel() {
   e_header "Installing Laravel......."
-  cd $PROJECTPATH
-  # composer create-project --prefer-dist laravel/laravel $PROJECTNAME
-  laravel new $PROJECTNAME
+
+  if [[ ! -d "$PROJECTPATH/$PROJECTNAME" ]]; then
+    cd $PROJECTPATH
+    # composer create-project --prefer-dist laravel/laravel $PROJECTNAME
+    laravel new $PROJECTNAME
+  else
+    e_error "Project already exists!"
+    exit 1
+  fi
 }
 
 ###########################################################################
@@ -85,17 +115,27 @@ install_laravel() {
 apache_config() {
   e_header "Configure Apache......."
 
+  if ! [ -f /etc/apache2/sites-available/laravel.conf ]; then
+    if [ -f $SCRIPT_DIR/laravel.conf ]; then
+      sudo cp $SCRIPT_DIR/laravel.conf /etc/apache2/sites-available/laravel.conf
+    else
+      e_error "Apache config template does not exist!"
+      exit 1
+    fi
+  fi
+
   if [ -f /etc/apache2/sites-available/laravel.conf ]; then
     sudo cp /etc/apache2/sites-available/laravel.conf /etc/apache2/sites-available/$PROJECTNAME.conf
-    sudo sed -i "s/{{ PROJECTNAME }}/$PROJECTNAME/" /etc/apache2/sites-available/$PROJECTNAME.conf
-    sudo sed -i "s/{{ PROJECTPATH }}/$PROJECTPATH/" /etc/apache2/sites-available/$PROJECTNAME.conf
+    sudo sed -i "s#{{ PROJECTNAME }}#$PROJECTNAME#" /etc/apache2/sites-available/$PROJECTNAME.conf
+    sudo sed -i "s#{{ PROJECTPATH }}#$PROJECTPATH#" /etc/apache2/sites-available/$PROJECTNAME.conf
     sudo a2ensite $PROJECTNAME.conf
     sudo systemctl restart apache2
   else
     e_error "Apache config file does not exist!"
+    exit 1
   fi
 
-  echo "127.0.0.1 $PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
+  echo "127.0.0.1   $PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
 }
 
 ###########################################################################
@@ -105,8 +145,8 @@ apache_config() {
 setup_permissions() {
   e_header "Setting Permissions......."
 
-  sudo chown -R www-data:www-data /$PROJECTPATH/$PROJECTNAME
-  sudo chmod -R 775 /$PROJECTPATH/$PROJECTNAME/.
+  sudo chown -R www-data:www-data $PROJECTPATH/$PROJECTNAME
+  sudo chmod -R 775 $PROJECTPATH/$PROJECTNAME/.
 }
 
 ###########################################################################
@@ -140,12 +180,13 @@ create_database() {
   fi
 
   # Setup database credentials
-  if [ -f /$PROJECTPATH/$PROJECTNAME/.env ]; then
-    sed -i "s/DB_DATABASE=homestead/DB_DATABASE=$DBNAME/" /$PROJECTPATH/$PROJECTNAME/.env
-    sed -i "s/DB_USERNAME=homestead/DB_USERNAME=$DBUSER/" /$PROJECTPATH/$PROJECTNAME/.env
-    sed -i "s/DB_PASSWORD=secret/DB_PASSWORD=$DBPASS/" /$PROJECTPATH/$PROJECTNAME/.env
+  if [ -f $PROJECTPATH/$PROJECTNAME/.env ]; then
+    sed -i "s/DB_DATABASE=homestead/DB_DATABASE=$DBNAME/" $PROJECTPATH/$PROJECTNAME/.env
+    sed -i "s/DB_USERNAME=homestead/DB_USERNAME=$DBUSER/" $PROJECTPATH/$PROJECTNAME/.env
+    sed -i "s/DB_PASSWORD=secret/DB_PASSWORD=$DBPASS/" $PROJECTPATH/$PROJECTNAME/.env
   else
     e_error "Environment file does not exists!"
+    exit 1
   fi
 }
 
@@ -156,6 +197,8 @@ create_database() {
 migrate_database() {
 
   local MIGRATE_CMD="php artisan migrate"
+
+  cd $PROJECTPATH/$PROJECTNAME
 
   if [ "$MIGRATE_DB" = "y" ] || [ "$MIGRATE_DB" = "Y" ]; then
     e_header "Migrating Database......."
@@ -175,10 +218,10 @@ migrate_database() {
 ###########################################################################
 
 setup_laravel() {
-  # install_prompts
-  # install_laravel
-  # apache_config
-  # setup_permissions
+  install_prompts
+  install_laravel
+  apache_config
+  setup_permissions
   create_database
   migrate_database
 }
