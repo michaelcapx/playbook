@@ -21,11 +21,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-readonly PROJECTNAME="wptest"
-readonly PROJECTPATH="/home/$USER/Public"
-readonly DBUSER="homestead"
-readonly DBPASS="secret"
-readonly DBNAME="wptest"
+# readonly PROJECTNAME="wptest"
+# readonly PROJECTPATH="/home/$USER/Public"
+# readonly DBUSER="homestead"
+# readonly DBPASS="secret"
+# readonly DBNAME="wptest"
 
 ###########################################################################
 # Basic Functions
@@ -177,13 +177,14 @@ install_wordpress() {
   mkdir $WP_INSTALL/wp-content/uploads
 
   # Adjust Permissions
-  sudo chown -R $USER:www-data $WP_INSTALL
-  # sudo chown -R www-data:www-data $WP_INSTALL
+  # sudo chown -R $USER:www-data $WP_INSTALL
+  sudo chown -R www-data:www-data $WP_INSTALL
   sudo find $WP_INSTALL -type d -exec chmod g+s {} \;
   sudo chmod g+w $WP_INSTALL/wp-content
   sudo chmod -R g+w $WP_INSTALL/wp-content/themes
   sudo chmod -R g+w $WP_INSTALL/wp-content/plugins
-
+  # sudo chown -R www-data:www-data $WP_INSTALL*
+  # sudo chmod -R 775 $WP_INSTALL/.
 }
 
 ###########################################################################
