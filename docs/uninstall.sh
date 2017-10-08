@@ -88,7 +88,7 @@ drop_apache() {
     sudo rm /etc/apache2/sites-available/$PROJECTNAME.conf
   fi
 
-  sudo sed -i "s/127.0.0.1\s\{2,\}$PROJECTNAME.dev/d" /etc/hosts
+  sudo sed -i "/127.0.0.1[[:space:]]*$PROJECTNAME.dev/d" /etc/hosts
 }
 
 ###########################################################################
@@ -98,8 +98,8 @@ drop_apache() {
 drop_files() {
   e_header "Removing Files......."
 
-  if [[ -d "$PROJECTPATH/$PROJECTNAME" ]]; then
-    sudo rm -r $PROJECTPATH/$PROJECTNAME
+  if [[ -d "$PROJECTPATH" ]]; then
+    sudo rm -r $PROJECTPATH
   else
     e_error "Project already deleted!"
     exit 1
@@ -112,9 +112,9 @@ drop_files() {
 
 uninstall_project() {
   build_vars
-  # drop_database
-  # drop_apache
-  # drop_files
+  drop_database
+  drop_apache
+  drop_files
 }
 
 uninstall_project

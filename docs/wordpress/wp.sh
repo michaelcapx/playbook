@@ -114,7 +114,8 @@ apache_config() {
     exit 1
   fi
 
-  echo "127.0.0.1   $PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
+  # echo "127.0.0.1      $PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
+  echo -e "127.0.0.1\t$PROJECTNAME.dev" | sudo tee --append /etc/hosts > /dev/null
 }
 
 ###########################################################################
