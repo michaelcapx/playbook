@@ -255,6 +255,14 @@ install_composer() {
   composer global require "hirak/prestissimo=^0.3"
   composer global require "friendsofphp/php-cs-fixer=@stable"
   composer global require "codeception/codeception=@stable"
+
+  # sudo git clone https://github.com/laravel/spark-installer.git /usr/local/share/spark-installer
+  # sudo composer install -d /usr/local/share/spark-installer
+  # sudo ln -s /usr/local/share/spark-installer/spark /usr/local/bin/spark
+
+  git clone https://github.com/laravel/spark-installer.git ~/Documents/spark
+  composer install -d ~/Documents/spark/spark
+  sudo ln -s ~/Documents/spark/spark /usr/local/bin/spark
 }
 
 ###########################################################################
