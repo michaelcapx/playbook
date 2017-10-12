@@ -273,19 +273,26 @@ install_node() {
   e_header "Installing Node......."
 
   # Install NodeJS
-  curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-  sudo apt-get install -y nodejs
+  # curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  # sudo apt-get install -y nodejs
 
   # Configure NodeJS Permissions
-  npm config get prefix
-  mkdir ~/.npm-global
-  npm config set prefix '~/.npm-global'
-  echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.profile
+  # npm config get prefix
+  # mkdir ~/.npm-global
+  # npm config set prefix '~/.npm-global'
+  # echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.profile
+  # source ~/.profile
+
+  # Install NVM
+  sudo apt-get install -y build-essential libssl-dev
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
   source ~/.profile
+  nvm install --lts=boron
 
   # Install NodeJS Global Packages
-  npm install -g npm
-  npm install -g gulp
+  # npm install -g npm
+  # npm install -g gulp
+  npm install -g gulp-cli
   npm install -g bower
   npm install -g yarn
   npm install -g grunt-cli
@@ -293,19 +300,19 @@ install_node() {
   npm install -g webpack
   npm install -g webpack-dev-server
   npm install -g yo
-  npm install -g npm-check-updates
+  # npm install -g npm-check-updates
   # npm install -g phantomjs-prebuilt
-  npm install -g casperjs
-  npm install -g simplehttpserver
-  npm install -g xlsx
-  npm install -g webfont-dl
-  npm install -g diff-so-fancy
+  # npm install -g casperjs
+  # npm install -g simplehttpserver
+  # npm install -g xlsx
+  # npm install -g webfont-dl
+  # npm install -g diff-so-fancy
   npm install -g less
   npm install -g node-sass
   npm install -g jslint
 
   # Update NPM
-  npm update -g
+  # npm update -g
 }
 
 ###########################################################################
