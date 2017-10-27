@@ -41,7 +41,7 @@
     - { role: git, become: true, tags: ['base'] }
     - { role: java, become: true, tags: ['base'] }
     - { role: python, become: true, tags: ['base'] }
-    - { role: ruby, become: true, tags: ['base'] }
+    # - { role: ruby, become: true, tags: ['base'] }
 
     # Desktop roles
     - { role: desktop, become: true, tags: ['desktop'] }

@@ -99,7 +99,7 @@ install_mysql() {
   # Install MySQL
   sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password secret'
   sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password secret'
-  sudo apt-get install -y mysql-server
+  sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
 
   # Configure MySQL Password Lifetime
   echo 'default_password_lifetime = 0' | sudo tee --append /etc/mysql/mysql.conf.d/mysqld.cnf > /dev/null
@@ -325,6 +325,41 @@ install_sqlite() {
 
   # Install SQLite
   sudo apt-get install -y sqlite3 libsqlite3-dev
+}
+
+###########################################################################
+# Install Rbenv
+# https://gorails.com/setup/ubuntu/16.04
+###########################################################################
+
+install_rbenv() {
+  e_header "Installing Rbenv......."
+
+  sudo apt-get install -y git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+  echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+  exec $SHELL
+
+  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+  echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+  exec $SHELL
+
+  rbenv install 2.4.2
+  rbenv global 2.4.2
+  ruby -v
+
+  gem install bundler
+  rbenv rehash
+
+  gem install rails -v 5.1.4
+  gem install sass
+  gem install boom
+
+  rbenv rehash
+
+  rails -v
 }
 
 ###########################################################################
@@ -596,6 +631,7 @@ setup_lamp() {
   install_composer
   install_node
   install_sqlite
+  install_rbenv
   install_redis
   install_memcached
   install_beanstalkd
