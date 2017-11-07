@@ -109,6 +109,24 @@ install_blender() {
 
 }
 
+###########################################################################
+# Install LibreOffice
+# http://www.omgubuntu.co.uk/2017/07/how-to-install-libreoffice-5-4-on-ubuntu
+###########################################################################
+
+install_libreoffice() {
+  e_header "Installing LibreOffice......."
+
+  # Add LibreOffice PPA
+  if ! grep -q "libreoffice/libreoffice-5-4" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    e_header "Adding LibreOffice PPA......."
+    sudo add-apt-repository -y ppa:libreoffice/libreoffice-5-4
+    sudo apt -y update
+  fi
+
+  sudo apt install -y libreoffice
+
+}
 
 ###########################################################################
 # Program Start
@@ -119,6 +137,7 @@ install_apps() {
   install_obs
   install_audacity
   install_blender
+  install_libreoffice
 }
 
 install_apps
