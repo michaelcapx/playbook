@@ -495,6 +495,20 @@ Scripting
 - [WP Setup](https://github.com/harryfinn/wp-setup): WordPress development provisioning tool
 - [Dotfiles](https://github.com/luisdavim/dotfiles): My dotfiles and some scripts to bootstrap new workstations
 - [Provisioning](https://github.com/JBlaak/Provisioning): So that everything is in place.
+- [Lazy Ubuntu](https://github.com/darol100/lazydubuntu): (Deprecated )Setting Up my Drupal Enviroment in Ubuntu
+- [Ubuntu Post-Install](https://github.com/snwh/ubuntu-post-install): A set of post-installation shell scripts for Ubuntu
+- [Perfect Ubuntu](https://github.com/andreystarkov/perfect-ubuntu): on the way to perfect open source dev enviroment
+- [Ubuntu Setup](https://github.com/mpadge/ubuntu-setup): script to configure fresh ubuntu install, or to update existing install
+- [Post Isntall Apps](https://github.com/davidprush/PostInstallApps): Bash script to install apps after fresh install of Ubuntu.
+- [Alraa Dotfiles](https://github.com/alrra/dotfiles): macOS / Ubuntu dotfiles
+- [Post-installation Scripts](https://github.com/aldomann/apps-scripts): Post-installation scripts for GNU/Linux systems
+- [Lazy-Xerus](https://github.com/Cypresslin/lazy-xerus): Laziness is humanity
+- [Arch Linux Installation Scripts](https://github.com/Archetylator/arch-linux): Arch Linux Installation Script
+- [Ubuntu After Effects](https://github.com/tprasadtp/ubuntu-post-install): Post Install Script for Ubuntu and its derivatives
+- [dotfiles](https://github.com/gmarmstrong/dotfiles): Runtime configuration files, maintenance scripts, and post-installation scripts for my Unix-like systems
+- [postinstall.sh](https://github.com/Cyclenerd/postinstall): Bash Script to automate post-installation steps
+- [elementary-post-install](https://github.com/Djaler/elementary-post-install)
+- [Ubuntu Setup Note](https://github.com/kaosf/ubuntu-setup): Ubuntu setup commands log
 
 ### Scripting Guides
 
