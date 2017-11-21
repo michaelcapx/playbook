@@ -30,6 +30,7 @@ Contents
   - [Sublime Guides](#sublime-guides)
 - [Scripting](#scripting)
   - [Crouton Scripts](#crouton-scripts)
+  - [Gallium Scripts](#gallium-scripts)
   - [Shell Scripts](#shell-scripts)
   - [Scripting Guides](#scripting-guides)
   - [Lamp Scripts](#lamp-scripts)
@@ -449,6 +450,20 @@ Scripting
 - [PiE DevOps](https://github.com/pioneers/DevOps)
 - [Crouton-buntu-Lazy-Script](https://github.com/CrashedBboy/Ubuntu-LazyScript)
 - [Crouton Config](https://github.com/dpeters1/CroutonConfig)
+
+### Gallium Scripts
+
+- [CWK Scripts](https://github.com/brettlyons/cwk_scripts)
+- [GalliumOS Setup](https://github.com/kmishra9/GalliumOS-Chromebook-Setup)
+- [Coderdojo](https://github.com/mjwbenton/coderdojo-install-scripts)
+- [Airgap](https://github.com/lrvick/airgap)
+- [Dar Dorfiles](https://github.com/dar-irl/dotfiles)
+- [iFlow Dotfiles](https://github.com/iflowfor8hours/dotfiles)
+- [Chromebook Config](https://github.com/Sienfeld/chromebook-config)
+- [Winky Scripts](https://github.com/arvati/winky-scripts)
+- [Homesetup](https://github.com/yuwash/homesetup)
+- [Linux Dotfiles](https://github.com/source-decay/Linux-Dotfiles)
+- [Vimix GTK Theme](https://github.com/vinceliuice/vimix-gtk-themes)
 
 ### Shell Scripts
 
