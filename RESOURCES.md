@@ -95,6 +95,14 @@ A collection of resources relating to ansible.
 - [Chromebook Desktop](https://github.com/ztsmith/ansible-chromebook-desktop)
 - [Setup Mac Playbook](https://github.com/daemonza/setupmac)
 - [Web Playbook](https://github.com/mgcrea/ansible-web-playbooks)
+- [ansible-provision-ubuntu-desktop](https://github.com/bboykov/configure-ubuntu-desktop)
+- [devbox](https://github.com/moussaclarke/devbox)
+- [My Ansible Playbook](https://github.com/guillaumebriday/my-ansible-playbook): This is my Ansible Playbook to fit with Ubuntu Xenial (16.04 LTS) servers and a Laravel application.
+- [Laravel Server](https://github.com/Ostendorf/laravel-server): Laravel Server setup via Ansible
+- [Ansible docker image to provision servers for laravel](https://github.com/ricklancee/ansible-laravel): An ansible docker image to provision servers for laravel 5.4
+- [ansible-playbooks](https://github.com/eendroroy/ansible-playbooks): ansible playbooks collection
+- [ansible-bootstrap-server](https://github.com/tasdikrahman/ansible-bootstrap-server): the bare essentials when you spin up a server
+- [Stedding](https://github.com/Larastudio/stedding): Ansible playbooks for Laravel LEMP Stack
 
 ### Ansible Roles
 
@@ -118,6 +126,7 @@ A collection of resources relating to ansible.
 - [Ansible Role Linux Desktop](https://github.com/pppontusw/ansible-role-linux-desktop)
 - [Sublime Drupal](https://galaxy.ansible.com/fubarhouse/sublime-drupal/)
 - [XFCE Desktop](https://galaxy.ansible.com/webofmars/xfce4-desktop/)
+- [Sa Lamp](https://github.com/softasap/sa-lamp): Basic LAMP
 
 ### Ansible Galaxy
 
@@ -479,7 +488,13 @@ Scripting
 - [all of my scripts for xfce..](https://github.com/s0la/scripts)
 - [Linux Post Install](https://github.com/Darkhogg/linux-post-install)
 - [Ubuntu Packages](https://github.com/adgellida/ubuntupackages)
-
+- [ubuntu-xenial-provisioning](https://github.com/koooge/ubuntu-xenial-provisioning)
+- [first-steps-ubuntu](https://github.com/bernardolm/first-steps-ubuntu)
+- [Development Env](https://github.com/owainlewis/development-environment): Setup development environment on Ubuntu 17.04
+- [provision-scripts](https://github.com/iboneyard/provision-scripts): collection or bash scripts to provision server or desktop linux
+- [WP Setup](https://github.com/harryfinn/wp-setup): WordPress development provisioning tool
+- [Dotfiles](https://github.com/luisdavim/dotfiles): My dotfiles and some scripts to bootstrap new workstations
+- [Provisioning](https://github.com/JBlaak/Provisioning): So that everything is in place.
 
 ### Scripting Guides
 
