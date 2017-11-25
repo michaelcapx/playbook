@@ -532,12 +532,38 @@ Scripting
 Browsers
 --------
 
+### Browser Privacy
+
+- [ICSI: Netalyzr](http://netalyzr.icsi.berkeley.edu/)
+- [Dataskydd: Web Privacy Check](https://webbkoll.dataskydd.net/en)
+- [heise Netze: Webcheck](https://www.heise.de/netze/tools/webcheck/)
+- [Mozilla: Observatory](https://observatory.mozilla.org/)
+- [MxToolBox: Network Tools](https://mxtoolbox.com/NetworkTools.aspx)
+- [Qualys SSL Labs: SSL Server Test](https://www.ssllabs.com/ssltest/analyze.html)
+- [Secure Email Test Tools and Services](https://www.checktls.com/index.html)
+- [badssl.com: Dashboard](https://badssl.com/dashboard/)
+- [BrowserLeaks: Web Browser Security](https://browserleaks.com/)
+- [Qualys SSL Labs: SSL/TLS Capabilities of Your Browser](https://www.ssllabs.com/ssltest/viewMyClient.html)
+- [Email Privacy Tester](https://emailprivacytester.com/)
+- [heise Security: Emailcheck](https://www.heise.de/security/dienste/Emailcheck-2109.html)
+- [Grepular: ParseMail](https://www.parsemail.org/)
+
 ### Firefox
 
 - [Install Firefox addon/extension with no user interaction](https://gist.github.com/eddiejaoude/0076739fe610189581d0)
 - [How to install Firefox addon from command line in scripts?](http://askubuntu.com/questions/73474/how-to-install-firefox-addon-from-command-line-in-scripts)
 - [How do I change Firefox's `about:config` from a shell script?](http://askubuntu.com/questions/313483/how-do-i-change-firefoxs-aboutconfig-from-a-shell-script)
 - [Download Firefox addons](https://github.com/raingloom/archisos/blob/master/releng/ffaddons.sh)
+- [Locking Down Firefox](https://leotindall.com/tutorial/locking-down-firefox/)
+- [How to make Firefox more secure using about:config](https://www.bestvpn.com/make-firefox-secure-using-aboutconfig/)
+- [Firefox bullshit removal](https://gist.github.com/haasn/69e19fc2fe0e25f3cff5)
+- [User.js](https://github.com/pyllyukko/user.js)
+- [My Mozilla Settings](https://github.com/gunnersson/my_Mozilla_settings)
+- [Profilemaker](https://github.com/allo-/firefox-profilemaker)
+- [ghacks user](https://github.com/ghacksuserjs/ghacks-user.js)
+- [MozillaZine: "about:config"](http://kb.mozillazine.org/About:config)
+- [MozillaZine: "user.js"](http://kb.mozillazine.org/User.js_file) 
+- [GH: allo-/firefox-profilemaker Wiki](https://github.com/allo-/firefox-profilemaker/wiki)
 
 
 ### Chrome
