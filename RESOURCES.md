@@ -67,6 +67,7 @@ Theming
 - [OSX Arc Darker](https://github.com/LinxGem33/OSX-Arc-Darker)
 - [Install Gnome Themes](https://github.com/tliron/install-gnome-themes)
 - [GitHub Universe](https://githubuniverse.com/)
+- [Vimix GTK Theme](https://github.com/vinceliuice/vimix-gtk-themes)
 
 ### Icons Themes
 
@@ -200,7 +201,6 @@ Scripting
 - [Winky Scripts](https://github.com/arvati/winky-scripts)
 - [Homesetup](https://github.com/yuwash/homesetup)
 - [Linux Dotfiles](https://github.com/source-decay/Linux-Dotfiles)
-- [Vimix GTK Theme](https://github.com/vinceliuice/vimix-gtk-themes)
 
 ### Shell Scripts
 
@@ -453,15 +453,6 @@ sudo bash
 
 ```bash
 dpkg-query -Wf '${Package;-40}${Priority}\n' | sort -b -k2,2 -k1,1 > ~/Downloads/priority.txt
-```
-
-### Add Ansible directory structure
-
-Source: https://raymii.org/s/snippets/Ansible_-_create_playbooks_and_role_file_and_folder_structure.html
-
-```bash
-mkdir -p roles/common/{tasks,handlers,templates,files,vars,defaults,meta}
-touch roles/common/{tasks,handlers,templates,files,vars,defaults,meta}/main.yml
 ```
 
 ### Get permissions octet from file or folder
