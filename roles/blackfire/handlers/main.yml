@@ -1,0 +1,12 @@
+---
+# handlers file for blackfire
+
+- name: Restart Blackfire.io
+  service:
+    name: blackfire-agent
+    state: restarted
+
+- name: restart webserver
+  service:
+    name: apache2
+    state: restarted

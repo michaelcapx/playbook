@@ -18,8 +18,8 @@
     mode: 0644
   notify: restart memcached
 
-- name: Ensure Memcached is started and set to run on startup
+- name: "Ensure Memcached is {{ memcached_start | ternary('started','stopped') }}"
   service:
     name: memcached
-    state: started
-    enabled: yes
+    state: "{{ memcached_start | ternary('restarted','stopped') }}"
+    enabled: "{{ memcached_service_enabled }}"

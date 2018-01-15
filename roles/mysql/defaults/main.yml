@@ -6,25 +6,22 @@ mysql_packages:
   - mysql-server
   - mysql-client
   - python-mysqldb
+  - libmysqlclient-dev
   - mytop
-
-# MySQL connection settings
-mysql_bind_address: '0.0.0.0'
-mysql_port: "3306"
 
 # The default root user installed by mysql - almost always root
 mysql_root_home: /root
 mysql_root_username: root
 mysql_root_password: root
 
-# Databases
+# MySQL Databases
 mysql_databases: []
 #   - name: example
 #     collation: utf8_general_ci
 #     encoding: utf8
 #     replicate: 1
 
-# Users
+# MySQL Users
 mysql_users: []
 #   - name: example
 #     host: 127.0.0.1

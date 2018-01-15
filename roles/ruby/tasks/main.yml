@@ -1,31 +1,81 @@
 ---
 # tasks file for ruby
 
-- name: Install ruby and rubygems
+# Install Dependencies
+- name: Ensure ruby dependencies are installed
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
-    - ruby-full
-    - "{{ ruby_rubygems_package_name }}"
+  with_items: "{{ ruby_dependencies | list }}"
 
-- name: Add user installed RubyGems bin directory to global $PATH
-  copy:
-    src: rubygems.sh
-    dest: /etc/profile.d/rubygems.sh
-    mode: 0644
+# Install Ruby via Rbenv
+- name: Install Rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: "{{ ruby_home }}/.rbenv"
+    accept_hostkey: true
+  become: true
+  become_user: "{{ ruby_user }}"
 
-# Install Bundler and configured gems.
+- name: Install Rbenv PATH
+  lineinfile:
+    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+
+- name: Initialize Rbenv
+  lineinfile:
+    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    line: 'eval "$(rbenv init -)"'
+
+- name: Creates plugin directory
+  file:
+    path: "{{ ruby_home }}/.rbenv/plugins/"
+    mode: 0755
+    state: directory
+
+- name: Install Ruby Build
+  git:
+    repo: https://github.com/rbenv/ruby-build.git
+    dest: "{{ ruby_home }}/.rbenv/plugins/ruby-build"
+    accept_hostkey: true
+  become: true
+  become_user: "{{ ruby_user }}"
+
+- name: Install Ruby Build PATH
+  lineinfile:
+    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    line: 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"'
+
+- name : Install ruby version
+  shell: "{{ ruby_home }}/.rbenv/bin/rbenv install {{ ruby_version }}"
+  failed_when: false
+  become: true
+  become_user: "{{ ruby_user }}"
+
+- name : Set global ruby version
+  shell: "{{ ruby_home }}/.rbenv/bin/rbenv global {{ ruby_version }}"
+  become: true
+  become_user: "{{ ruby_user }}"
+
+# Install RubyGems
 - name: Install Bundler
   gem:
     name: bundler
     state: present
     user_install: no
 
-- name: Install configured gems
+- name: Install global Ruby gems
   gem:
-    name: "{{ item }}"
-    state: present
+    name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('present') }}"
+    version: "{{ item.version | default(omit) }}"
+    user_install: yes
+    executable: "{{ item.executable | default(omit) }}"
   become: yes
-  become_user: "{{ ansible_env.USER }}"
-  with_items: "{{ ruby_install_gems }}"
+  become_user: "{{ ruby_user }}"
+  with_items: "{{ ruby_gems }}"
+
+- name : Rehash Rbenv
+  shell: "{{ ruby_home }}/.rbenv/bin/rbenv rehash"
+  become: true
+  become_user: "{{ ruby_user }}"

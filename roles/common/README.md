@@ -2,29 +2,21 @@
 
 Base role to install some common packages and utilites.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: common, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [darkraiden.ansible-base](https://github.com/darkraiden/ansible-role-base)
+- [bbatsche.Base](https://github.com/bbatsche/Ansible-Common-Role)
+- [coaxial.base](https://github.com/coaxial/ansible-role-base)
+- [Ilyes512.Base](https://github.com/Ilyes512/ansible-role-base)
+- [fubarhouse.commons](https://github.com/fubarhouse/ansible-role-commons)
+- [viasite-ansible.common](https://github.com/viasite-ansible/ansible-role-common)
+- [fabschurt.ubuntu-base](https://github.com/fabschurt/ansible-role-ubuntu-base)
+- [fretscha.first-five-minutes](https://github.com/fretscha-ansible/ansible-role-first-five-minutes)
+- [kosssi.apt](https://github.com/kosssi/ansible-role-apt)
+- [manala.apt](https://github.com/manala/ansible-role-apt)
+- [antonchernik.common](https://github.com/antonchernik/ansible-role-common)
+- [stuvusIT.common](https://github.com/stuvusIT/common)
+- [Stouts.foundation](https://github.com/Stouts/Stouts.foundation)
+- [kbrebanov.common](https://github.com/kbrebanov/ansible-common)

@@ -2,7 +2,7 @@
 # defaults file for common
 
 # The type of upgrade to perform before installing apt packages. Valid values include: yes, no, safe, full and dist.
-common_apt_upgrade_type: dist
+common_apt_upgrade_type: safe
 
 # If yes, forces upgrade
 common_apt_upgrade_force: no
@@ -22,12 +22,11 @@ common_apt_remove_packages:
   - simple-scan
 
 # Determines the state for packages installed on the system. Available values are `present` or `latest`.
-common_apt_state: latest
+common_apt_state: present
 
 # Array of common apt package dependencies. These packages should be installed before all others.
 common_apt_dependencies:
   - software-properties-common
-  - python-software-properties
   - git
   - ssh
   - curl
@@ -37,14 +36,15 @@ common_apt_dependencies:
 
 # Array of default apt packages.
 common_apt_packages_default:
+  - apt-transport-https
   - build-essential
   - unattended-upgrades
   - dos2unix
   - gcc
+  - htop
   - libglib2.0-dev
   - libmcrypt4
   - libpcre3-dev
-  - libnotify-bin
   - make
   - mcrypt
   - ntp

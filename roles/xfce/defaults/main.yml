@@ -1,2 +1,15 @@
 ---
 # defaults file for xfce
+
+# Default xfce user.
+xfce_user: "{{ ansible_env.USER }}"
+
+# Default xfce home.
+xfce_home: "{{ ansible_env.HOME }}"
+
+# Weather indicator parameters.
+xfce_weather_loc: "Melbourne, Florida"
+xfce_weather_lat: "28.211901"
+xfce_weather_lon: "-80.758301"
+xfce_weather_tz: "America/New_York"
+xfce_weather_theme: "/usr/share/xfce4/weather/icons/WSky-Light"

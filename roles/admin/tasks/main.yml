@@ -1,0 +1,42 @@
+---
+# tasks file for admin
+
+# Setup Admin User
+- name: Create admin user account
+  user:
+    name: "{{ admin_user }}"
+    comment: "{{ admin_fullname | default(omit) }}"
+    group: "{{ admin_group }}"
+    groups: "{{ admin_groups | default([]) | join(',') }}"
+    state: present
+    append: yes
+
+- name: Setting admin user's home permission
+  file:
+    dest: "{{ admin_home }}"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: 0755
+
+# Configure XDG Directories
+- name: Configure XDG user directories
+  lineinfile:
+    dest: "{{ admin_home }}/.config/user-dirs.dirs"
+    regexp: "^XDG_{{ item.name }}_DIR="
+    line: "XDG_{{ item.name }}_DIR=\"{{ item.path }}\""
+  with_items : "{{ admin_xdg_directories }}"
+
+- name: Build XDG directories
+  file:
+    path: "{{ admin_home }}/{{ item.dir }}"
+    force: yes
+    state: "{{ item.state }}"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: 0755
+  with_items: "{{ admin_xdg_directories }}"
+
+- name : Run xdg-user-dirs-update
+  shell: xdg-user-dirs-update
+  become: true
+  become_user: "{{ admin_user }}"

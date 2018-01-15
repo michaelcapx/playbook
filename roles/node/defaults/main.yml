@@ -1,39 +1,47 @@
 ---
 # defaults file for node
 
-# Set the version of Node.js to install ("0.10", "0.12", "4.x", "5.x", "6.x").
+# Default node user.
+node_user: "{{ ansible_env.USER }}"
+
+# Default node home.
+node_home: "{{ ansible_env.HOME }}"
+
+# Build dependencies for packages (will be installed with apt).
+node_dependencies:
+  - apt-transport-https
+  - build-essential
+  - libssl-dev
+  - git
+  - curl
+
+# Set the version of Node.js to install ("0.12", "4.x", "5.x", "6.x", "8.x").
 # Version numbers from Nodesource: https://github.com/nodesource/distributions
-node_version: "6.x"
+node_version: "8.x"
 
 # The directory for global installations.
-npm_config_prefix: "/home/{{ ansible_env.USER }}/.npm-global"
+npm_config_prefix: "{{ node_home }}/.npm-global"
 
 # Set to true to suppress the UID/GID switching when running package scripts. If set explicitly to false, then installing as a non-root user will fail.
 npm_config_unsafe_perm: "false"
 
 # Define a list of global packages to be installed with NPM.
-node_npm_global_packages:
-  - name: gulp
+npm_packages:
+  - name: gulp-cli
   - name: bower
+  - name: yarn
+  - name: grunt-cli
   - name: browser-sync
   - name: webpack
   - name: webpack-dev-server
-  - name: yarn
-  - name: grunt-cli
   - name: yo
-  - name: npm-check-updates
-  - name: phantomjs-prebuilt
-  - name: casperjs
-  - name: simplehttpserver
-  - name: xlsx
-  - name: webfont-dl
-  - name: diff-so-fancy
   - name: less
   - name: node-sass
-#  # Install a specific version of a package.
-#  - name: jslint
-#    version: 0.9.3
-#  # Install the latest stable release of a package.
-#  - name: node-sass
-#  # This shorthand syntax also works (same as previous example).
-#  - node-sass
+  - name: jslint
+  # - name: npm-check-updates
+  # - name: phantomjs-prebuilt
+  # - name: casperjs
+  # - name: simplehttpserver
+  # - name: xlsx
+  # - name: webfont-dl
+  # - name: diff-so-fancy

@@ -1,30 +1,14 @@
 # Ansible Role: Python
 
-Installs [Python](https://www.python.org/) for Debian/Ubuntu linux servers.
-
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: python, become: true }
+Installs [Python](https://www.python.org/) and [Pip](https://pip.pypa.io)(Python package manager) for GalliumOS.
 
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [telusdigital.python](https://github.com/telusdigital/ansible-python)
+- [geerlingguy.pip](https://github.com/geerlingguy/ansible-role-pip)
+- [zerohacks.python](https://github.com/zerohacks/ansible-python)
+- [andrewrothstein.python](https://github.com/andrewrothstein/ansible-python)
+- [Stouts.python](https://github.com/Stouts/Stouts.python)
+- [futurice.pip](https://github.com/futurice/ansible-pip)

@@ -3,7 +3,7 @@
 
 - name: Check MailHog version
   command: "mailhog --version"
-  register: mailhog_check
+  register: mailhog_version
   ignore_errors: true
   failed_when: false
   changed_when: false
@@ -12,7 +12,7 @@
   file:
     path: "{{ mailhog_install_dir }}/mailhog"
     state: absent
-  when: mailhog_check | failed
+  when: mailhog_version | failed
   ignore_errors: true
   failed_when: false
   changed_when: false
@@ -46,10 +46,9 @@
     owner: root
     group: root
     mode: 0755
-  when: "ansible_service_mgr == 'systemd'"
 
-- name: Ensure mailhog is enabled and will start on boot
+- name: "Ensure MailHog is {{ mailhog_start | ternary('started','stopped') }}"
   service:
     name: mailhog
-    state: started
-    enabled: yes
+    state: "{{ mailhog_start | ternary('restarted','stopped') }}"
+    enabled: "{{ mailhog_service_enabled }}"

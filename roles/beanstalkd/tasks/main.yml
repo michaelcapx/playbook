@@ -4,7 +4,9 @@
 - name: Install Beanstalkd package
   apt:
     name: "{{ beanstalkd_package }}"
-    state: latest
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime | default(3600) }}"
 
 - name: Configure Beanstalkd options
   lineinfile:
@@ -15,8 +17,8 @@
     - { regexp: "^#?START", line: "START=yes" }
   notify: restart beanstalkd
 
-- name: Ensure beanstalkd is running
+- name: "Ensure Beanstalkd is {{ beanstalkd_start | ternary('started','stopped') }}"
   service:
     name: beanstalkd
-    state: started
-    enabled: yes
+    state: "{{ beanstalkd_start | ternary('restarted','stopped') }}"
+    enabled: "{{ beanstalkd_service_enabled }}"

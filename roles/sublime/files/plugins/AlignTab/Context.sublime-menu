@@ -1,0 +1,48 @@
+[
+   {"caption" : "-"},
+    {
+      "id": "aligntab",
+      "caption": "AlignTab",
+      "children": [
+          {
+          "caption": "First Equal =",
+          "command": "align_tab",
+           "args": {"user_input" : "=/f"}
+          },
+          {
+          "caption" : "First Colon :",
+          "command" : "align_tab",
+          "args"    : {"user_input" : ":/f"}
+          },
+          {
+          "caption": "Fat Arrow =>",
+          "command": "align_tab",
+           "args": {"user_input" : "=>"}
+          },
+          {
+          "caption" : "Ampersands &",
+          "command" : "align_tab",
+          "args"    : {"user_input" : "&"}
+          },
+          {
+          "caption" : "Vertical Bars |",
+          "command" : "align_tab",
+          "args"    : {"user_input" : "\\|"}
+          },
+          {
+          "caption" : "Spaces",
+          "command" : "align_tab",
+          "args"    : {"user_input" : "\\s*/l1l0"}
+          },
+          {
+          "caption" : "SCSS Variables",
+          "command" : "align_tab",
+          "args"    : {"user_input" : "(?<=:) /l1l1f"}
+          },
+          {
+              "caption": "Exit Table Mode",
+              "command": "align_tab_clear_mode"
+          }
+      ]
+  }
+]

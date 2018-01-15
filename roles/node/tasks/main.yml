@@ -1,11 +1,14 @@
 ---
 # tasks file for node
 
-- name: Ensure apt-transport-https is installed
+# Install Dependencies
+- name: Ensure node dependencies are installed
   apt:
-    name: apt-transport-https
+    name: "{{ item }}"
     state: present
+  with_items: "{{ node_dependencies | list }}"
 
+# Install node via Nodesource PPA
 - name: Add Nodesource apt key
   apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
@@ -27,49 +30,63 @@
   when: node_repo.changed
 
 - name: Ensure Node.js and npm are installed
-  apt: "name=nodejs={{ node_version|regex_replace('x', '') }}* state=present"
+  apt:
+    name: "nodejs={{ node_version|regex_replace('x', '') }}*"
+    state: present
 
+# NPM Configuration
 - name: Create npm global directory
   file:
     path: "{{ npm_config_prefix }}"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ node_user }}"
+    group: "{{ node_user }}"
     state: directory
 
-- name: Set npm global packages path
+- name: Add npm_config_prefix bin directory to global $PATH.
+  template:
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
+
+# NPM User Configuration
+- name: Set npm global packages prefix
   command: npm config set prefix "{{ npm_config_prefix }}"
   changed_when: false
+  become: true
+  become_user: "{{ node_user }}"
+  when: node_user is defined and node_user != 'root'
 
-- name: Add npm_config_prefix bin directory to global $PATH
+- name: Ensure .npmrc has npm config prefix
   lineinfile:
-    path: "{{ ansible_env.HOME }}/.profile"
-    line: "export {{ item.key }}={{ item.value }}"
+    path: "/home/{{ node_user }}/.npmrc"
+    line: "prefix={{ npm_config_prefix }}"
     create: yes
+  when: node_user is defined and node_user != 'root'
+
+- name: Configure dotfile paths for node
+  lineinfile:
+    path: "/home/{{ node_user }}/.profile"
+    line: "{{ item }}"
+    create: yes
+    owner: "{{ node_user }}"
+    group: "{{ node_user }}"
   with_items:
-    - { key: "PATH", value: "{{ npm_config_prefix }}/bin:$PATH" }
+    - "NPM_PACKAGES=\"{{ npm_config_prefix }}\""
+    - "PATH=\"$NPM_PACKAGES/bin:$PATH\""
+    - "unset MANPATH"
+    - "export MANPATH=\"$NPM_PACKAGES/share/man:$(manpath)\""
+  when: node_user is defined and node_user != 'root'
 
-# - name: Source the profile
-#   command: source "{{ ansible_env.HOME }}/.profile"
-#   changed_when: false
-
-- name: Add npm_config_prefix bin directory to global $PATH
-  copy:
-    dest: /etc/profile.d/npm.sh
-    content: "export {{ item.key }}={{ item.value }}"
-    mode: 0664
-  with_items:
-    - { key: "PATH", value: "{{ npm_config_prefix }}/bin:$PATH" }
-    - { key: "NPM_CONFIG_PREFIX", value: "{{ npm_config_prefix }}" }
-    - { key: "NODE_PATH", value: "$NODE_PATH:{{ npm_config_prefix }}/lib/node_modules" }
-
-- name: Ensure npm global packages are installed
+# NPM Installation
+- name: Ensure npm global packages are installed.
   npm:
     name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('latest') }}"
     version: "{{ item.version | default('latest') }}"
     global: yes
-    state: latest
+    executable: "{{ item.executable | default(omit) }}"
   environment:
     NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
     NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
     NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
-  with_items: "{{ node_npm_global_packages }}"
+  with_items: "{{ npm_packages }}"

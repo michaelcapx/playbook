@@ -1,8 +1,11 @@
 ---
 # defaults file for desktop
 
-# Determines the state for packages installed on the system. Available values are `present` or `latest`.
-desktop_apt_state: latest
+# Default desktop user.
+desktop_user: "{{ ansible_env.USER }}"
+
+# Default desktop home.
+desktop_home: "{{ ansible_env.HOME }}"
 
 # Array of desktop apt package dependencies. These packages should be installed before all others.
 desktop_apt_dependencies:
@@ -12,24 +15,42 @@ desktop_apt_dependencies:
 
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
 desktop_apt_ppa:
-  - ppa:yktooo/ppa
-  - ppa:nilarimogard/webupd8
-  - ppa:dawidd0811/neofetch
+  - { ppa: "ppa:nilarimogard/webupd8",             pkg: todo-indicator }
+  - { ppa: "ppa:yktooo/ppa",                       pkg: indicator-sound-switcher }
+  - { ppa: "ppa:dawidd0811/neofetch",              pkg: neofetch }
+  - { ppa: "ppa:giuspen/ppa",                      pkg: cherrytree }
+  - { ppa: "ppa:eugenesan/ppa",                    pkg: keepassx }
+  - { ppa: "ppa:caffeine-developers/ppa",          pkg: caffeine }
+  - { ppa: "ppa:fossfreedom/indicator-sysmonitor", pkg: indicator-sysmonitor }
+  # - { ppa: "ppa:thomas-schiex/blender",            pkg: blender }
+  # - { ppa: "ppa:kirillshkrogalev/ffmpeg-next",     pkg: ffmpeg }
+  # - { ppa: "ppa:obsproject/obs-studio",            pkg: obs-studio }
+  # - { ppa: "ppa:ubuntuhandbook1/audacity",         pkg: audacity }
+  # - { ppa: "ppa:webupd8team/tor-browser",          pkg: tor-browser }
+  # - { ppa: "ppa:notepadqq-team/notepadqq",         pkg: notepadqq }
 
 # Array of gui desktop software packages to install
 desktop_apt_packages_gui:
   - bleachbit
   - filezilla
   - gpick
-  - meld
+  - meld # Diff / merge tool
   - mpv
   - font-manager
   - screenruler
   - transmission
   - typecatcher
   - lubuntu-software-center
-  - indicator-sound-switcher
   - xfpanel-switch
+  - easytag # audio files metadata management
+  - byzanz # screen recording
+  - geany # texteditor
+  - pinta # light paint.net equivalent
+  - rhythmbox
+  - ubuntu-restricted-extras # MP3, Microsoft fonts, Flash plugin, LAME and DVD playback
+  - unetbootin # create bootable USB drives
+  - fonts-hack-ttf
+  - thunderbird
 
 # Array of cli desktop software packages to install
 desktop_apt_packages_cli:
@@ -38,10 +59,11 @@ desktop_apt_packages_cli:
   - httping
   - iftop
   - iotop
-  - xclip
+  - xclip # to manipulate the clipboard
   - lastpass-cli
   - trash-cli
-  - neofetch
+  - rxvt-unicode-256color
+  - sox # to play sounds
 
 # Array of desktop apt packages to install.
 desktop_apt_packages: "{{ desktop_apt_packages_gui + desktop_apt_packages_cli }}"

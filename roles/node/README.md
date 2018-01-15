@@ -1,30 +1,15 @@
 # Ansible Role: Node
 
-Installs Node.js on Debian/Ubuntu.
-
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: node, become: true }
+Installs [Node.js](https://nodejs.org) and [npm](https://www.npmjs.com) for GalliumOS.
 
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [nodesource.node](https://github.com/nodesource/ansible-nodejs-role)
+- [geerlingguy.nodejs](https://github.com/geerlingguy/ansible-role-nodejs)
+- [AerisCloud.nodejs](https://github.com/AerisCloud/ansible-nodejs)
+- [sansible.nodejs](https://github.com/sansible/nodejs)
+- [Stouts.nodejs](https://github.com/Stouts/Stouts.nodejs)
+- [tersmitten.nodejs](https://github.com/Oefenweb/ansible-nodejs)
+- [leanbit.nvm](https://github.com/leanbit/ansible-nvm)

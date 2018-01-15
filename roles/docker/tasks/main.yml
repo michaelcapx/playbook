@@ -1,22 +1,12 @@
 ---
 # tasks file for docker
 
-# Docker prerequisites
-- name: Ensure old versions of Docker are not installed
-  package:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - docker
-    - docker-engine
-
-- name: Ensure depdencies are installed
+# Docker Prerequisites
+- name: Ensure docker dependencies are installed
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
-    - apt-transport-https
-    - ca-certificates
+  with_items: "{{ docker_dependencies | list }}"
 
 # Add Docker repository
 - name: Add Docker apt key
@@ -46,10 +36,10 @@
     update_cache: yes
 
 # Install Docker
-- name: Install Docker
-  package:
+- name: Install Docker packages
+  apt:
     name: "{{ docker_package }}"
-    state: "{{ docker_package_state }}"
+    state: present
 
 - name: Ensure Docker is started and enabled at boot
   service:
@@ -73,7 +63,7 @@
 
 - name: Add user to docker group
   user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ docker_user }}"
     groups: docker
     append: yes
 
@@ -109,13 +99,11 @@
   apt_repository:
     repo: ppa:yktooo/ppa
     state: present
-  when: docker_add_indicator
 
 - name: Install Docker indicator software package
   apt:
     name: indicator-docker
     state: present
-  when: docker_add_indicator
 
 - name: Change default Docker indicator icon
   get_url:
@@ -123,4 +111,3 @@
     dest: /usr/share/icons/hicolor/22x22/status/indicator-docker.svg
     mode: 0644
     force: yes
-  when: docker_add_indicator

@@ -1,0 +1,41 @@
+---
+# defaults file for admin
+
+# Default admin user.
+admin_user: "{{ ansible_env.USER }}"
+
+# Default admin home.
+admin_home: "{{ ansible_env.HOME }}"
+
+# Default admin full name.
+admin_fullname: "{{ ansible_user_gecos.split(',')[0] }}"
+
+# Default admin user group.
+admin_group: "{{ admin_user }}"
+
+# Default groups for the admin user.
+admin_default_groups:
+  - adm
+  - sudo
+  - cdrom
+  - dip
+  - plugdev
+  - lpadmin
+  - www-data
+
+# Custom groups to add to the admin user.
+admin_custom_groups: []
+
+# Secondary groups for the admin user.
+admin_groups: "{{ admin_default_groups }}"
+
+# XDG user directories. To remove a folder, set its value to "$HOME".
+admin_xdg_directories:
+  - { name: DESKTOP,     path: "$HOME/Desktop",   dir: Desktop,   state: directory }
+  - { name: DOWNLOAD,    path: "$HOME/Downloads", dir: Downloads, state: directory }
+  - { name: PUBLICSHARE, path: "$HOME/Public",    dir: Public,    state: directory }
+  - { name: DOCUMENTS,   path: "$HOME/Documents", dir: Documents, state: directory }
+  - { name: TEMPLATES,   path: "$HOME",           dir: Templates, state: absent  }
+  - { name: MUSIC,       path: "$HOME",           dir: Music,     state: absent  }
+  - { name: PICTURES,    path: "$HOME",           dir: Pictures,  state: absent  }
+  - { name: VIDEOS,      path: "$HOME",           dir: Videos,    state: absent  }

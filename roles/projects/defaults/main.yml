@@ -1,0 +1,17 @@
+---
+# defaults file for projects
+
+# Default projects user.
+projects_user: "{{ ansible_env.USER }}"
+
+# Default projects path.
+projects_path: "{{ ansible_env.HOME }}/Documents/projects"
+
+# Default projects repo.
+projects_repo: "https://github.com/Benoth/projects-installer.git"
+
+# Default projects git name.
+projects_git_name: ""
+
+# Default projects git email.
+projects_git_email: ""

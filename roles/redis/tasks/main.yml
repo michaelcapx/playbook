@@ -19,15 +19,17 @@
     name: "{{ redis_package }}"
     state: present
 
-- name: Ensure Redis is configured
-  template:
-    src: redis.conf.j2
+- name: Configure Redis
+  lineinfile:
     dest: "{{ redis_conf_path }}"
-    mode: 0644
-  notify: restart redis
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - { regexp: 'bind 127\.0\.0\.1', line: "bind 127.0.0.1" }
 
-- name: Ensure Redis is running and enabled on boot
+- name: "Ensure Redis is {{ redis_start | ternary('started','stopped') }}"
   service:
     name: "{{ redis_daemon }}"
-    state: started
-    enabled: yes
+    state: "{{ redis_start | ternary('restarted','stopped') }}"
+    enabled: "{{ redis_service_enabled }}"

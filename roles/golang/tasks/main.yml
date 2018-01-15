@@ -1,0 +1,42 @@
+---
+# tasks file for golang
+
+# Install dependencies
+- name: Install GVM dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ golang_dependencies | list }}"
+  when: golang_dependencies | length
+
+- name: Download GVM
+  get_url:
+    url: "https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer"
+    dest: "/tmp/gvm-installer"
+    mode: 0755
+
+- name: Install GVM
+  shell: "/tmp/gvm-installer"
+  failed_when: false
+  become: true
+  become_user: "{{ golang_user }}"
+
+- name: Make GVM executable
+  file:
+    path: "{{ golang_home }}/.gvm/scripts/gvm-default"
+    mode: 0755
+
+- name: Install GVM
+  shell: "bash {{ golang_home }}/.gvm/scripts/gvm-default"
+  become: true
+  become_user: "{{ golang_user }}"
+
+- name: Install Go {{ golang_version }}
+  shell: "bash -c \"source {{ golang_home }}/.gvm/scripts/gvm && gvm install go{{ golang_version }} --prefer-binary\""
+  become: true
+  become_user: "{{ golang_user }}"
+
+- name: Make Go {{ golang_version }} default
+  shell: "bash -c \"source {{ golang_home }}/.gvm/scripts/gvm && gvm use go{{ golang_version }} --default\""
+  become: true
+  become_user: "{{ golang_user }}"

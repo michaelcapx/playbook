@@ -1,0 +1,41 @@
+---
+# tasks file for dotfiles
+
+- name: Create public dotfiles directory
+  file:
+    path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+    state: directory
+  register: dotfiles_create
+
+- name: Clone public dotfiles repository
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+    update: yes
+    accept_hostkey: yes
+  # failed_when: false
+
+- name: Configure repository
+  command: "git config --local user.email {{ dotfiles_git_email }}"
+  args:
+    chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+    warn: false
+  when:
+    - dotfiles_create.changed
+    - dotfiles_git_email is defined and dotfiles_git_email != ''
+
+- name: Configure repository
+  command: "git config --local user.name {{ dotfiles_git_name }}"
+  args:
+    chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+    warn: false
+  when:
+    - dotfiles_create.changed
+    - dotfiles_git_name is defined and dotfiles_git_name != ''
+
+- name: Fix dotfiles directory owner
+  file:
+    path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+    owner: "{{ dotfiles_user }}"
+    group: "{{ dotfiles_user }}"
+    recurse: yes

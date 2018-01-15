@@ -2,5 +2,7 @@
 # handlers file for memcached
 
 - name: restart memcached
-  service: name=memcached state=restarted
+  service:
+    name: memcached
+    state: restarted
   when: not memcached_install.changed

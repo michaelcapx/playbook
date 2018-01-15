@@ -2,29 +2,24 @@
 
 Installs Ruby and bundler gem on Linux.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: ruby, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [geerlingguy.ruby](https://github.com/geerlingguy/ansible-role-ruby)
+- [MichaelRigart.brightbox-ruby](https://github.com/michaelrigart/ansible-role-brightbox-ruby)
+- [ferrarimarco.ruby-install](https://github.com/ferrarimarco/ansible-role-ruby-install)
+- [joshualund.ruby-common](https://github.com/jlund/ansible-ruby-common)
+- [calebwoods.brightbox_ruby](https://github.com/RoleModel/brightbox_ruby)
+- [dnivra26.ruby-1](https://github.com/dnivra26/ansible-role-ruby-1)
+- [spitfast.rbenv](https://github.com/spitfast/ansible-role-rbenv)
+- [reallyenglish.language-ruby](https://github.com/reallyenglish/ansible-role-language-ruby)
+- [AerisCloud.rvm](https://github.com/AerisCloud/ansible-rvm)
+- [altermn.rvm](https://github.com/newmen/ansible-rvm)
+- [colstrom.ruby](https://github.com/colstrom/ansible-ruby)
+- [azavea.ruby](https://github.com/azavea/ansible-ruby)
+- [telusdigital.ruby](https://github.com/telusdigital/ansible-ruby)
+- [debops.ruby](https://github.com/debops/ansible-ruby)
+- [Stouts.ruby](https://github.com/Stouts/Stouts.ruby)
+- [sansible.ruby](https://github.com/sansible/ruby)
+- [rvm_io.ruby](https://github.com/rvm/rvm1-ansible)

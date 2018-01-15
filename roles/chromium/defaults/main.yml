@@ -1,0 +1,105 @@
+---
+# defaults file for chromium
+
+# Default chromium user.
+chromium_user: "{{ ansible_env.USER }}"
+
+# Default chromium home.
+chromium_home: "{{ ansible_env.HOME }}"
+
+# Chromium configuration paths.
+chromium_config: "{{ chromium_home }}/.config/chromium/Default"
+chromium_preferences: "{{ chromium_config }}/Preferences"
+
+# Array of chromium apt packages to install.
+chromium_packages:
+  - chromium-browser
+  - chromium-browser-l10n
+  - chromium-codecs-ffmpeg-extra
+
+chromium_preferences_json:
+  browser:
+    check_default_browser: false
+    show_home_button: true
+  bookmark_bar:
+    show_on_all_tabs: true
+  sync_promo:
+    user_skipped: true
+  autofill:
+    enabled: false
+  profile:
+    password_manager_enabled: false
+  distribution:
+    skip_first_run_ui: true
+    make_chrome_default: false
+    make_chrome_default_for_user: false
+  first_run_tabs:
+    - "chrome://newtab"
+  session:
+    startup_urls:
+      - "https://www.startpage.com"
+  homepage: "http://example.org"
+  homepage_is_newtabpage: false
+
+# Default chromium filename.
+chromium_policies_filename: user-policy.json
+
+# Chromium managed policies object.
+chromium_policies_managed:
+  BookmarkBarEnabled: true
+  ShowAppsShortcutInBookmarkBar: false
+  ShowHomeButton: true
+  HomepageIsNewTabPage: false
+
+# Chromium recommended policies object.
+chromium_policies_recommended:
+  PasswordManagerEnabled: false
+  AutoFillEnabled: false
+  WelcomePageOnOSUpgradeEnabled: false
+  DefaultBrowserSettingEnabled: false
+  DefaultCookiesSetting: 4 # Keep cookies for the duration of the session
+  DefaultPluginsSetting: 2 # Block the Flash plugin
+  DefaultPopupsSetting: 2 # Do not allow any site to show popups
+  DefaultNotificationsSetting: 2 # Do not allow any site to show desktop notifications
+  DefaultGeolocationSetting: 2 # Do not allow any site to track the users' physical location
+  DefaultMediaStreamSetting: 2 # Do not allow any site to access the camera and microphone
+  DefaultWebBluetoothGuardSetting: 2 # Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API
+  DefaultSearchProviderEnabled: true
+  DefaultSearchProviderName: "DuckDuckGo"
+  DefaultSearchProviderSearchURL: "https://duckduckgo.com/?q={searchTerms}"
+  DefaultSearchProviderIconURL: "https://duckduckgo.com/favicon.ico"
+  RestoreOnStartup: 4 # Open a list of URLs
+  RestoreOnStartupURLs: ["https://www.startpage.com"]
+  AllowDeletingBrowserHistory: true
+  AudioCaptureAllowed: false
+  BackgroundModeEnabled: false
+  BlockThirdPartyCookies: true
+  DeviceAllowBluetooth: false
+  MetricsReportingEnabled: false
+  NTPContentSuggestionsEnabled: false
+  SyncDisabled: true
+  VideoCaptureAllowed: false
+  HomepageLocation: "https://www.google.com/"
+
+# Array of extension hashes from the Chrome webstore.
+chromium_extensions:
+  - cjpalhdlnbpafiamejdnhcphjbkeiagm # uBlock
+  - pgdnlhfefecpicbbihgmbmffkjpaplco # uBlock extra
+  - hdokiejnpimakedhajhdlcegeplioahd # Lastpass
+  # - nngceckbapebfimnlniiiahkandclblb # Bitwarden
+  - bcjindcccaagfpapjjmafapmmgkkhgoa # JSON Formatter
+  - fhbjgbiflinjbdggehcddcbncdddomop # Postman
+  - bhlhnicpbhignbdhedgjhgdocnmhomnp # ColorZilla
+  - gcbommkclmclpchllfjekcdonpmejbdp # HTTPs Everywhere
+  - pkehgijcmpdhfbdbbnkijodmdjhbjlgp # Privacy Badger
+  # - ldpochfccmkkmhdbclfhpagapcfdljkj # DecentralEyes
+  # - gieohaicffldbmiilohhggbidhephnjj # Cookie Manager
+  # - cppjkneekbjaeellbfkmgnhonkkjfpdn # Clear Cache
+  # - ajpgkpeckebdhofmmjfgcjjiiejpodla # Xmarks Bookmark Sync
+  # - miefikpgahefdbcgoiicnmpbeeomffld # Blackfire Companion
+  # - fjnbnpbmkenffdnngjfgmeleoegfcffe # Stylish
+  # - jbbplnpkjmmeebjpijfedlgcdilocofh # Wave-evaluation-tool
+  # - idgpnmonknjnojddfkpgkljpfnnfcklj # ModHeader
+  # - jgbbilmfbammlbbhmmgaagdkbkepnijn # Cookie Inspector
+  # - dapjbgnjinbpoindlpdmhochffioedbn # Builtwith-technology-prof
+  # - deoaddaobnieaecelinfdllcgdehimih # Kimono

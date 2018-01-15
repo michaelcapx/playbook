@@ -2,29 +2,8 @@
 
 Shim to configure miscellaneous settings prior to installation.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: www, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [geerlingguy.git](https://github.com/geerlingguy/ansible-role-git)

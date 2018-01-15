@@ -1,6 +1,13 @@
 ---
 # defaults file for themes
 
+# Default theme user.
+theme_user: "{{ ansible_env.USER }}"
+
+# Default theme home.
+theme_home: "{{ ansible_env.HOME }}"
+
+# Array of theme apt package dependencies. These packages should be installed before all others.
 theme_dependencies:
   - autoconf
   - automake
@@ -9,8 +16,10 @@ theme_dependencies:
   - libgtk-3-dev
   - optipng
 
+# Main theme git repos.
 theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme
 
+# Theme XFCE parameters.
 theme_name: "Arc-Grey-Flatabulous-Darker"
 theme_window: "Arc-Grey-Flatabulous-Darker"
 theme_icons: "Numix-Circle-GalliumOS"

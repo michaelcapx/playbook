@@ -4,17 +4,30 @@
 # The PHP version to be installed.
 php_version: '7.1'
 
+# Build dependencies for packages (will be installed with apt).
+php_dependencies:
+  - apt-transport-https
+  - ca-certificates
+
+# PHP package state; use 'installed' to make sure it's installed, or 'latest' if
+# you want to upgrade or switch versions using a new repo.
+php_packages_state: installed
+
+# Whether to install recommended packages. Used only for Debian/Ubuntu.
+php_install_recommends: yes
+
 # Define the php packages to install.
 php_packages:
   - "php{{ php_version }}"
-  - "php{{ php_version }}-apcu"
+  # - "php{{ php_version }}-apcu"
   - "php{{ php_version }}-bcmath"
   - "php{{ php_version }}-bz2"
+  - "php{{ php_version }}-cgi"
   - "php{{ php_version }}-cli"
   - "php{{ php_version }}-common"
   - "php{{ php_version }}-curl"
   - "php{{ php_version }}-dev"
-  - "php{{ php_version }}-fpm"
+  # - "php{{ php_version }}-fpm"
   - "php{{ php_version }}-gd"
   - "php{{ php_version }}-intl"
   - "php{{ php_version }}-imagick"
@@ -38,75 +51,17 @@ php_packages:
   - "php{{ php_version }}-yaml"
   - "php{{ php_version }}-zip"
 
-# Vendor-specific configuration paths.
-php_conf_paths:
-  - "/etc/php/{{ php_version }}/fpm"
-  - "/etc/php/{{ php_version }}/apache2"
-  - "/etc/php/{{ php_version }}/cli"
-
-# Vendor-specific extension configuration paths.
-php_extension_conf_paths:
-  - "/etc/php/{{ php_version }}/fpm/conf.d"
-  - "/etc/php/{{ php_version }}/apache2/conf.d"
-  - "/etc/php/{{ php_version }}/cli/conf.d"
-
 # Set this to false if you're not using PHP with Apache/Nginx/etc.
 php_enable_webserver: true
 
-# PHP.ini configuration.
-php_use_managed_ini: true
-php_max_execution_time: "120"
-php_memory_limit: "192M"
-php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
-php_display_errors: "On"
-php_display_startup_errors: "On"
-php_post_max_size: "32M"
-php_upload_max_filesize: "64M"
-php_date_timezone: "UTC"
-php_sendmail_path: "/opt/mailhog/mhsendmail"
-
-# PHP-FPM configuration.
-php_enable_php_fpm: true
-php_fpm_daemon: "php{{ php_version }}-fpm"
-php_fpm_pool_user: www-data
-php_fpm_pool_group: www-data
-php_fpm_listen: "127.0.0.1:9000"
-php_fpm_listen_allowed_clients: "127.0.0.1"
-php_fpm_pm_max_children: 50
-php_fpm_pm_start_servers: 5
-php_fpm_pm_min_spare_servers: 5
-php_fpm_pm_max_spare_servers: 5
+# Set the webserver daemon (either `apache2` or `nginx`).
+php_webserver_daemon: "apache2"
 
 # OpCache settings.
-php_opcache_enable: "1"
-php_opcache_enable_cli: "0"
-php_opcache_memory_consumption: "192"
-php_opcache_interned_strings_buffer: "16"
-php_opcache_max_accelerated_files: "4096"
-php_opcache_max_wasted_percentage: "5"
-php_opcache_validate_timestamps: "1"
-php_opcache_revalidate_path: "0"
-php_opcache_revalidate_freq: "2"
-php_opcache_max_file_size: "0"
-php_opcache_save_comments: "1"
-php_opcache_fast_shutdown: "0"
+php_opcache_enable: true
 
-# Xdebug settings.
-php_xdebug_coverage_enable: 0
-php_xdebug_default_enable: 0
-php_xdebug_remote_enable: 1
-php_xdebug_remote_connect_back: 1
-php_xdebug_remote_host: localhost
-php_xdebug_remote_port: "9000"
-php_xdebug_remote_handler: dbgp
-php_xdebug_remote_log: /tmp/xdebug.log
-php_xdebug_remote_autostart: "false"
-php_xdebug_idekey: sublime.xdebug
-php_xdebug_max_nesting_level: 512
-php_xdebug_cli_color: 1
-
-# Whether to install `php-pecl` (Debian-based OSes) or `php-pear` (RedHat-based OSes).
-php_pecl_install_pecl: true
+# Whether to install `php-pear`.
+php_pecl_install_pecl: false
 php_pecl_package: php-pear
 
 # The command that will be run to install extensions. The default is generally correct, but if you're running Ubuntu 14.04 LTS and run into [this issue](https://github.com/geerlingguy/ansible-role-php-pecl/pull/7), you should override this default with `"pecl install -Z"`
@@ -116,8 +71,10 @@ php_pecl_install_command: "pecl install"
 php_pecl_extensions: []
   # - xdebug
 
+# Path to install PHP phar tools.
 php_phar_path: /usr/local/bin
 
+# Array of PHP phar tools to install.
 php_phar_tools:
   - { dest: "php-cs-fixer", url: "http://get.sensiolabs.org/php-cs-fixer.phar" }
   - { dest: "phpcpd", url: "https://phar.phpunit.de/phpcpd.phar" }

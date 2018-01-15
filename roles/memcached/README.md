@@ -1,30 +1,17 @@
 # Ansible Role: Memcached
 
-Installs Memcached on RedHat/CentOS or Debian/Ubuntu Linux.
-
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: memcached, become: true }
+Installs Memcached on Debian/Ubuntu Linux.
 
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [geerlingguy.memcached](https://github.com/geerlingguy/ansible-role-memcached)
+- [tersmitten.memcached](https://github.com/Oefenweb/ansible-memcached)
+- [sebamontini.memcached](https://github.com/sebamontini/memcached)
+- [mrlesmithjr.memcached](https://github.com/mrlesmithjr/ansible-memcached)
+- [net2grid.memcached](https://github.com/net2grid/ansible-role-memcached)
+- [yfix.memcached](https://github.com/yfix/ansible-role-memcached)
+- [cchurch.memcached](https://github.com/cchurch/memcached)
+- [debops.memcached](https://github.com/debops/ansible-memcached)
+- [azavea.memcached](https://github.com/azavea/ansible-memcached)

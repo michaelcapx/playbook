@@ -2,29 +2,12 @@
 
 Install ngrok binary and add a custom tunnel configuration.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: ngrok, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [votum.ngrok](https://github.com/votum/ansible-ngrok)
+- [wtanaka.ngrok](https://github.com/wtanaka/ansible-role-ngrok)
+- [MikePadge.ngrok](https://github.com/MikePadge/ansible-ngrok)
+- [phalcon.ngrok](https://github.com/phalcon/ansible-role-ngrok)
+- [mAAdhaTTah.ngrok](https://github.com/mAAdhaTTah/ansible-ngrok)

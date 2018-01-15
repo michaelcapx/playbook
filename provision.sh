@@ -1,255 +1,411 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
-export DEBIAN_FRONTEND=noninteractive
+# A better class of script...
+set -o errexit          # Exit on most errors (see the manual)
+set -o errtrace         # Make sure any error trap is inherited
+set -o nounset          # Disallow expansion of unset variables
+set -o pipefail         # Use last non-zero exit code in a pipeline
+#set -o xtrace          # Trace the execution of the script (debug)
 
-# Define User
-readonly MACHINE_USER="$(who am i | awk '{print $1}')"
+###########################################################################
+#
+# Bootstrap Installer
+# https://github.com/polymimetic/playbook
+#
+# # Usage:
+#
+# wget -qO - https://raw.github.com/polymimetic/playbook/master/provision.sh | bash
+#
+###########################################################################
 
-# Update Package List
-apt-get update
+if [[ $EUID -eq 0 ]]; then
+  echo "$(tput bold)$(tput setaf 1)This script must NOT be run as root$(tput sgr0)" 1>&2
+  exit 1
+fi
 
-# Update System Packages
-apt-get -y upgrade
+###########################################################################
+# Constants and Global Variables
+###########################################################################
 
-# Install Some PPAs
-apt-get install -y software-properties-common curl
+# Machine constants
+readonly LINUX_MTYPE="$(uname -m)"                   # x86_64
+readonly LINUX_ID="$(lsb_release -i -s)"             # Ubuntu
+readonly LINUX_CODENAME="$(lsb_release -c -s)"       # xenial
+readonly LINUX_RELEASE="$(lsb_release -r -s)"        # 16.04
+readonly LINUX_DESCRIPTION="$(lsb_release -d -s)"    # GalliumOS 2.1
+readonly LINUX_DESKTOP="$(printenv DESKTOP_SESSION)" # xfce
+readonly LINUX_USER="$(who am i | awk '{print $1}')" # user
 
-apt-add-repository ppa:nginx/development -y
-apt-add-repository ppa:chris-lea/redis-server -y
-apt-add-repository ppa:ondrej/php -y
+# Git variables
+readonly GIT_USER="polymimetic"
+readonly GIT_REPO="playbook"
+readonly GIT_URL="https://github.com/${GIT_USER}/${GIT_REPO}.git"
+readonly GIT_RAW="https://raw.github.com/${GIT_USER}/${GIT_REPO}/master"
+readonly GIT_DEST="$HOME/Downloads/playbook"
 
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+# Script variables
+readonly SCRIPT_CWD="${PWD}"
+readonly SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+readonly SCRIPT_PATH="$( cd -P "$( dirname "${SCRIPT_SOURCE}" )" && pwd )"
+readonly SCRIPT_NAME="$(basename "${SCRIPT_SOURCE}")"
+readonly TMPDIR="/tmp/${SCRIPT_NAME}-${RANDOM}"
 
-# gpg: key 5072E1F5: public key "MySQL Release Engineering <mysql-build@oss.oracle.com>" imported
-# apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5
-# sh -c 'echo "deb http://repo.mysql.com/apt/ubuntu/ xenial mysql-5.7" >> /etc/apt/sources.list.d/mysql.list'
+# Color variables
+readonly txtreset="$(tput sgr0 || true)"      # Reset
+readonly txtbold="$(tput bold || true)"       # Bold
+readonly txtuline="$(tput smul || true)"      # Underline
+readonly txtrev="$(tput rev || true)"         # Reverse colors
+readonly txtred="$(tput setaf 1 || true)"     # Red
+readonly txtgreen="$(tput setaf 2 || true)"   # Green
+readonly txtyellow="$(tput setaf 3 || true)"  # Yellow
+readonly txtblue="$(tput setaf 4 || true)"    # Blue
+readonly txtmagenta="$(tput setaf 5 || true)" # Magenta
+readonly txtcyan="$(tput setaf 6 || true)"    # Cyan
 
-# wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-# sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'
+# Bootstrap variables
+BI_VERSION="0.1.0"
 
-curl -s https://packagecloud.io/gpg.key | apt-key add -
-echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
+###########################################################################
+# Basic Functions
+###########################################################################
 
-curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+# Trap Functions
+function err_status() { if [[ $# -eq 1 && $1 =~ ^[0-9]+$ ]]; then exit "$1"; else exit 1; fi; }
+function del_tmpdir() { if [[ -d ${TMPDIR} ]]; then rm -r ${TMPDIR}; fi; }
+function trap_exit()  { cd "${SCRIPT_CWD}"; printf '%b' "${txtreset}"; del_tmpdir; }
+function trap_error() { trap - ERR; set +o errexit; set +o pipefail; del_tmpdir; err_status; }
+function safe_exit()  { del_tmpdir; trap - INT TERM EXIT; exit; }
+function die()        { echo "$@" >&2; exit 1; }
 
-# Update Package Lists
-apt-get update
+# File Checks
+# Usage: if is_file "file.txt"; then some action fi
+function is_exists()      { if [[ -e "$1" ]]; then return 0; fi; return 1; }
+function is_not_exists()  { if [[ ! -e "$1" ]]; then return 0; fi; return 1; }
+function is_file()        { if [[ -f "$1" ]]; then return 0; fi; return 1; }
+function is_not_file()    { if [[ ! -f "$1" ]]; then return 0; fi; return 1; }
+function is_dir()         { if [[ -d "$1" ]]; then return 0; fi; return 1; }
+function is_not_dir()     { if [[ ! -d "$1" ]]; then return 0; fi; return 1; }
+function is_symlink()     { if [[ -L "$1" ]]; then return 0; fi; return 1; }
+function is_not_symlink() { if [[ ! -L "$1" ]]; then return 0; fi; return 1; }
+function is_empty()       { if [[ -z "$1" ]]; then return 0; fi; return 1; }
+function is_not_empty()   { if [[ -n "$1" ]]; then return 0; fi; return 1; }
 
-# Install Some Basic Packages
-apt-get install -y build-essential dos2unix gcc git libmcrypt4 libpcre3-dev ntp unzip \
-make python2.7-dev python-pip re2c supervisor unattended-upgrades whois vim libnotify-bin \
-pv cifs-utils mcrypt
+# Type Checks
+# Usage: if type_exists 'git'; then some action; else other action; fi
+function type_exists()     { if [ "$(type -P "$1")" ]; then return 0; fi; return 1; }
+function type_not_exists() { if [ ! "$(type -P "$1")" ]; then return 0; fi; return 1; }
 
-# Install PHP Stuffs
-# Current PHP
-apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
-php7.1-cli php7.1-dev \
-php7.1-pgsql php7.1-sqlite3 php7.1-gd \
-php7.1-curl php7.1-memcached \
-php7.1-imap php7.1-mysql php7.1-mbstring \
-php7.1-xml php7.1-zip php7.1-bcmath php7.1-soap \
-php7.1-intl php7.1-readline php-xdebug php-pear
+# Output Echoes
+# Usage: e_info "This is an info msg"
+function e_error()   { echo -e "${txtbold}${txtred}✖  $@${txtreset}"; }
+function e_warn()    { echo -e "${txtbold}${txtyellow}⚠  $@${txtreset}"; }
+function e_success() { echo -e "${txtbold}${txtgreen}✔  $@${txtreset}"; }
+function e_prompt()  { echo -e "${txtbold}${txtyellow}$@${txtreset}"; }
+function e_info()    { echo -e "${txtbold}${txtblue}$@${txtreset}"; }
+function e_title()   { echo -e "${txtbold}${txtmagenta}$@.......${txtreset}"; }
+function e_header()  { echo -e "${txtbold}${txtcyan}===== $@ =====${txtreset}"; }
+function e_output()  { printf "$@\n"; }
 
-# Install Composer
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+###########################################################################
+# Usage
+###########################################################################
 
-# Add Composer Global Bin To Path
-printf "\nPATH=\"$(sudo su - $MACHINE_USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a $HOME/.profile
+USAGE="
+bootstrap installer, version ${BI_VERSION}
+Usage: $0 [ option ... ]
+Options
+   -b              run the full bootstrap installer
+   -d              run the development setup
+   -u              run the playbook utilities script
+   -h              show this help
+"
 
-# Install Laravel Envoy & Installer
-sudo su $MACHINE_USER <<'EOF'
-/usr/local/bin/composer global require "laravel/envoy=~1.0"
-/usr/local/bin/composer global require "laravel/installer=~1.1"
-EOF
+usage() { echo "${USAGE}"; exit; }
 
-# Set Some PHP CLI Settings
-sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.1/cli/php.ini
-sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/cli/php.ini
-sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/cli/php.ini
-sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/cli/php.ini
+#
+# BOOTSTRAP SCRIPTS ------------------------------------------------------------
+#
 
-# Install Nginx & PHP-FPM
-apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
-nginx php7.1-fpm
+###########################################################################
+# Pre Installation
+###########################################################################
 
-rm /etc/nginx/sites-enabled/default
-rm /etc/nginx/sites-available/default
-service nginx restart
+pre_install() {
+  e_title "Start your engines"
 
-# Setup Some PHP-FPM Options
-echo "xdebug.remote_enable = 1" >> /etc/php/7.1/mods-available/xdebug.ini
-echo "xdebug.remote_connect_back = 1" >> /etc/php/7.1/mods-available/xdebug.ini
-echo "xdebug.remote_port = 9000" >> /etc/php/7.1/mods-available/xdebug.ini
-echo "xdebug.max_nesting_level = 512" >> /etc/php/7.1/mods-available/xdebug.ini
-echo "opcache.revalidate_freq = 0" >> /etc/php/7.1/mods-available/opcache.ini
+  # Update Package List
+  sudo apt-get update
 
-sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.1/fpm/php.ini
-sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/fpm/php.ini
-sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.1/fpm/php.ini
-sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/fpm/php.ini
-sed -i "s/upload_max_filesize = .*/upload_max_filesize = 100M/" /etc/php/7.1/fpm/php.ini
-sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.1/fpm/php.ini
-sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/fpm/php.ini
+  # Upgrade System Packages
+  sudo apt-get -y upgrade
+}
 
-# Disable XDebug On The CLI
-sudo phpdismod -s cli xdebug
+###########################################################################
+# Install Core Packages
+###########################################################################
 
-# Copy fastcgi_params to Nginx because they broke it on the PPA
-cat > /etc/nginx/fastcgi_params << EOF
-fastcgi_param	QUERY_STRING		\$query_string;
-fastcgi_param	REQUEST_METHOD		\$request_method;
-fastcgi_param	CONTENT_TYPE		\$content_type;
-fastcgi_param	CONTENT_LENGTH		\$content_length;
-fastcgi_param	SCRIPT_FILENAME		\$request_filename;
-fastcgi_param	SCRIPT_NAME		\$fastcgi_script_name;
-fastcgi_param	REQUEST_URI		\$request_uri;
-fastcgi_param	DOCUMENT_URI		\$document_uri;
-fastcgi_param	DOCUMENT_ROOT		\$document_root;
-fastcgi_param	SERVER_PROTOCOL		\$server_protocol;
-fastcgi_param	GATEWAY_INTERFACE	CGI/1.1;
-fastcgi_param	SERVER_SOFTWARE		nginx/\$nginx_version;
-fastcgi_param	REMOTE_ADDR		\$remote_addr;
-fastcgi_param	REMOTE_PORT		\$remote_port;
-fastcgi_param	SERVER_ADDR		\$server_addr;
-fastcgi_param	SERVER_PORT		\$server_port;
-fastcgi_param	SERVER_NAME		\$server_name;
-fastcgi_param	HTTPS			\$https if_not_empty;
-fastcgi_param	REDIRECT_STATUS		200;
-EOF
+install_core() {
+  e_title "Installing core packages"
 
-# Set The Nginx & PHP-FPM User
-sed -i "s/user www-data;/user www-data;/" /etc/nginx/nginx.conf
-sed -i "s/# server_names_hash_bucket_size.*/server_names_hash_bucket_size 64;/" /etc/nginx/nginx.conf
+  local core_pkgs=(
+    software-properties-common
+    git
+    nano
+    curl
+    wget
+  )
 
-sed -i "s/user = www-data/user = www-data/" /etc/php/7.1/fpm/pool.d/www.conf
-sed -i "s/group = www-data/group = www-data/" /etc/php/7.1/fpm/pool.d/www.conf
+  # Install core packages
+  sudo apt-get install -yq ${core_pkgs[@]}
 
-sed -i "s/listen\.owner.*/listen.owner = www-data/" /etc/php/7.1/fpm/pool.d/www.conf
-sed -i "s/listen\.group.*/listen.group = www-data/" /etc/php/7.1/fpm/pool.d/www.conf
-sed -i "s/;listen\.mode.*/listen.mode = 0666/" /etc/php/7.1/fpm/pool.d/www.conf
+  e_success "Core packages installed"
+}
 
-service nginx restart
-service php7.1-fpm restart
+###########################################################################
+# Post Installation
+###########################################################################
 
-# Add User To WWW-Data
-usermod -a -G www-data $MACHINE_USER
-id $MACHINE_USER
-groups $MACHINE_USER
+post_install() {
+  e_title "Finishing Up"
 
-# Install Node
-apt-get install -y nodejs
-/usr/bin/npm install -g gulp
-/usr/bin/npm install -g bower
-/usr/bin/npm install -g yarn
-/usr/bin/npm install -g grunt-cli
+  sudo apt-get -y autoremove
+  sudo apt-get -y clean
+  sudo apt-get -y autoclean
 
-# Install SQLite
-apt-get install -y sqlite3 libsqlite3-dev
+  # sudo systemctl enable supervisor.service
+  # sudo service supervisor start
 
-# Install MySQL
-debconf-set-selections <<< "mysql-server mysql-server/root_password password secret"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password secret"
-apt-get install -y mysql-server
+  # sudo systemctl restart apache2
+  # sudo systemctl restart mysql
 
-# Configure MySQL Password Lifetime
-echo "default_password_lifetime = 0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+  e_success "All Done!"
+}
 
-# Configure MySQL Remote Access
-sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
-mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO root@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
-service mysql restart
+#
+# DEV SCRIPTS ------------------------------------------------------------
+#
 
-mysql --user="root" --password="secret" -e "CREATE USER 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret';"
-mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
-mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO 'homestead'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
-mysql --user="root" --password="secret" -e "FLUSH PRIVILEGES;"
-mysql --user="root" --password="secret" -e "CREATE DATABASE homestead character set UTF8mb4 collate utf8mb4_bin;"
-service mysql restart
+###########################################################################
+# Generate SSH Keys
+###########################################################################
 
-# Add Timezone Support To MySQL
-mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user=root --password=secret mysql
+generate_ssh() {
+  e_title "Generating SSH Keys"
 
-# Install Postgres
-apt-get install -y postgresql
+  if [[ ! -f "~/.ssh/id_rsa" ]]; then
+    ssh-keygen -t rsa -b 4096 -C "${GIT_EMAIL}" -N "" -f "~/.ssh/id_rsa"
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+  fi
 
-# Install MSSQL
-ACCEPT_EULA=Y apt-get -y install msodbcsql mssql-tools
-apt-get -y install unixodbc-dev
-pear config-set php_ini `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` system
-pecl install sqlsrv
-pecl install pdo_sqlsrv
-echo "[mssql]" >> /etc/php/7.1/fpm/php.ini
-echo "extension=sqlsrv.so" >> /etc/php/7.1/fpm/php.ini
-echo "extension=pdo_sqlsrv.so" >> /etc/php/7.1/fpm/php.ini
-service nginx restart
-service php7.1-fpm restart
+  e_success "SSH Keys generated"
+}
 
-# Configure Postgres Remote Access
-sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/9.5/main/postgresql.conf
-echo "host    all             all             10.0.2.2/32               md5" | tee -a /etc/postgresql/9.5/main/pg_hba.conf
-sudo -u postgres psql -c "CREATE ROLE homestead LOGIN UNENCRYPTED PASSWORD 'secret' SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
-sudo -u postgres /usr/bin/createdb --echo --owner=homestead homestead
-service postgresql restart
+###########################################################################
+# Setup GitHub Account
+###########################################################################
 
-# Install Blackfire
-apt-get install -y blackfire-agent blackfire-php
+setup_github() {
+  e_title "Setup Github"
 
-# Install The Chrome Web Driver & Dusk Utilities
-apt-get -y install libxpm4 libxrender1 libgtk2.0-0 \
-libnss3 libgconf-2-4 chromium-browser \
-xvfb gtk2-engines-pixbuf xfonts-cyrillic \
-xfonts-100dpi xfonts-75dpi xfonts-base \
-xfonts-scalable imagemagick x11-apps
+  # Install git packages
+  sudo apt-get install -yq git
 
-# Install Memcached & Beanstalk
-apt-get install -y redis-server memcached beanstalkd
+  # Configure Git
+  git config --global user.name "${GIT_NAME}"
+  git config --global user.email "${GIT_EMAIL}"
+  git config --global github.user "${GIT_USER}"
+  git config --global core.editor nano
+  git config --global push.default simple
 
-# Configure Beanstalkd
-sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
-/etc/init.d/beanstalkd start
+  # Set git SSH key registration script
+  if [[ ! -f "/usr/local/bin/ssh-keyreg" ]]; then
+    sudo sh -c "curl https://raw.githubusercontent.com/b4b4r07/ssh-keyreg/master/bin/ssh-keyreg -o /usr/local/bin/ssh-keyreg && chmod +x /usr/local/bin/ssh-keyreg"
+  fi
 
-# Install & Configure MailHog
-wget --quiet -O /usr/local/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v0.2.1/MailHog_linux_amd64
-chmod +x /usr/local/bin/mailhog
+  # Add SSH keys to GitHub & Bitbucket
+  if [[ -f "~/.ssh/id_rsa.pub" ]] && [[ ${GIT_PASS} != "" ]]; then
+    ssh-keyreg --path ~/.ssh/id_rsa.pub --user ${GIT_USER}:${GIT_PASS} github
+  fi
 
-sudo tee /etc/systemd/system/mailhog.service <<EOL
-[Unit]
-Description=Mailhog
-After=network.target
+  e_success "GitHub setup complete"
+}
 
-[Service]
-ExecStart=/usr/bin/env /usr/local/bin/mailhog > /dev/null 2>&1 &
+###########################################################################
+# Install Sublime Text
+###########################################################################
 
-[Install]
-WantedBy=multi-user.target
-EOL
+install_sublime() {
+  e_title "Installing Sublime Text"
 
-systemctl daemon-reload
-systemctl enable mailhog
+  if ! subl --version >/dev/null 2>&1; then
+    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+    sudo apt install apt-transport-https
+    echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+    sudo apt update
+    sudo apt install -yq sublime-text
+  else
+    e_error "Sublime Text already installed"
+  fi
 
-# Configure Supervisor
-systemctl enable supervisor.service
-service supervisor start
+  e_info "Sublime Text version: $(subl --version 2>&1) installed."
+  e_success "Sublime Text installed"
+}
 
-# Install ngrok
-wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-unzip ngrok-stable-linux-amd64.zip -d /usr/local/bin
-rm -rf ngrok-stable-linux-amd64.zip
+#
+# UTILITY SCRIPTS ------------------------------------------------------------
+#
 
-# Install Flyway
-wget https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.2.0/flyway-commandline-4.2.0-linux-x64.tar.gz
-tar -zxvf flyway-commandline-4.2.0-linux-x64.tar.gz -C /usr/local
-ln -s /usr/local/flyway-4.2.0/flyway /usr/local/bin/flyway
-rm -rf flyway-commandline-4.2.0-linux-x64.tar.gz
+###########################################################################
+# UTILITY: Compile Defaults
+###########################################################################
 
-# Install wp-cli
-curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar
-mv wp-cli.phar /usr/local/bin/wp
+compile_defaults() {
+  cat \
+    <(echo -e "---\n") \
+    <(cat ../roles/*/defaults/main.yml | grep -v '^---$' | grep -v '^[[:space:]]*$') \
+    > _compiled_defaults.yml
+}
 
-# Clean Up
-apt-get -y autoremove
-apt-get -y clean
+###########################################################################
+# UTILITY: Gather Facts
+###########################################################################
+
+gather_facts() {
+  ansible -m setup localhost > ansible-facts.json
+}
+
+###########################################################################
+# Parse Options
+###########################################################################
+
+parse_opts() {
+
+  local bootflag=''
+  local devflag=''
+  local utilflag=''
+
+  while getopts 'bduh' flag; do
+    case "${flag}" in
+      b) bootflag='true' ;;
+      d) devflag='true' ;;
+      u) utilflag='true' ;;
+      h) usage ;;
+      *) e_error "Unexpected option ${flag}"; exit 1 ;;
+    esac
+  done
+
+  if [ $OPTIND -eq 1 ]; then e_error "No options were passed"; fi
+
+  # Development flag
+  if [ "${devflag}" ]; then
+    e_title "Running Development Setup"
+
+    e_prompt "What is your name?:"
+    read GIT_NAME
+
+    e_prompt "What is your email?:"
+    read GIT_EMAIL
+
+    e_prompt "What is your GitHub username?:"
+    read GIT_USER
+
+    e_prompt "What is your GitHub password?:"
+    read GIT_PASS
+
+    generate_ssh
+    setup_github
+    install_sublime
+
+  fi
+
+  # Bootstrap flag
+  if [ "${bootflag}" ]; then
+    e_title "Running Bootstrap Installer"
+
+    pre_install
+    install_core
+
+    for role in $(ls -d ${SCRIPT_PATH}/roles/*/); do
+      # echo ${role%%/}
+      bash ${role%%/}/install.sh
+    done
+
+    # bash ${SCRIPT_PATH}/roles/common/install.sh
+    # bash ${SCRIPT_PATH}/roles/admin/install.sh
+    # bash ${SCRIPT_PATH}/roles/ssh/install.sh
+    # bash ${SCRIPT_PATH}/roles/git/install.sh
+    # bash ${SCRIPT_PATH}/roles/shell/install.sh
+    # bash ${SCRIPT_PATH}/roles/chromium/install.sh
+    # bash ${SCRIPT_PATH}/roles/firefox/install.sh
+    # bash ${SCRIPT_PATH}/roles/sublime/install.sh
+    # bash ${SCRIPT_PATH}/roles/desktop/install.sh
+    # bash ${SCRIPT_PATH}/roles/fonts/install.sh
+    # bash ${SCRIPT_PATH}/roles/themes/install.sh
+    # bash ${SCRIPT_PATH}/roles/xfce/install.sh
+    # bash ${SCRIPT_PATH}/roles/docker/install.sh
+    # bash ${SCRIPT_PATH}/roles/vagrant/install.sh
+    # bash ${SCRIPT_PATH}/roles/apache/install.sh
+    # bash ${SCRIPT_PATH}/roles/python/install.sh
+    # bash ${SCRIPT_PATH}/roles/ruby/install.sh
+    # bash ${SCRIPT_PATH}/roles/node/install.sh
+    # bash ${SCRIPT_PATH}/roles/golang/install.sh
+    # bash ${SCRIPT_PATH}/roles/php/install.sh
+    # bash ${SCRIPT_PATH}/roles/mysql/install.sh
+    # bash ${SCRIPT_PATH}/roles/postgresql/install.sh
+    # bash ${SCRIPT_PATH}/roles/mongodb/install.sh
+    # bash ${SCRIPT_PATH}/roles/couchdb/install.sh
+    # bash ${SCRIPT_PATH}/roles/sqlite/install.sh
+    # bash ${SCRIPT_PATH}/roles/postfix/install.sh
+    # bash ${SCRIPT_PATH}/roles/mailhog/install.sh
+    # bash ${SCRIPT_PATH}/roles/mailcatcher/install.sh
+    # bash ${SCRIPT_PATH}/roles/composer/install.sh
+    # bash ${SCRIPT_PATH}/roles/beanstalkd/install.sh
+    # bash ${SCRIPT_PATH}/roles/memcached/install.sh
+    # bash ${SCRIPT_PATH}/roles/redis/install.sh
+    # bash ${SCRIPT_PATH}/roles/adminer/install.sh
+    # bash ${SCRIPT_PATH}/roles/phpmyadmin/install.sh
+    # bash ${SCRIPT_PATH}/roles/pimpmylog/install.sh
+    # bash ${SCRIPT_PATH}/roles/ngrok/install.sh
+    # bash ${SCRIPT_PATH}/roles/blackfire/install.sh
+    # bash ${SCRIPT_PATH}/roles/dotfiles/install.sh
+    # bash ${SCRIPT_PATH}/roles/projects/install.sh
+    # bash ${SCRIPT_PATH}/roles/www/install.sh
+
+    post_install
+
+  fi
+
+  # Utilities flag
+  if [ "${utilflag}" ]; then
+    e_title "Running Playbook Utilities"
+
+    e_prompt "Would you like to compile the playbook defaults? (y/n):"
+    read COMPILE_DEFAULTS
+
+    e_prompt "Would you like to gather the playbook facts? (y/n):"
+    read GATHER_FACTS
+
+    if [ "$COMPILE_DEFAULTS" = "y" ] || [ "$COMPILE_DEFAULTS" = "Y" ]; then
+      compile_defaults
+    fi
+
+    if [ "$GATHER_FACTS" = "y" ] || [ "$GATHER_FACTS" = "Y" ]; then
+      gather_facts
+    fi
+  fi
+}
+
+###########################################################################
+# Program Start
+###########################################################################
+
+main_bootstrap() {
+  trap "trap_error" ERR
+  trap "trap_exit" EXIT
+
+  parse_opts "$@"
+}
+
+main_bootstrap "$@"

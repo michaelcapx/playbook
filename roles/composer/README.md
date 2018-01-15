@@ -2,30 +2,15 @@
 
 Installs Composer, the PHP Dependency Manager, on any Linux or UNIX system.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [PHP](https://secure.php.net/) >= 5.4
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: composer, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [sansible.composer](https://github.com/sansible/composer)
+- [kosssi.composer](https://github.com/kosssi/ansible-role-composer)
+- [geerlingguy.composer](https://github.com/geerlingguy/ansible-role-composer)
+- [openapphack.composer](https://github.com/openapphack/ansible-role-openapphack-composer)
+- [franklinkim.composer](https://github.com/weareinteractive/ansible-composer)
+- [enricorufnak.composer](https://github.com/enricorufnak/ansible-role-composer)
+- [AsianChris.composer](https://github.com/asianchris/ansible-role-composer)
+- [tersmitten.composer](https://github.com/Oefenweb/ansible-composer)

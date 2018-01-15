@@ -20,3 +20,6 @@ memcached_user: memcache
 # The port and IP address (127.0.0.1 for localhost) on which Memcached will listen for requests.
 memcached_port: 11211
 memcached_listen_ip: 127.0.0.1
+
+memcached_start: true
+memcached_service_enabled: yes

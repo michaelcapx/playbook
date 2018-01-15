@@ -1,18 +1,26 @@
 ---
 # defaults file for docker
 
-# Used only for Debian/Ubuntu. Switch 'stable' to 'edge' if needed.
+# Default docker user.
+docker_user: "{{ ansible_env.USER }}"
+
+# Default docker home.
+docker_home: "{{ ansible_env.HOME }}"
+
+# Array of docker apt package dependencies.
+docker_dependencies:
+  - apt-transport-https
+  - ca-certificates
+  - python3-pip
+
+# Docker apt repository URL. Switch 'stable' to 'edge' if needed.
 docker_apt_release_channel: stable
 docker_apt_repository: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
 
 # Edition can be one of: 'ce' (Community Edition) or 'ee' (Enterprise Edition).
 docker_edition: 'ce'
 docker_package: "docker-{{ docker_edition }}"
-docker_package_state: present
 
 # Docker Compose options.
 docker_compose_version: "1.13.0"
 docker_compose_path: /usr/local/bin/docker-compose
-
-# Docker indicator package.
-docker_add_indicator: true

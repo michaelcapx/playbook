@@ -12,15 +12,15 @@
   file:
     path: "{{ sqlite_dir }}"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sqlite_user }}"
+    group: "{{ sqlite_user }}"
     mode: 0755
 
 - name: Create sqlite databases
   file:
     name: "{{ sqlite_dir }}/{{ item }}"
     state: file
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sqlite_user }}"
+    group: "{{ sqlite_user }}"
     mode: 0644
   with_items: "{{ sqlite_dbs }}"

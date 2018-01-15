@@ -1,0 +1,40 @@
+---
+# tasks file for shell
+
+- name: Install ZSH with Aptitude
+  apt:
+    name: zsh
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime | default(3600) }}"
+  when: shell_type == 'zsh'
+
+- name: Make ZSH default shell for user root
+  user:
+    name: root
+    shell: "/bin/zsh"
+  when: shell_type == 'zsh'
+
+- name: Copy default ZSH config for user root
+  copy:
+    src: "zshrc"
+    dest: "/root/.zshrc"
+    owner: "root"
+    group: "root"
+    force: yes
+  when: shell_type == 'zsh'
+
+- name: "Make ZSH default shell for user {{ ansible_env.USER }}"
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: /bin/zsh
+  when: shell_type == 'zsh'
+
+- name: "Copy default ZSH config for user {{ ansible_env.USER }}"
+  copy:
+    src: "zshrc"
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    force: no
+  when: shell_type == 'zsh'

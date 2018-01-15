@@ -1,6 +1,8 @@
 ---
+# ansible-playbook testbook.yml -vvv -K
 - name: Test Suite
   hosts: localhost
+  # strategy: debug
   connection: local
 
   vars_files:
@@ -9,6 +11,7 @@
   vars:
     test_user: "{{ ansible_env.USER }}"
     test_home: "{{ ansible_env.HOME }}"
+    test_cases: []
 
   pre_tasks:
 
@@ -22,7 +25,7 @@
         var: hostvars[inventory_hostname]
         verbosity: 4
 
-    - name: Print out the user facts.
+    - name: Print out the user facts
       become: yes
       debug:
         msg: "User: {{ ansible_env.USER }} Home: {{ ansible_env.HOME }}"

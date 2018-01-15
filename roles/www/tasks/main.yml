@@ -3,7 +3,7 @@
 
 - name: Add user to www-data group
   user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ www_user }}"
     groups: www-data
     append: yes
 
@@ -13,20 +13,46 @@
     state: directory
     mode: 0755
 
-- name: Copy dashboard page into place
-  template:
-    src: dashboard.html.j2
-    dest: "{{ www_dashboard_install_dir }}/index.html"
-    mode: 0644
+# - name: Copy dashboard page into place
+#   template:
+#     src: dashboard.html.j2
+#     dest: "{{ www_dashboard_install_dir }}/index.html"
+#     mode: 0644
 
 - name: Copy phpinfo file into place
-  template:
-    src: server-info.php.j2
+  copy:
+    content: "<?php phpinfo(); ?>"
     dest: "{{ www_dashboard_install_dir }}/server-info.php"
+    force: no
     mode: 0644
 
-- include: apache.yml
-  when: pbook_webserver == 'apache'
+- name: Add Apache vhosts
+  template:
+    src: apache/{{ item.template }}.j2
+    dest: "/etc/apache2/sites-available/vhost-{{ item.vhost }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ www_vhosts }}"
 
-- include: nginx.yml
-  when: pbook_webserver == 'nginx'
+- name: Add vhost symlink in sites-enabled
+  file:
+    src: "/etc/apache2/sites-available/vhost-{{ item.vhost }}.conf"
+    dest: "/etc/apache2/sites-enabled/vhost-{{ item.vhost }}.conf"
+    state: link
+  with_items: "{{ www_vhosts }}"
+  notify: restart apache
+
+- name: Clean /etc/hosts file
+  replace:
+    dest: /etc/hosts
+    regexp: '.* \# apache2 vhost\n'
+    replace: ''
+
+- name: Build /etc/hosts file
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.vhost }} \# apache2 vhost$'
+    line: "127.0.0.1   {{ item.vhost }} {{ '#' }} apache2 vhost"
+    state: present
+  with_items: "{{ www_vhosts }}"

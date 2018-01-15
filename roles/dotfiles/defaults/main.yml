@@ -1,0 +1,20 @@
+---
+# defaults file for dotfiles
+
+# Default dotfiles user.
+dotfiles_user: "{{ ansible_env.USER }}"
+
+# Default dotfiles home.
+dotfiles_home: "{{ ansible_env.HOME }}"
+
+# Default dotfiles path.
+dotfiles_path: .dotfiles
+
+# Default dotfiles Github repo.
+dotfiles_repo: https://github.com/Benoth/dotfiles.git
+
+# Default dotfiles git name.
+dotfiles_git_name: ""
+
+# Default dotfiles git email.
+dotfiles_git_email: ""

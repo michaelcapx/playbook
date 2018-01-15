@@ -1,19 +1,95 @@
+# Note:
+# To effectively apply the changes you will have
+# to re-index the git index (if there are already
+# commited files)
+#
+# $ git rm -r --cached .
+# $ git add .
+# $ git commit -m ".gitignore index rebuild"
+#
+
+######################################
+# GENERIC
+######################################
+
 ### Dotfiles ###
+.lock
 *.box
 *.log
 *.out
-*.swp
+
+### Patches/Diffs ###
+*.patch
+*.diff
+*.orig
+*.rej
+
+### Python Bytecode ###
 *.py[co]
 
-### OS-specific ###
-.DS_Store
-.DS_Store?
-.Trash-*
+######################################
+# Operating Systems
+######################################
 
-### Editor ###
+### OSX ###
+._*
+.DS*
+.Spotlight-V100
+.Trashes
+
+### Windows ###
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.shortcut
+
+### Linux ###
+*~
+.Trash-*
+.fuse_hidden*
+.directory
+.nfs*
+
+######################################
+# Editors
+######################################
+
+### Sublime ###
+*.sublime-project
+*.sublime-workspace
+
+### Eclipse ###
+.classpath
+.buildpath
+.project
+.settings/
+
+### Netbeans ###
+/nbproject/
+
+### Intellij ###
 .idea/
-.project/
-.bundle/
+.idea_modules/
+
+### Vim ###
+*.swp
+*.swo
+*.swn
+*.swm
+
+### TextMate ###
+.tm_properties
+*.tmproj
+
+### BBEdit ###
+*.bbprojectd
+*.bbproject
+
+######################################
+# Ansible
+######################################
 
 ### Ansible ###
 *.retry
@@ -22,18 +98,26 @@
 ### Vagrant ###
 .virtualbox
 .vagrant/
+vbox_host.cfg
 vagrant_ansible_inventory_*
 
 ### Vault ###
 .vault_pass
+.vault
 
 ### Roles & Variables ###
 vendor/roles
 group_vars/_*.yml
 
-### Scratchpad ###
-scratchpad.sh
+######################################
+# CUSTOM
+######################################
 
 ### Project-specific files ###
+_*.yml
+ansible-facts.json
 local.config.yml
 secrets.yml
+
+### Misc ###
+SCRATCHPAD.md

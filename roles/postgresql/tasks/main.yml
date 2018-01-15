@@ -1,23 +1,42 @@
 ---
 # tasks file for postgresql
 
-# Setup/install tasks.
-- name: Ensure PostgreSQL Python libraries are installed
-  apt:
-    name: "{{ postgresql_python_library }}"
-    state: installed
+- name: Adding PostgreSQL APT repository key
+  become: yes
+  apt_key:
+    id: ACCC4CF8
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+- name: Add PostgreSQL official APT repository
+  become: yes
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
 
 - name: Ensure PostgreSQL packages are installed
+  become: yes
   apt:
     name: "{{ item }}"
-    state: installed
-  with_items: "{{ postgresql_packages }}"
-
-- name: Ensure all configured locales are present
-  locale_gen:
-    name: "{{ item }}"
     state: present
-  with_items: "{{ postgresql_locales }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - "postgresql-{{postgresql_version}}"
+    - "postgresql-contrib-{{postgresql_version}}"
+    - libpq-dev
+
+- name: Ensure PostgreSQL dependencies are installed for the Ansible module
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ postgresql_python_library }}"
+
+# PostgreSQL Locales
+- name: Ensure all configured locales are present
+  become: yes
+  locale_gen:
+    name: "{{ postgresql_locale }}"
+    state: present
   register: locale_gen_result
 
 - name: Force-restart PostgreSQL after new locales are generated
@@ -26,112 +45,38 @@
     state: restarted
   when: locale_gen_result.changed
 
-# Initialize tasks
-- name: Set PostgreSQL environment variables
-  template:
-    src: postgres.sh.j2
-    dest: /etc/profile.d/postgres.sh
-    mode: 0644
-  notify: restart postgresql
-
-- name: Ensure PostgreSQL data directory exists
-  file:
-    path: "{{ postgresql_data_dir }}"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
-    state: directory
-    mode: 0700
-
-- name: Check if PostgreSQL database is initialized
-  stat:
-    path: "{{ postgresql_data_dir }}/PG_VERSION"
-  register: pgdata_dir_version
-
-- name: Ensure PostgreSQL database is initialized
-  command: "{{ postgresql_bin_path }}/initdb -D {{ postgresql_data_dir }}"
-  when: not pgdata_dir_version.stat.exists
-  become: yes
-  become_user: "{{ postgresql_user }}"
-  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
-  vars:
-    ansible_ssh_pipelining: true
-
-# Configuration tasks
+# Configure PostgreSQL
 - name: Configure global settings
-  lineinfile:
-    dest: "{{ postgresql_config_path }}/postgresql.conf"
-    regexp: "^#?{{ item.option }}.+$"
-    line: "{{ item.option }} = '{{ item.value }}'"
-    state: "{{ item.state | default('present') }}"
-  with_items: "{{ postgresql_global_config_options }}"
-  notify: restart postgresql
+  become: yes
+  template:
+    src: postgresql.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
+  notify: reload postgresql
 
 - name: Configure host based authentication (if entries are configured)
+  become: yes
   template:
-    src: "templates/pg_hba.conf.j2"
-    dest: "{{ postgresql_config_path }}/pg_hba.conf"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+    owner: postgres
+    group: postgres
     mode: 0600
   notify: restart postgresql
-  when: postgresql_hba_entries
-
-- name: Ensure PostgreSQL unix socket dirs exist
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
-    mode: 02775
-  with_items: "{{ postgresql_unix_socket_directories }}"
 
 # Enable tasks
 - name: Ensure PostgreSQL is started and enabled on boot
+  become: yes
   service:
+    enabled: yes
     name: postgresql
     state: started
-    enabled: yes
 
 # Database tasks
-- name: Ensure PostgreSQL databases are present
-  postgresql_db:
-    name: "{{ item.name }}"
-    lc_collate: "{{ item.lc_collate | default('en_US.UTF-8') }}"
-    lc_ctype: "{{ item.lc_ctype | default('en_US.UTF-8') }}"
-    encoding: "{{ item.encoding | default('UTF-8') }}"
-    template: "{{ item.template | default('template0') }}"
-    login_host: "{{ item.login_host | default('localhost') }}"
-    login_password: "{{ item.login_password | default(omit) }}"
-    login_user: "{{ item.login_user | default(postgresql_user) }}"
-    login_unix_socket: "{{ item.login_unix_socket | default(postgresql_unix_socket_directories[0]) }}"
-    port: "{{ item.port | default(omit) }}"
-    owner: "{{ item.owner | default(postgresql_user) }}"
-    state: "{{ item.state | default('present') }}"
-  with_items: "{{ postgresql_databases }}"
+- name: Ensure Database user
   become: yes
-  become_user: "{{ postgresql_user }}"
-  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
-  vars:
-    ansible_ssh_pipelining: true
-
-# User tasks
-- name: Ensure PostgreSQL users are present
+  become_user: postgres
   postgresql_user:
-    name: "{{ item.name }}"
-    password: "{{ item.password | default(omit) }}"
-    priv: "{{ item.priv | default(omit) }}"
-    role_attr_flags: "{{ item.role_attr_flags | default(omit) }}"
-    db: "{{ item.db | default(omit) }}"
-    login_host: "{{ item.login_host | default('localhost') }}"
-    login_password: "{{ item.login_password | default(omit) }}"
-    login_user: "{{ item.login_user | default(postgresql_user) }}"
-    login_unix_socket: "{{ item.login_unix_socket | default(postgresql_unix_socket_directories[0]) }}"
-    port: "{{ item.port | default(omit) }}"
-    state: "{{ item.state | default('present') }}"
-  with_items: "{{ postgresql_users }}"
-  no_log: true
-  become: yes
-  become_user: "{{ postgresql_user }}"
-  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
-  vars:
-    ansible_ssh_pipelining: true
+    name: "{{ postgresql_root_user }}"
+    password: "{{ postgresql_root_password }}"
+    role_attr_flags: "SUPERUSER,CREATEROLE,CREATEDB,INHERIT,login"
+    state: present

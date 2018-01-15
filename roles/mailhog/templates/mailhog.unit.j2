@@ -1,9 +1,11 @@
 [Unit]
 Description=MailHog Email Catcher
+Documentation=https://github.com/mailhog/MailHog/
 After=syslog.target network.target
 
 [Service]
 Type=simple
+EnvironmentFile=-/etc/default/mailcatcher
 ExecStart={{ mailhog_install_dir }}/mailhog
 StandardOutput=journal
 Restart=on-failure

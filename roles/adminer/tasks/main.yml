@@ -14,3 +14,20 @@
     dest: "{{ adminer_install_dir }}/{{ adminer_install_filename }}"
     mode: 0644
     timeout: 60
+
+# Create Apache Configuration
+- name: Create Adminer Apache conf file
+  copy:
+    content: "Alias /{{ adminer_install_filename }} {{ adminer_install_dir }}/{{ adminer_install_filename }}"
+    dest: /etc/apache2/conf-available/adminer.conf
+
+- name: Enable Adminer conf
+  file:
+    src: "/etc/apache2/conf-available/adminer.conf"
+    dest: "/etc/apache2/conf-enabled/adminer.conf"
+    state: link
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted

@@ -9,21 +9,13 @@
   with_items: "{{ mysql_packages }}"
 
 # Configuration tasks
-# - name: Configure MySQL Password Lifetime
-#   lineinfile:
-#     dest: /etc/mysql/my.cnf
-#     regexp: "default_password_lifetime\s*=.*"
-#     line: "default_password_lifetime = 0"
-#     state: present
-#     backrefs: yes
-
-# - name: Configure MySQL listen IP address
-#   lineinfile:
-#     dest: /etc/mysql/my.cnf
-#     regexp: "bind-address\s*=.*"
-#     line: "bind-address = {{ mysql_bind_address }}"
-#     state: present
-#     backrefs: yes
+- name: Configure MySQL Password Lifetime
+  lineinfile:
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: "default_password_lifetime\s*=.*"
+    line: "default_password_lifetime = 0"
+    state: present
+    backrefs: yes
 
 - name: Ensure MySQL is started to change root password
   service:

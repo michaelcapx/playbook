@@ -2,29 +2,12 @@
 
 Installs the [Beanstalkd](http://kr.github.io/beanstalkd/) network work queue.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: beanstalkd, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [gheydon.beanstalkd](https://github.com/gheydon/ansible-role-beanstalkd)
+- [softasap.sa-queue-beanstalkd](https://github.com/softasap/sa-queue-beanstalkd)
+- [phansible.beanstalkd](https://github.com/phansible/role-beanstalkd)
+- [cowops.debian-beanstalkd](https://github.com/cowops/debian-beanstalkd)
+- [jasonj.beanstalkd](https://github.com/jasonj/ansible-beanstalkd)

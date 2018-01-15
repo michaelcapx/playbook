@@ -1,25 +1,24 @@
-# Set the default behavior, in case people don't have core.autocrlf set.
+# Autodetect text files.
 * text=auto
 
-# Explicitly declare text files you want to always be normalized and converted
-# to native line endings on checkout.
+# Explicitly declare text files to be normalized to native line endings.
 .gitignore text
 .gitattributes text
-*.xml text
-*.yml text
-*.yaml text
-*.json text
-*.txt text
-*.md text
-*.htm text
-*.html text
+*.xml   text
+*.yml   text
+*.yaml  text
+*.json  text
+*.txt   text
+*.md    text
+*.htm   text
+*.html  text
 *.xhtml text
-*.js text
-*.ts text
-*.css text
-*.less text
-*.scss text
-*.cfg text
+*.js    text
+*.ts    text
+*.css   text
+*.less  text
+*.scss  text
+*.cfg   text
 LICENSE text
 
 # Declare files that will always have CRLF line endings on checkout.
@@ -29,22 +28,36 @@ LICENSE text
 # Declare files that will always have LF line endings on checkout.
 *.sh text eol=lf
 *.service eol=lf
-*.conf eol=lf
+*.conf    eol=lf
 *.desktop eol=lf
-*.j2 eol=lf
+*.j2      eol=lf
 
 # Denote all files that are truly binary and should not be modified.
-*.png binary
-*.jpg binary
+*.jpg  binary
 *.jpeg binary
-*.gif binary
-*.eot binary
-*.tff binary
-*.woff binary
+*.gif  binary
+*.png  binary
+*.t3x  binary
+*.t3d  binary
+*.exe  binary
+*.data binary
+*.ttf  binary
+*.eof  binary
+*.eot  binary
+*.swf  binary
+*.mov  binary
+*.mp4  binary
+*.mp3  binary
+*.ogg  binary
+*.flv  binary
+*.ico  binary
+*.gz   binary
+*.zip  binary
+*.7z   binary
 
 # Denote all folders to ignore during export.
 .github/ export-ignore
-utils/ export-ignore
+utils/   export-ignore
 
 # Merge changelog to avoid conflicts.
 .github/CHANGELOG.md merge=union

@@ -2,15 +2,28 @@
 # tasks file for sublime
 
 # Sublime Installation
+- name: Ensure sublime dependencies are installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ sublime_dependencies | list }}"
+
+- name: Add sublime GPG key
+  apt_key:
+    url: "{{ sublime_gpg_key }}"
+    state: present
+
 - name: Add sublime repository
   apt_repository:
-    repo: "ppa:webupd8team/sublime-text-3"
+    repo: "deb https://download.sublimetext.com/ apt/{{ sublime_repo_channel }}/"
     state: present
+    filename: "sublime-text"
+    update_cache: yes
   register: sublime_add_repo
 
 - name: Install latest sublime package
   apt:
-    name: sublime-text-installer
+    name: sublime-text
     state: latest
   when: sublime_add_repo | succeeded
 
@@ -21,8 +34,8 @@
     path: "{{ sublime_config_dir }}"
     recurse: true
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
 
 - name: Ensure sublime directories exist
   file:
@@ -30,8 +43,8 @@
     path: "{{ item }}"
     mode: 0774
     recurse: true
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
   with_items:
     - "{{ sublime_installed_pkgs_dir }}"
     - "{{ sublime_user_preferences_dir }}"
@@ -43,32 +56,33 @@
     url: "{{ sublime_package_control_url }}"
     dest: "{{ sublime_installed_pkgs_dir }}/Package Control.sublime-package"
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
 
 - name: Generate Package Control settings template for auto-install
   template:
     src: "Package Control.sublime-settings.j2"
     dest: "{{ sublime_user_preferences_dir }}/Package Control.sublime-settings"
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
     backup: "{{ sublime_package_control_backup }}"
 
-# Sublime Install User Packages
+# Git Clone Sublime Install User Packages
 - name: Clone Sublime Packages from Github
   git:
     repo: "{{ item.repo }}"
     dest: "{{ sublime_user_preferences_dir }}/{{ item.name }}"
   with_items: "{{ sublime_git_repos }}"
+  when: sublime_git_repos | length
 
 # Sublime License
 - name: Copy Sublime license file
   copy:
     src: "License.sublime_license"
     dest: "{{ sublime_local_license_dir }}/License.sublime_license"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
 
 # Sublime Preferences
 - name: Copy Sublime preference file
@@ -76,8 +90,8 @@
     src: "Preferences.sublime-settings"
     dest: "{{ sublime_user_preferences_dir }}/Preferences.sublime-settings"
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
 
 # Sublime Mousemap
 - name: Copy Sublime mousemap file
@@ -85,15 +99,15 @@
     src: "Default.sublime-mousemap"
     dest: "{{ sublime_user_preferences_dir }}/Default.sublime-mousemap"
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
 
 # Sublime Plugin Preferences
 - name: Copy Sublime plugin preferences
   copy:
-    src: "{{ item }}"
+    src: "plugins/{{ item }}"
     dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
     mode: 0774
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ sublime_user }}"
+    group: "{{ sublime_user }}"
   with_items: "{{ sublime_plugin_prefs }}"

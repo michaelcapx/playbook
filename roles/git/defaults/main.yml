@@ -1,20 +1,43 @@
 ---
 # defaults file for git
 
-# Determines the state for packages installed on the system. Available values are `present` or `latest`.
-git_apt_state: present
-
 # Array of git packages to install.
 git_packages:
   - git
   - git-core
   - git-svn
+  - git-extras
+
+# Default git user.
+git_user: "{{ ansible_env.USER }}"
+
+# Default git home.
+git_home: "{{ ansible_env.HOME }}"
+
+# Github/BitBucket Keys
+git_github_user: ""
+git_github_password: ""
+git_bitbucket_user: ""
+git_bitbucket_password: ""
+
+# Gitconfig user name.
+git_config_name: null
+
+# Gitconfig user email.
+git_config_email: null
+
+# Gitconfig editor
+git_config_editor: nano
 
 # Git configuration object.
 git_config:
   user:
-    name: "{{ pbook_name | default(none) }}"
-    email: "{{ pbook_email | default(none) }}"
+    name: "{{ git_config_name | default(none) }}"
+    email: "{{ git_config_email | default(none) }}"
+  github:
+    user: "{{ git_github_user | default(none) }}"
+  bitbucket:
+    user: "{{ git_bitbucket_user | default(none) }}"
   color:
     branch: auto
     diff: auto
@@ -22,8 +45,8 @@ git_config:
     status: auto
     ui: true
   core:
-    editor: nano
-    excludesfile: "{{ ansible_env.HOME }}/.gitexcludesfile"
+    editor: "{{ git_config_editor | default('nano') }}"
+    excludesfile: "/home/{{ git_user }}/.gitignore"
   credential:
     helper: cache
   push:
@@ -41,20 +64,31 @@ git_config:
 
 # Array of filenames and patterns for git to globally ignore.
 git_ignore:
-  - "*.log"
   - ".vagrant"
-  # OS generated files
+  - "*.com"
+  - "*.class"
+  - "*.dll"
+  - "*.exe"
+  - "*.o"
+  - "*.so"
+  - "*.7z"
+  - "*.dmg"
+  - "*.gz"
+  - "*.iso"
+  - "*.jar"
+  - "*.rar"
+  - "*.tar"
+  - "*.zip"
+  - "*.log"
+  - "*.sql"
+  - "*.sqlite"
   - ".DS_Store"
   - ".DS_Store?"
   - "._*"
   - ".Spotlight-V100"
   - ".Trashes"
-  - "Icon?"
   - "ehthumbs.db"
   - "Thumbs.db"
-  # ide
-  - "~*"
-  - ".idea/"
 
 # Array of name and key values for known git hosts.
 git_known_hosts:
@@ -67,8 +101,5 @@ git_known_hosts:
   - name: gitlab.com
     key: gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9
 
-# Github/BitBucket Keys
-git_github_user: "{{ pbook_github_user | default('') }}"
-git_github_password: "{{ pbook_github_password | default('') }}"
-git_bitbucket_user: "{{ pbook_bitbucket_user | default('') }}"
-git_bitbucket_password: "{{ pbook_bitbucket_password | default('') }}"
+# Git SSH keyfile
+git_ssh_keyfile: "{{ git_home }}/.ssh/id_rsa.pub"

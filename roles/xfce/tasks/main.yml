@@ -4,21 +4,21 @@
 # GTK Bookmarks
 - name: Create GTK bookmarks
   lineinfile:
-    path: "{{ ansible_env.HOME }}/.config/gtk-3.0/bookmarks"
+    path: "{{ xfce_home }}/.config/gtk-3.0/bookmarks"
     line: "{{ item }}"
     state: present
     create: yes
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
   with_items:
-    - "file://{{ ansible_env.HOME }}/Documents"
-    - "file://{{ ansible_env.HOME }}/Downloads"
-    - "file://{{ ansible_env.HOME }}/Public"
+    - "file://{{ xfce_home }}/Documents"
+    - "file://{{ xfce_home }}/Downloads"
+    - "file://{{ xfce_home }}/Public"
 
 # GTK File Chooser
 - name: Configure GTK file chooser
   lineinfile:
-    dest: "{{ ansible_env.HOME }}/.config/gtk-2.0/gtkfilechooser.ini"
+    dest: "{{ xfce_home }}/.config/gtk-2.0/gtkfilechooser.ini"
     regexp: "{{ item.param }}"
     line: "{{ item.value }}"
     state: present
@@ -27,52 +27,63 @@
     - { param: "StartupMode=", value: "StartupMode=cwd" }
     - { param: "DefaultFolder=", value: "DefaultFolder=cwd" }
 
+# Imagemagick Configuration
+- name: Copy imagemagick desktop entry files
+  copy:
+    src: imagemagick.desktop
+    dest: "/usr/local/share/applications/{{ item }}"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
+  with_items:
+    - display-im6.q16.desktop
+    - display-im6.desktop
+
 # Profile Image
 - name: Copy profile face
   copy:
     src: face
-    dest: "{{ ansible_env.HOME }}/.face"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ xfce_home }}/.face"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
     mode: 0664
 
 # XFCE panel
 - name: Clean panel config directory
   file:
-    path: "{{ ansible_env.HOME }}/.config/xfce4/panel"
+    path: "{{ xfce_home }}/.config/xfce4/panel"
     state: absent
 
 - name: Create panel config directory
   file:
-    path: "{{ ansible_env.HOME }}/.config/xfce4/panel"
+    path: "{{ xfce_home }}/.config/xfce4/panel"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 # Weather icons
 - name: Clone weather icons
   git:
     repo: https://github.com/kevlar1818/xfce4-weather-mono-icons
-    dest: "{{ ansible_env.HOME }}/.cache/xfce4-weather-mono-icons"
+    dest: "{{ xfce_home }}/.cache/xfce4-weather-mono-icons"
   register: xfce_weather_icons_git
 
 - name: Copy weather icons
   copy:
-    src: "{{ ansible_env.HOME }}/.cache/xfce4-weather-mono-icons/{{ item }}"
+    src: "{{ xfce_home }}/.cache/xfce4-weather-mono-icons/{{ item }}"
     dest: /usr/share/xfce4/weather/icons
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
   with_items:
     - WSky-Light
     - WSky
   when: xfce_weather_icons_git.changed
 
 - name: Copy weather preferences file
-  copy:
-    src: weather.rc
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/weather-13.rc"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+  template:
+    src: "weather.rc.j2"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/weather-13.rc"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 # Whiskermenu
 - name: Copy menu icon
@@ -81,19 +92,19 @@
     dest: /usr/share/pixmaps/ubuntu-logo-menu.png
 
 - name: Copy whiskermenu preferences file
-  copy:
-    src: whiskermenu.rc
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/whiskermenu-7.rc"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+  template:
+    src: "whiskermenu.rc.j2"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/whiskermenu-7.rc"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 # XFCE Panel launchers
 - name: Create panel launcher directories
   file:
-    path: "{{ ansible_env.HOME }}/.config/xfce4/panel/{{ item }}"
+    path: "{{ xfce_home }}/.config/xfce4/panel/{{ item }}"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
   with_items:
     - launcher-1
     - launcher-2
@@ -103,36 +114,36 @@
 - name: Copy chromium launcher file
   copy:
     src: chromium.desktop
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-1/chromium.desktop"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-1/chromium.desktop"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 - name: Copy thunar launcher file
   copy:
     src: thunar.desktop
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-2/thunar.desktop"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-2/thunar.desktop"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 - name: Copy sublime launcher file
   copy:
     src: sublime.desktop
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-9/sublime.desktop"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-9/sublime.desktop"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 - name: Copy terminal launcher file
   copy:
     src: terminal.desktop
-    dest: "{{ ansible_env.HOME }}/.config/xfce4/panel/launcher-12/terminal.desktop"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-12/terminal.desktop"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
 
 # Xfconf Settings
 - name: Setup Thunar
   shell: "{{ item }}"
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ xfce_user }}"
   with_items:
     - xfconf-query -c thunar -p /last-view -n -t string -s ThunarIconView
     - xfconf-query -c thunar -p /last-icon-view-zoom-level -n -t string -s THUNAR_ZOOM_LEVEL_NORMAL
@@ -144,7 +155,7 @@
 - name: Setup Panel plugins
   shell: "{{ item }}"
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ xfce_user }}"
   with_items:
     - xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids -n -a -t int -s 7 -t int -s 2 -t int -s 12 -t int -s 1 -t int -s 9 -t int -s 3 -t int -s 15 -t int -s 4 -t int -s 11 -t int -s 6 -t int -s 13 -t int -s 8 -t int -s 5
     - xfconf-query -c xfce4-panel -p /plugins/plugin-3 -n -t string -s tasklist
@@ -180,18 +191,18 @@
 - name: Set Power Manager
   shell: "{{ item }}"
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ xfce_user }}"
   with_items:
     - xfconf-query -c xfce4-power-manager -p /show-tray-icon -n -t int -s 0
 
 - name: Set XFCE Session
   shell: "{{ item }}"
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ xfce_user }}"
   with_items:
     - xfconf-query -c xfce4-session -p /compat/LaunchGNOME -n -t bool -s true
 
 - name: Restart xfce4 panel
   shell: xfce4-panel --restart
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ xfce_user }}"

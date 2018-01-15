@@ -1,0 +1,32 @@
+---
+- hosts: all
+
+  vars:
+    test_user: "{{ ansible_env.USER }}"
+    test_home: "{{ ansible_env.HOME }}"
+    test_cases: []
+
+  pre_tasks:
+    - name: Update apt cache
+      apt: update_cache=yes cache_valid_time=600
+
+  roles:
+    # - { role: ../roles/common, become: true }
+
+  post_tasks:
+    - name: Run test suite
+      command: "{{ item }}"
+      changed_when: false
+      register: test_results
+      with_items: "{{ test_cases }}"
+
+    - name: Print out test results variable
+      debug:
+        var: test_results
+        verbosity: 2
+
+    - name: Print out test results
+      debug:
+        msg: "{{ item.stdout }}"
+        verbosity: 1
+      with_items: "{{ test_results.results }}"

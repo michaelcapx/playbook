@@ -1,0 +1,40 @@
+---
+# tasks file for projects
+
+- name: Create projects-installer directory
+  file:
+    path: "{{ projects_path }}"
+    state: directory
+  register: projects_directory_create
+
+- name: Clone projects-installer repository
+  git:
+    repo: "{{ projects_repo }}"
+    dest: "{{ projects_path }}"
+    update: yes
+    accept_hostkey: yes
+
+- name: Configure repository
+  command: "git config --local user.email {{ projects_git_email }}"
+  args:
+    chdir: "{{ projects_path }}"
+    warn: false
+  when:
+    - projects_directory_create.changed
+    - projects_git_email is defined and projects_git_email != ''
+
+- name: Configure repository
+  command: "git config --local user.name {{ projects_git_name }}"
+  args:
+    chdir: "{{ projects_path }}"
+    warn: false
+  when:
+    - projects_directory_create.changed
+    - projects_git_name is defined and projects_git_name != ''
+
+- name: Fix projects-installer directory owner
+  file:
+    path: "{{ projects_path }}"
+    owner: "{{ projects_user }}"
+    group: "{{ projects_user }}"
+    recurse: yes

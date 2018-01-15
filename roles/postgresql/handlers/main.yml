@@ -2,7 +2,13 @@
 # handlers file for postgresql
 
 - name: restart postgresql
+  become: yes
   service:
     name: postgresql
     state: restarted
-    sleep: 5
+
+- name: reload postgresql
+  become: yes
+  service:
+    name: postgresql
+    state: reloaded

@@ -1,30 +1,15 @@
-# Ansible Role: MailHog
+# Ansible Role: Mailhog
 
 Installs [MailHog](https://github.com/mailhog/MailHog), a Go-based SMTP server and web UI/API for displaying captured emails, on Debian-based linux systems.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: mailhog, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [Oefenweb.mailhog](https://github.com/Oefenweb/ansible-mailhog)
+- [jebovic.mailhog](https://github.com/jebovic/ansible-mailhog)
+- [softasap.sa-mailhog](https://github.com/softasap/sa-mailhog)
+- [mstantoncook.mailhog](https://github.com/mstantoncook/ansible-role-mailhog)
+- [virtualenv.mailhog](https://github.com/wosg-virtualenv/ansible-role-virtualenv-mailhog)
+- [geerlingguy.mailhog](https://github.com/geerlingguy/ansible-role-mailhog)
+- [bpresles.mailhog](https://github.com/bpresles/ansible-role-mailhog)

@@ -2,29 +2,12 @@
 
 Installs [Firefox](https://www.mozilla.org/firefox/) and optionally creates profiles with extensions. Extensions are installed but need to be manually enabled from firefox.
 
-## Requirements
-
-Make sure all dependencies have been installed before moving on:
-
-* [Git](https://git-scm.com/) >= 2.7.4
-* [Ansible](https://www.ansible.com/) >= 2.0
-
-## Dependencies
-
-None.
-
-## Example playbook
-
-This is an example playbook that demonstrates how you would use the role:
-
-    - hosts: localhost
-      roles:
-         - { role: firefox, become: true }
-
 ## Credits
 
-None.
+This role takes inspiration from the following Ansible roles:
 
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- [arknoll.firefox](https://github.com/arknoll/ansible-role-firefox)
+- [conorsch.firefox](https://github.com/conorsch/ansible-role-firefox)
+- [tschifftner.firefox](https://github.com/tschifftner/ansible-role-firefox)
+- [juju4.ansible-firefox-config](https://github.com/juju4/ansible-firefox-config)
+- [unrblt.firefox](https://github.com/unrblt/ansible-role-firefox)
