@@ -55,15 +55,15 @@
     - { role: sublime, become: true, tags: ['editor'] }
 
     # Desktop roles
-    # - { role: desktop,     become: true, tags: ['desktop'] }
+    - { role: desktop,     become: true, tags: ['desktop'] }
     # - { role: gimp,        become: true, tags: ['desktop'] }
     # - { role: inkscape,    become: true, tags: ['desktop'] }
     # - { role: libreoffice, become: true, tags: ['desktop'] }
     # - { role: thunderbird, become: true, tags: ['desktop'] }
     # - { role: i3,          become: true, tags: ['desktop'] }
     # - { role: fonts,       become: true, tags: ['desktop'] }
-    # - { role: themes,      become: true, tags: ['desktop'] }
-    # - { role: xfce,        become: true, tags: ['desktop'] }
+    - { role: themes,      become: true, tags: ['desktop'] }
+    - { role: xfce,        become: true, tags: ['desktop'] }
 
     # Virtualization roles
     # - { role: docker,     become: true, tags: ['virtualization'] }

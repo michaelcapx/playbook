@@ -154,6 +154,7 @@ if [[ -f /etc/lsb-release ]]; then
   else
     e_error "Cannot identify operating system. Aborting..."
     exit 1
+  fi
 else
   e_error "LSB Release file does not exist. Aborting..."
   exit 1
