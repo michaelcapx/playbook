@@ -16,7 +16,7 @@
   with_items: "{{ theme_icons }}"
   when: theme_icons | length
 
-- name: Install desktop PPA packages
+- name: Install icon PPA packages
   apt:
     name: "{{ item.pkg }}"
     state: present
@@ -79,7 +79,7 @@
   with_items:
     - xfconf-query -c xfwm4 -p /general/theme -n -t string -s "{{ theme_window }}"
     - xfconf-query -c xsettings -p /Net/ThemeName -n -t string -s "{{ theme_name }}"
-    - xfconf-query -c xsettings -p /Net/IconThemeName -n -t string -s "{{ theme_icons }}"
+    - xfconf-query -c xsettings -p /Net/IconThemeName -n -t string -s "{{ theme_iconset }}"
     - xfconf-query -c xsettings -p /Gtk/CursorThemeName -n -t string -s "{{ theme_cursor }}"
     - xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -n -t string -s "{{ theme_wallpaper }}"
 
