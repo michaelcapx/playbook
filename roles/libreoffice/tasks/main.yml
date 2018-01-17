@@ -1,0 +1,152 @@
+---
+# tasks file for libreoffice
+
+# Install LibreOffice
+- name: Check if libreoffice is already installed
+  command: "dpkg-query -W {{ libreoffice_package_name }}"
+  register: libreoffice_installed
+  check_mode: no
+  failed_when: libreoffice_installed.rc > 1
+  changed_when: libreoffice_installed.rc == 1
+
+- name: Create temporary download directory
+  tempfile:
+    state: directory
+    suffix: build
+  register: libreoffice_tmp_dir
+  when: libreoffice_installed.rc == 1
+
+- name: Fetch libreoffice download page
+  uri:
+    url: "{{ libreoffice_download_url }}"
+    method: GET
+    follow_redirects: yes
+    return_content: yes
+  register: libreoffice_download_page_raw
+  check_mode: no
+  when: libreoffice_installed.rc == 1
+
+- name: Extract libreoffice mirror url
+  set_fact:
+    libreoffice_mirror_url: "{{ libreoffice_download_page_raw.content | regex_search(qry) }}"
+  vars:
+    qry: 'https://www.libreoffice.org/donate/dl/deb-x86_64/[.0-9]+/en-US/LibreOffice_[.0-9]+_Linux_x86-64_deb.tar.gz'
+  check_mode: no
+  when: libreoffice_installed.rc == 1
+
+- name: Fetch libreoffice mirror page
+  uri:
+    url: "{{ libreoffice_mirror_url }}"
+    method: GET
+    follow_redirects: yes
+    return_content: yes
+  register: libreoffice_mirror_page_raw
+  check_mode: no
+  when: libreoffice_installed.rc == 1
+
+- name: Extract libreoffice download link
+  set_fact:
+    libreoffice_download_link: "{{ libreoffice_mirror_page_raw.content | regex_search(qry) }}"
+  vars:
+    qry: 'http://download.documentfoundation.org/libreoffice/testing/[.0-9]+/deb/x86_64/LibreOffice_[.0-9]+_Linux_x86-64_deb.tar.gz'
+  check_mode: no
+  when: libreoffice_installed.rc == 1
+
+- name: Extract libreoffice download name
+  set_fact:
+    libreoffice_download_name: "{{ libreoffice_mirror_page_raw.content | regex_search(qry) }}"
+  vars:
+    qry: 'LibreOffice_[.0-9]+_Linux_x86-64_deb'
+  check_mode: no
+  when: libreoffice_installed.rc == 1
+
+- name: Ensure libreoffice is downloaded
+  unarchive:
+    src: "{{ libreoffice_download_link }}"
+    dest: "{{ libreoffice_tmp_dir.path }}"
+    remote_src: yes
+  when: libreoffice_installed.rc == 1
+
+- name: Find libreoffice deb files
+  find:
+    path: "{{ libreoffice_tmp_dir.path }}/{{ libreoffice_download_name }}/DEBS"
+    pattern: '^lib.*\_amd64\.deb$'
+    file_type: file
+    use_regex: yes
+  register: libreoffice_deb
+  when: libreoffice_installed.rc == 1
+
+- name: Ensure libreoffice deb files are installed
+  shell: 'dpkg -i *.deb'
+  args:
+    chdir: "{{ libreoffice_tmp_dir.path }}/{{ libreoffice_download_name }}/DEBS"
+    executable: /bin/bash
+  become: yes
+  when: libreoffice_installed.rc == 1
+
+- name: Ensure libreoffice tmp directory is removed
+  file:
+    path: "{{ libreoffice_tmp_dir.path }}"
+    state: absent
+  when: libreoffice_installed.rc == 1
+
+# Configure LibreOffice
+- name: Ensure office2016 icon pack is copied
+  copy:
+    src: "files/{{ libreoffice_icon_name }}"
+    dest: "{{ libreoffice_icon_path }}/{{ libreoffice_icon_name }}"
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+- name: Ensure config directory exists
+  file:
+    path: "{{ libreoffice_config_path }}"
+    state: directory
+    mode: 0700
+  when: libreoffice_installed.rc == 1
+
+- name: Ensure libreoffice base config is copied once
+  copy:
+    src: "files/registrymodifications.xcu"
+    dest: "{{ libreoffice_config_path }}/registrymodifications.xcu"
+    mode: 0600
+  when: libreoffice_installed.rc == 1
+
+# HDPI Wrapper
+- name: Ensure dpi wrapper requirements are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    autoclean: yes
+    autoremove: yes
+    force_apt_get: yes
+    update_cache: yes
+    cache_valid_time: 3600
+    install_recommends: no
+  with_items: "{{ libreoffice_shared_packages | list }}"
+
+- name: Ensure libreoffice wrapper is present
+  template:
+    src: templates/libreoffice6.0.j2
+    dest: "{{ libreoffice_wrapper_path }}"
+    owner: root
+    group: root
+    mode: 0755
+  become: yes
+
+
+# Install LibreOffice via PPA
+# - name: Configure the LibreOffice PPA
+#   apt_repository:
+#     repo: ppa:libreoffice/libreoffice-5-4
+#     state: present
+#   register: libreoffice_add_apt_repo
+
+# - name: Ensure LibreOffice is installed
+#   apt:
+#     name: libreoffice
+#     state: latest
+#   when: libreoffice_add_apt_repo | succeeded

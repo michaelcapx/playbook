@@ -15,16 +15,16 @@ git_user: "{{ ansible_env.USER }}"
 git_home: "{{ ansible_env.HOME }}"
 
 # Github/BitBucket Keys
-git_github_user: ""
-git_github_password: ""
-git_bitbucket_user: ""
-git_bitbucket_password: ""
+git_github_user: "{{ mimetic_github_user | default('') }}"
+git_github_password: "{{ mimetic_github_password | default('') }}"
+git_bitbucket_user: "{{ mimetic_bitbucket_user | default('') }}"
+git_bitbucket_password: "{{ mimetic_bitbucket_password | default('') }}"
 
 # Gitconfig user name.
-git_config_name: null
+git_config_name: "{{ mimetic_name | default(null) }}"
 
 # Gitconfig user email.
-git_config_email: null
+git_config_email: "{{ mimetic_email | default(null) }}"
 
 # Gitconfig editor
 git_config_editor: nano
@@ -89,6 +89,7 @@ git_ignore:
   - ".Trashes"
   - "ehthumbs.db"
   - "Thumbs.db"
+  - ".dotfiles"
 
 # Array of name and key values for known git hosts.
 git_known_hosts:

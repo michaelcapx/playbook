@@ -1,7 +1,0 @@
----
-# defaults file for beanstalkd
-
-beanstalkd_package: beanstalkd
-
-beanstalkd_start: true
-beanstalkd_service_enabled: yes

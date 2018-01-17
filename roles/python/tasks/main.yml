@@ -1,6 +1,12 @@
 ---
 # tasks file for python
 
+- name: Ensure either python2 or python3 is enabled
+  assert:
+    that:
+      - python_2 or python_3
+    msg: either python2 or python3 must be enabled (or both)
+
 # Install python
 - name: Install python dependencies
   apt:
@@ -9,14 +15,50 @@
   with_items: "{{ python_dependencies | list }}"
   when: python_dependencies | length
 
-- name: Install python APT packages
+# - name: Install python APT packages
+#   apt:
+#     name: "{{ item }}"
+#     state: present
+#   with_items: "{{ python_packages | list }}"
+#   when: python_packages | length
+
+- name: Ensure python2 packages are installed
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ python_packages | list }}"
-  when: python_packages | length
+  with_items: "{{ python_2_packages | list }}"
+  when: python_2
+
+- name: Ensure python3 packages are installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ python_3_packages | list }}"
+  when: python_3
 
 # Install pip
+- name: Ensure python2 pip packages are installed
+  pip:
+    state: latest
+    name: "{{ item }}"
+    executable: pip2
+  become: yes
+  when: python_2
+  with_items:
+    - "{{ python_2_required_pip_packages }}"
+    - "{{ pip2_packages }}"
+
+- name: Ensure python3 pip packages are installed
+  pip:
+    state: latest
+    name: "{{ item }}"
+    executable: pip3
+  become: yes
+  when: python_3
+  with_items:
+    - "{{ python_3_required_pip_packages }}"
+    - "{{ pip3_packages }}"
+
 - name: Install python PIP packages
   pip:
     name: "{{ item.name | default(item) }}"

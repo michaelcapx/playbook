@@ -1,6 +1,10 @@
 ---
 # defaults file for python
 
+# Python versions to enable
+python_2: yes
+python_3: yes
+
 # Build dependencies for packages (will be installed with apt).
 python_dependencies:
   - build-essential
@@ -9,15 +13,43 @@ python_dependencies:
 
 # Array of python apt packages.
 python_packages:
-  - python
+  - python #
   - python-dev
-  - python-minimal
-  - python-setuptools
-  - python-simplejson
+  - python-minimal #
+  - python-setuptools #
+  - python-simplejson #
+  - python-pip #
+  - python-apt #
+  - python-pycurl #
+  - python3-pip #
+
+python_2_required_apt_packages:
+  - python
   - python-pip
-  - python-apt
-  - python-pycurl
+  - python-setuptools
+
+python_3_required_apt_packages:
+  - python3
   - python3-pip
+  - python3-setuptools
+
+# Array of user-defined python[23] apt packaes
+python_2_apt_packages: []
+python_3_apt_packages: []
+
+python_2_packages: "{{ python_2_required_apt_packages + python_2_apt_packages }}"
+
+python_3_packages: "{{ python_3_required_apt_packages + python_3_apt_packages }}"
+
+python_2_required_pip_packages:
+  - wheel
+
+python_3_required_pip_packages:
+  - wheel
+
+# Array of user-defined pip[23] packages
+pip2_packages: []
+pip3_packages: []
 
 # Enable support for python 2.x.
 python_legacy_support: yes

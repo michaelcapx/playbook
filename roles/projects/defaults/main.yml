@@ -8,10 +8,10 @@ projects_user: "{{ ansible_env.USER }}"
 projects_path: "{{ ansible_env.HOME }}/Documents/projects"
 
 # Default projects repo.
-projects_repo: "https://github.com/Benoth/projects-installer.git"
+projects_repo: "https://github.com/michaelcapx/projects.git"
 
 # Default projects git name.
-projects_git_name: ""
+projects_git_name: "{{ mimetic_name | default('') }}"
 
 # Default projects git email.
-projects_git_email: ""
+projects_git_email: "{{ mimetic_email | default('') }}"

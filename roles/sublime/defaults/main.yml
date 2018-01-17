@@ -14,6 +14,9 @@ sublime_home: "{{ ansible_env.HOME }}"
 # Sublime text gpg url.
 sublime_gpg_key: https://download.sublimetext.com/sublimehq-pub.gpg
 
+# Sublime apt key.
+sublime_apt_key: ADAE6AD28A8F901A
+
 # Sublime text repo channel. Options are `stable` or `dev`.
 sublime_repo_channel: stable
 

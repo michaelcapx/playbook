@@ -97,7 +97,8 @@ $RECYCLE.BIN/
 
 ### Vagrant ###
 .virtualbox
-.vagrant/
+.vagrant
+.vagrant/*
 vbox_host.cfg
 vagrant_ansible_inventory_*
 

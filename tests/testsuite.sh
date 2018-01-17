@@ -3,7 +3,7 @@ set -e
 ###########################################################################
 #
 # Test Suite
-# https://github.com/polymimetic/playbook
+# https://github.com/michaelcapx/playbook
 #
 ###########################################################################
 
@@ -24,7 +24,7 @@ readonly LINUX_DESCRIPTION="$(lsb_release -d -s)"    # GalliumOS 2.1
 readonly LINUX_DESKTOP="$(printenv DESKTOP_SESSION)" # xfce
 readonly LINUX_USER="$(who am i | awk '{print $1}')" # user
 
-readonly GIT_USER="polymimetic"
+readonly GIT_USER="michaelcapx"
 readonly GIT_REPO="playbook"
 readonly GIT_URL="https://github.com/${GIT_USER}/${GIT_REPO}.git"
 readonly GIT_RAW="https://raw.github.com/${GIT_USER}/${GIT_REPO}/master/"

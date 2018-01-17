@@ -1,4 +1,11 @@
 ---
 # defaults file for shell
 
-shell_type: bash
+# Default shell type. Use either `bash` or `zsh`.
+shell_type: "{{ mimetic_shell | default('bash') }}"
+
+# Default shell user.
+shell_user: "{{ mimetic_user | default(ansible_env.USER) }}"
+
+# Default shell home.
+shell_home: "{{ mimetic_home | default(ansible_env.HOME) }}"

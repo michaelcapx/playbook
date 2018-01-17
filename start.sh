@@ -3,11 +3,11 @@ set -e
 ###########################################################################
 #
 # Playbook Installer
-# https://github.com/polymimetic/playbook
+# https://github.com/michaelcapx/playbook
 #
 # # Usage:
 #
-# wget -qO - https://raw.github.com/polymimetic/playbook/master/start.sh | bash
+# wget -qO - https://raw.github.com/michaelcapx/playbook/master/start.sh | bash
 #
 ###########################################################################
 
@@ -20,7 +20,7 @@ fi
 # Constants and Global Variables
 ###########################################################################
 
-readonly GIT_REPO="https://github.com/polymimetic/playbook.git"
+readonly GIT_REPO="https://github.com/michaelcapx/playbook.git"
 readonly GIT_DEST="$HOME/Downloads/playbook"
 
 ###########################################################################
@@ -111,8 +111,18 @@ run_playbook() {
     local VAULT_CMD=""
   fi
 
+  # Check for ansible inventory
+  if [[ -f $GIT_DEST/hosts ]]; then
+    local HOST_CMD="-i $GIT_DEST/hosts"
+  elif [[ -f $GIT_DEST/inventory ]]; then
+    local HOST_CMD="-i $GIT_DEST/inventory"
+  else
+    local HOST_CMD=""
+  fi
+
   # Build the playbook command
-  local PLAYBOOK_CMD="ansible-playbook -i "$GIT_DEST"/hosts "$GIT_DEST"/playbook.yml -K $VAULT_CMD"
+  # ansible-playbook -i ~/Downloads/playbook/hosts ~/Downloads/playbook/playbook.yml -K --vault-id @prompt
+  local PLAYBOOK_CMD="ansible-playbook $HOST_CMD $GIT_DEST/playbook.yml -K $VAULT_CMD"
 
   # Run playbook prompt
   e_prompt "Would you like to run the playbook now? (y/n):"
@@ -131,48 +141,11 @@ run_playbook() {
 }
 
 ###########################################################################
-# Setup Chrx
-# https://chrx.org/
-# https://github.com/reynhout/chrx
-###########################################################################
-
-chrx_start() {
-
-  local CHRX_USERNAME="chrx"
-  local CHRX_HOSTNAME="chrx"
-  local CHRX_LOCALE="en_US.UTF-8"
-  local CHRX_TZ="America/New_York"
-
-  e_prompt "What is your username? ($CHRX_USERNAME):"
-  read PROMPT_USER
-
-  e_prompt "What is your hostname? ($CHRX_HOSTNAME):"
-  read PROMPT_HOST
-
-  e_prompt "What is your locale? ($CHRX_LOCALE):"
-  read PROMPT_LOCALE
-
-  e_prompt "What is your timezone? ($CHRX_TZ):"
-  read PROMPT_TZ
-
-  if [[ !  -z  $PROMPT_USER  ]]; then CHRX_USERNAME=${PROMPT_USER}; fi
-  if [[ !  -z  $PROMPT_HOST  ]]; then CHRX_HOSTNAME=${PROMPT_HOST}; fi
-  if [[ !  -z  $PROMPT_LOCALE  ]]; then CHRX_LOCALE=${PROMPT_LOCALE}; fi
-  if [[ !  -z  $PROMPT_TZ  ]]; then CHRX_TZ=${PROMPT_TZ}; fi
-
-  cd ; curl -Os https://chrx.org/go && sh go -U ${CHRX_USERNAME} -H ${CHRX_HOSTNAME} -L ${CHRX_LOCALE} -Z ${CHRX_TZ}
-
-}
-
-###########################################################################
 # Program Start
 ###########################################################################
 
 if [[ -f /etc/lsb-release ]]; then
-  if [[ $(cat /etc/lsb-release | grep "CHROMEOS_RELEASE_NAME=Chrome OS" -c) = 1 ]]; then
-    e_success "Running chrx installer....."
-    chrx_start
-  elif [[ $(cat /etc/lsb-release | grep "DISTRIB_ID=Ubuntu" -c) = 1 ]]; then
+  if [[ $(cat /etc/lsb-release | grep "DISTRIB_ID=Ubuntu" -c) = 1 ]]; then
     e_success "Running GalliumOS bootstrap script....."
     install_core
     install_python

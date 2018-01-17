@@ -1,7 +1,0 @@
----
-# defaults file for ngrok
-
-ngrok_path_bin: "/usr/local/bin/ngrok"
-
-ngrok_download: "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
-ngrok_path_download_tmp: "/tmp"

@@ -1,7 +1,0 @@
----
-# handlers file for couchdb
-
-- name: restart couchdb
-  service:
-    name: couchdb
-    state: restarted

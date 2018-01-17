@@ -1,0 +1,4 @@
+---
+
+- name: Setup Custom Bash Prompt PS1, Hold on...
+  shell: echo 'PS1="\`if [ \$? = 0 ]; then echo \[\e[37m\]^_^[\u@\H:\w]\\$ \[\e[0m\]; else echo \[\e[31m\]O_O[\u@\H:\w]\\$ \[\e[0m\]; fi\`"' >> {{ shell_home }}/.bashrc

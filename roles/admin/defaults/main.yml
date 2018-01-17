@@ -2,19 +2,19 @@
 # defaults file for admin
 
 # Default admin user.
-admin_user: "{{ ansible_env.USER }}"
+admin_user: "{{ mimetic_user | default(ansible_env.USER) }}"
 
 # Default admin home.
-admin_home: "{{ ansible_env.HOME }}"
+admin_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 
 # Default admin full name.
-admin_fullname: "{{ ansible_user_gecos.split(',')[0] }}"
+admin_fullname: "{{ mimetic_name | default(ansible_user_gecos.split(',')[0]) }}"
 
 # Default admin user group.
 admin_group: "{{ admin_user }}"
 
 # Default groups for the admin user.
-admin_default_groups:
+admin_groups:
   - adm
   - sudo
   - cdrom
@@ -22,12 +22,6 @@ admin_default_groups:
   - plugdev
   - lpadmin
   - www-data
-
-# Custom groups to add to the admin user.
-admin_custom_groups: []
-
-# Secondary groups for the admin user.
-admin_groups: "{{ admin_default_groups }}"
 
 # XDG user directories. To remove a folder, set its value to "$HOME".
 admin_xdg_directories:

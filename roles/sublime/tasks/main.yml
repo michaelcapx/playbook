@@ -1,16 +1,24 @@
 ---
 # tasks file for sublime
 
-# Sublime Installation
+# Sublime Dependencies
+- name: assert that sublime repository channel is set correctly
+  assert:
+    that:
+      - sublime_repo_channel == 'stable' or sublime_repo_channel == 'dev'
+    msg: sublime_repo_channel must be 'stable' or 'dev'
+
 - name: Ensure sublime dependencies are installed
   apt:
     name: "{{ item }}"
     state: present
   with_items: "{{ sublime_dependencies | list }}"
 
+# Sublime Installation
 - name: Add sublime GPG key
   apt_key:
     url: "{{ sublime_gpg_key }}"
+    id: "{{ sublime_apt_key }}"
     state: present
 
 - name: Add sublime repository
@@ -55,9 +63,14 @@
   get_url:
     url: "{{ sublime_package_control_url }}"
     dest: "{{ sublime_installed_pkgs_dir }}/Package Control.sublime-package"
+    timeout: 30
     mode: 0774
     owner: "{{ sublime_user }}"
     group: "{{ sublime_user }}"
+  register: task_result
+  until: task_result | succeeded
+  retries: 10
+  delay: 5
 
 - name: Generate Package Control settings template for auto-install
   template:

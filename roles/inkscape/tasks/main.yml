@@ -1,0 +1,15 @@
+---
+# tasks file for inkscape
+
+# Install Inkscape
+- name: Configure the Inkscape PPA
+  apt_repository:
+    repo: ppa:inkscape.dev/stable
+    state: present
+  register: inkscape_add_apt_repo
+
+- name: Ensure Inkscape is installed
+  apt:
+    name: inkscape
+    state: latest
+  when: inkscape_add_apt_repo | succeeded

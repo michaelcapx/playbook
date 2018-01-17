@@ -8,12 +8,19 @@
   register: dotfiles_create
 
 - name: Clone public dotfiles repository
+  become: true
+  become_user: "{{ dotfiles_user }}"
   git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles_home }}/{{ dotfiles_path }}"
     update: yes
+    bare: yes
     accept_hostkey: yes
-  # failed_when: false
+  failed_when: false
+  notify: checkout dotfiles
+
+# Make sure the handler runs now and not at the end of the playbook
+- meta: flush_handlers
 
 - name: Configure repository
   command: "git config --local user.email {{ dotfiles_git_email }}"

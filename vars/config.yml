@@ -18,31 +18,3 @@ mimetic_github_user: "{{ vault_github_user | default('') }}"
 mimetic_github_password: "{{ vault_github_password | default('') }}"
 mimetic_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
 mimetic_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"
-
-#####################################################################
-### ROLE VARS ###
-#####################################################################
-
-# Admin role
-admin_user: "{{ mimetic_user }}"
-admin_home: "{{ mimetic_home }}"
-admin_fullname: "{{ mimetic_name }}"
-
-# SSH role
-ssh_key_comment: "{{ mimetic_email }}"
-
-# Git role
-git_config_name: "{{ mimetic_name }}"
-git_config_email: "{{ mimetic_email }}"
-git_github_user: "{{ mimetic_github_user }}"
-git_github_password: "{{ mimetic_github_password }}"
-git_bitbucket_user: "{{ mimetic_bitbucket_user }}"
-git_bitbucket_password: "{{ mimetic_bitbucket_password }}"
-
-# Projects role
-projects_git_name: "{{ mimetic_name }}"
-projects_git_email: "{{ mimetic_email }}"
-
-# Dotfiles role
-dotfiles_git_name: "{{ mimetic_name }}"
-dotfiles_git_email: "{{ mimetic_email }}"

@@ -2,46 +2,7 @@ Provision Resources
 ===================
 
 A curated list of resources to help with provisioning a
-Chromebook to an Ubuntu development environment with Crouton.
-
-    ansible-galaxy init --role-skeleton=~/Downloads/skeleton ROLENAME
-
-    ansible -m setup localhost
-
-## Bash Functions
-- http://www.bashoneliners.com/
-- https://github.com/natelandau/shell-scripts
-- https://github.com/ralish/bash-script-template
-- https://github.com/faif/shell-utils
-- https://github.com/hallison/bash-toolbox
-- https://github.com/martinburger/bash-common-helpers
-- https://github.com/kvz/bash3boilerplate
-- https://www.unix.com/shell-programming-and-scripting/243393-encrypted-password-script.html
-- https://github.com/johanhaleby/bash-templater
-
-## Lamp
-- https://www.linode.com/docs/web-servers/lamp/install-lamp-stack-on-ubuntu-16-04
-- https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
-- https://gist.github.com/Otienoh/6431b247d1bddfddb12f3dda436615d0
-- https://gist.github.com/edouard-lopez/10008944
-
-## Dotfiles
-- https://github.com/Globidev/linux-dotfiles
-- https://github.com/thezimmee/os-zimmee
-- https://github.com/927589452/yadm
-- https://github.com/wkentaro/dotfiles
-
-## Guides
-- http://www.pontikis.net/blog/setup-ubuntu-16.04-desktop-step-by-step
-
-## Repos
-- https://github.com/adgellida/ubuntupackages
-- https://github.com/mhognogi/install_on_ubuntu
-- https://github.com/pedrobmarin/linux-setup
-- https://github.com/HarryEMartland/codeYourFutureLinuxDependencies
-- https://github.com/cochran-at-niche/home
-- https://github.com/NicolasBernaerts/ubuntu-scripts
-- https://github.com/jphafner/ansible-local
+Chromebook to an GalliumOS development environment with Ansible.
 
 Contents
 --------
@@ -163,6 +124,7 @@ Theming
 - [Modify XFCE Panel](https://forum.xfce.org/viewtopic.php?id=8619)
 - [Maintain XFCE Panel elements](https://forum.xfce.org/viewtopic.php?id=11117)
 - [UnixPorn Compiz Emerald](https://www.reddit.com/r/unixporn/comments/5j8l87/xfce_compiz_emerald_final_rice/)
+- [Setup Ubuntu Desktop Step-by-Step](http://www.pontikis.net/blog/setup-ubuntu-16.04-desktop-step-by-step)
 
 Sublime Text
 ------------
@@ -284,6 +246,15 @@ Scripting
 - [how to install imagemagick for php7 on ubuntu 16.04?](http://askubuntu.com/questions/769396/how-to-install-imagemagick-for-php7-on-ubuntu-16-04)
 - [Is there a link to GitHub for downloading a file in the latest release of a repository?](http://stackoverflow.com/questions/24987542/is-there-a-link-to-github-for-downloading-a-file-in-the-latest-release-of-a-repo)
 - [Bash Script Testing Library (BSTL)](https://github.com/rafritts/BashScriptTestingLibrary)
+- http://www.bashoneliners.com/
+- https://github.com/natelandau/shell-scripts
+- https://github.com/ralish/bash-script-template
+- https://github.com/faif/shell-utils
+- https://github.com/hallison/bash-toolbox
+- https://github.com/martinburger/bash-common-helpers
+- https://github.com/kvz/bash3boilerplate
+- https://www.unix.com/shell-programming-and-scripting/243393-encrypted-password-script.html
+- https://github.com/johanhaleby/bash-templater
 
 ### Lamp Scripts
 
@@ -295,6 +266,10 @@ Scripting
 - [vHost Manager](https://github.com/Marko-M/lamp-vhost-manager)
 - [Laravel lemp installation](https://github.com/naveenyagati/Laravel-Lemp-Installation)
 - [Lemp Stack](https://github.com/lucien144/lemp-stack)
+- https://www.linode.com/docs/web-servers/lamp/install-lamp-stack-on-ubuntu-16-04
+- https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
+- https://gist.github.com/Otienoh/6431b247d1bddfddb12f3dda436615d0
+- https://gist.github.com/edouard-lopez/10008944
 
 Browsers
 --------
@@ -329,7 +304,7 @@ Browsers
 - [Profilemaker](https://github.com/allo-/firefox-profilemaker)
 - [ghacks user](https://github.com/ghacksuserjs/ghacks-user.js)
 - [MozillaZine: "about:config"](http://kb.mozillazine.org/About:config)
-- [MozillaZine: "user.js"](http://kb.mozillazine.org/User.js_file) 
+- [MozillaZine: "user.js"](http://kb.mozillazine.org/User.js_file)
 - [GH: allo-/firefox-profilemaker Wiki](https://github.com/allo-/firefox-profilemaker/wiki)
 
 
@@ -470,6 +445,10 @@ Dotfiles
 - [serialdoom](https://github.com/serialdoom/ansible-dotfiles)
 - [aljoscha](https://github.com/aljoscha/ansible-role-dotfiles)
 - [gunzy83](https://github.com/gunzy83/ansible-role-dotfiles)
+- [Globidev](https://github.com/Globidev/linux-dotfiles)
+- [thezimmee](https://github.com/thezimmee/os-zimmee)
+- [927589452](https://github.com/927589452/yadm)
+- [wkentaro](https://github.com/wkentaro/dotfiles)
 
 Commands
 --------
@@ -478,51 +457,41 @@ Commands
 
 Source: http://askubuntu.com/questions/420981/how-do-i-save-terminal-output-to-a-file
 
-```bash
-command | tee output.txt
-```
+    command | tee output.txt
 
 ### Enter Bash as Root
 
-```bash
-sudo bash
-```
+    sudo bash
 
 ### Print out list of installed packages
 
-```bash
-dpkg-query -Wf '${Package;-40}${Priority}\n' | sort -b -k2,2 -k1,1 > ~/Downloads/priority.txt
-```
+    dpkg-query -Wf '${Package;-40}${Priority}\n' | sort -b -k2,2 -k1,1 > ~/Downloads/priority.txt
 
 ### Get permissions octet from file or folder
 
 Source: https://askubuntu.com/q/152001
 
-```bash
-stat -c "%a %n" <FILEORFOLDER>
-```
+    stat -c "%a %n" <FILEORFOLDER>
 
 ### List installed packages via APT
 
 Source: https://unix.stackexchange.com/q/288024
 
-```bash
-apt --installed list
-```
+    apt --installed list
 
 ### Show package description via APT
 
 Source: https://askubuntu.com/q/49578
 
-```bash
-apt-cache show scons | grep --color -E "Description-en|$"
-```
+    apt-cache show scons | grep --color -E "Description-en|$"
 
 ### Get list of XFCE panel plugins
 
-```bash
-xfconf-query -c xfce4-panel -p /plugins -l | egrep -v '[0-9]/' | sed -e 's#/plugins/plugin-##g' | sort -rn | head -n 1
-```
+    xfconf-query -c xfce4-panel -p /plugins -l | egrep -v '[0-9]/' | sed -e 's#/plugins/plugin-##g' | sort -rn | head -n 1
+
+### Print Ansible facts
+
+    ansible -m setup localhost
 
 Misc
 ----
@@ -541,3 +510,82 @@ Misc
 - [Linode Lamp Install Guide](https://www.linode.com/docs/web-servers/lamp/install-lamp-stack-on-ubuntu-16-04)
 - [Digital Ocean Lamp Install Guide](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
 - [How to Install Virtualmin with Webmin, LAMP, BIND, and PostFix on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-virtualmin-with-webmin-lamp-bind-and-postfix-on-ubuntu-16-04)
+- https://github.com/adgellida/ubuntupackages
+- https://github.com/mhognogi/install_on_ubuntu
+- https://github.com/pedrobmarin/linux-setup
+- https://github.com/HarryEMartland/codeYourFutureLinuxDependencies
+- https://github.com/cochran-at-niche/home
+- https://github.com/NicolasBernaerts/ubuntu-scripts
+- https://github.com/jphafner/ansible-local
+- https://github.com/silns/GitRoad
+- https://github.com/ChristianBreitkreutz/YUMYUM/tree/master/roles/git
+- https://github.com/MyHush/hush-gitian
+- https://github.com/thokari/centos6-ansible
+- https://github.com/assout/ansible-playbooks
+- https://medium.com/xeneta/testing-ansible-playbooks-on-localhost-58f9fddc4f8b
+- https://github.com/cytopia/ansible-debian
+- https://github.com/Cloudbox/Cloudbox
+- https://github.com/groupon/ansible-silo
+- https://github.com/AnsiPress/AnsiPress
+
+## Bookmarks
+
+- https://github.com/MorganGeek/bookmarks
+- https://www.youtube.com/channel/UCZAlJJ-_WO1DPgTjTZKWZwg
+
+## Docker
+
+- https://joshtronic.com/2017/10/25/oci-runtime-error-after-upgrading-docker-on-arch-linux/
+- https://gist.github.com/evanscottgray/8571828
+- https://www.shivering-isles.com/helpful-shell-snippets-for-docker-testing-and-bootstrapping/
+
+## Ansible
+- https://readme.fr/continuous-integration-for-ansible/
+- https://github.com/vadimdemedes/trevor
+- http://concourse.ci/
+- https://github.com/AnsibleCheck/ansiblecheck
+- https://github.com/samdoran/docker-ubuntu16-ansible
+- https://visibilityspots.org/test-ansible-playbooks.html
+
+## Dotfiles
+
+- https://gist.github.com/jexchan/2351996
+- https://news.ycombinator.com/item?id=11070797
+- https://www.youtube.com/watch?v=awtfkl50bUQ
+- https://elliotekj.com/2017/01/04/screencast-1-how-i-manage-my-dotfiles-with-github/
+- https://what.thedailywtf.com/topic/21311/ssh-keys-not-working/14
+
+## Linux
+
+- https://sandstorm.io/
+- https://github.com/joeleisner/config
+- https://www.ubuntupit.com/best-ubuntu-themes-will-blow-mind/
+- https://www.ubuntupit.com/top-things-installing-ubuntu/
+- https://github.com/pirate/bookmark-archiver
+- https://github.com/drduh/macOS-Security-and-Privacy-Guide
+- https://github.com/drduh/Debian-Privacy-Server-Guide
+- https://github.com/bablosoft/BAS
+- http://aslanbakan.com/en/blog/33-essential-sublime-text-plugins-for-all-developers/
+- https://www.ostechnix.com/install-oracle-virtualbox-ubuntu-16-04-headless-server/
+- https://gist.github.com/maxivak/c318fd085231b9ab934e631401c876b1
+- https://coderwall.com/p/7smjkq/multiple-ssh-keys-for-different-accounts-on-github-or-gitlab
+- https://github.com/jasperes/bash-yaml
+
+# Chromium
+
+- https://pastebin.com/TQFnUZhn
+- https://superuser.com/questions/773614/where-can-i-find-a-full-list-of-chromes-master-preferences
+- https://github.com/Synzvato/decentraleyes/issues/148
+- http://www.itninja.com/question/master-preferences-not-working-google-chrome-for-work-51-0-2704-103
+
+# Firefox
+
+- https://github.com/jm42/compare-user.js
+- https://github.com/juju4/ansible-firefox-config
+- https://gist.github.com/eddiejaoude/0076739fe610189581d0
+- http://forgottheaddress.blogspot.com/2012/04/set-firefox-as-default-browser-using.html
+
+
+## Docker Installation
+- https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
+- https://docs.docker.com/engine/installation/linux/linux-postinstall/

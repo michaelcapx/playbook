@@ -2,9 +2,11 @@
 # tasks file for vagrant
 
 # Install Virtualbox
+# ID: curl https://www.virtualbox.org/download/oracle_vbox_2016.asc | gpg --list-packets
 - name: Configure the Oracle APT key
   apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox.asc
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    id: A2F683C52980AECF
     state: present
 
 - name: Configure the VirtualBox APT repositories
@@ -16,6 +18,31 @@
   apt:
     name: "virtualbox-{{ virtualbox_version }}"
     state: present
+
+- name: Install VirtualBox shared packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ virtualbox_shared_packages | list }}"
+
+- name: Ensure virtualbox group is present
+  group:
+    name: vboxusers
+    state: present
+    system: yes
+
+- name: Set username
+  command: whoami
+  register: virtualbox_username
+  check_mode: no
+  changed_when: False
+
+- name: Ensure user is added to vboxusers group
+  become: yes
+  user:
+    name: "{{ virtualbox_username.stdout }}"
+    groups: vboxusers
+    append: yes
 
 # Install Vargrant
 - name: Check if Vagrant is installed

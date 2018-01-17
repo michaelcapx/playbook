@@ -19,4 +19,4 @@ ssh_generate_key: yes
 ssh_key_type: rsa
 ssh_key_bits: 4096
 ssh_key_file: .ssh/id_rsa
-ssh_key_comment: "{{ inventory_hostname }}"
+ssh_key_comment: "{{ mimetic_email | default(inventory_hostname) }}"

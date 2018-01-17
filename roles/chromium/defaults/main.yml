@@ -10,12 +10,16 @@ chromium_home: "{{ ansible_env.HOME }}"
 # Chromium configuration paths.
 chromium_config: "{{ chromium_home }}/.config/chromium/Default"
 chromium_preferences: "{{ chromium_config }}/Preferences"
+chromium_extensions_dir: /usr/share/chromium-browser/extensions
 
 # Array of chromium apt packages to install.
 chromium_packages:
   - chromium-browser
   - chromium-browser-l10n
   - chromium-codecs-ffmpeg-extra
+  - upower
+  - opus-tools
+  - speex
 
 chromium_preferences_json:
   browser:

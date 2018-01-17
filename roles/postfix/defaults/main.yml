@@ -1,8 +1,0 @@
----
-# defaults file for postfix
-
-postfix_package: postfix
-
-postfix_service_name: postfix
-postfix_service_state: started
-postfix_service_enabled: yes

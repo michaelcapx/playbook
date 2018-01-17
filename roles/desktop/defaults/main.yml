@@ -15,19 +15,19 @@ desktop_apt_dependencies:
 
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
 desktop_apt_ppa:
-  - { ppa: "ppa:nilarimogard/webupd8",             pkg: todo-indicator }
   - { ppa: "ppa:yktooo/ppa",                       pkg: indicator-sound-switcher }
   - { ppa: "ppa:dawidd0811/neofetch",              pkg: neofetch }
   - { ppa: "ppa:giuspen/ppa",                      pkg: cherrytree }
   - { ppa: "ppa:eugenesan/ppa",                    pkg: keepassx }
   - { ppa: "ppa:caffeine-developers/ppa",          pkg: caffeine }
-  - { ppa: "ppa:fossfreedom/indicator-sysmonitor", pkg: indicator-sysmonitor }
   # - { ppa: "ppa:thomas-schiex/blender",            pkg: blender }
   # - { ppa: "ppa:kirillshkrogalev/ffmpeg-next",     pkg: ffmpeg }
   # - { ppa: "ppa:obsproject/obs-studio",            pkg: obs-studio }
   # - { ppa: "ppa:ubuntuhandbook1/audacity",         pkg: audacity }
   # - { ppa: "ppa:webupd8team/tor-browser",          pkg: tor-browser }
   # - { ppa: "ppa:notepadqq-team/notepadqq",         pkg: notepadqq }
+  # - { ppa: "ppa:remmina-ppa-team/remmina-next",    pkg: remmina }
+  # - { ppa: "ppa:remmina-ppa-team/remmina-next",    pkg: remmina-plugin-rdp }
 
 # Array of gui desktop software packages to install
 desktop_apt_packages_gui:
@@ -49,8 +49,9 @@ desktop_apt_packages_gui:
   - rhythmbox
   - ubuntu-restricted-extras # MP3, Microsoft fonts, Flash plugin, LAME and DVD playback
   - unetbootin # create bootable USB drives
-  - fonts-hack-ttf
-  - thunderbird
+  - zathura
+  - zathura-pdf-poppler
+  - zathura-ps
 
 # Array of cli desktop software packages to install
 desktop_apt_packages_cli:
