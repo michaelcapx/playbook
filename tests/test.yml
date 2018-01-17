@@ -12,6 +12,7 @@
 
   roles:
     # - { role: ../roles/common, become: true }
+    - { role: ../roles/python, become: true }
 
   post_tasks:
     - name: Run test suite

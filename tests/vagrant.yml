@@ -28,6 +28,7 @@
 
   roles:
     # - { role: ../roles/base, become: true }
+    - { role: ../roles/node, become: true }
 
   tasks:
 

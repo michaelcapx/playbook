@@ -82,7 +82,7 @@ if [ "$test_suite" = true ]; then
   printf ${green}"Running test suite"${neutral}"\n"
 
   # Ensure nano is installed.
-  docker exec --tty ${container_id} env TERM=xterm nano --version
+  # docker exec --tty ${container_id} env TERM=xterm nano --version
 fi
 
 # Remove the Docker container (if configured).
