@@ -49,9 +49,9 @@ desktop_apt_packages_gui:
   - rhythmbox
   - ubuntu-restricted-extras # MP3, Microsoft fonts, Flash plugin, LAME and DVD playback
   - unetbootin # create bootable USB drives
-  - zathura
-  - zathura-pdf-poppler
-  - zathura-ps
+  # - zathura
+  # - zathura-pdf-poppler
+  # - zathura-ps
 
 # Array of cli desktop software packages to install
 desktop_apt_packages_cli:

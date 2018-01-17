@@ -41,7 +41,7 @@ function e_title()   { echo -e "\033[1;35m$@.......\033[0m"; }      # magenta
 
 install_core() {
   e_title "Installing core packages"
-  sudo apt install -yq software-properties-common git nano curl wget
+  sudo apt install -yq software-properties-common aptitude git nano curl wget
   e_success "Core packages installed"
 }
 
@@ -121,7 +121,7 @@ run_playbook() {
   fi
 
   # Build the playbook command
-  # ansible-playbook -i ~/Downloads/playbook/hosts ~/Downloads/playbook/playbook.yml -K --vault-id @prompt
+  # ansible-playbook -i ~/Downloads/playbook/inventory ~/Downloads/playbook/playbook.yml -K --vault-id @prompt
   local PLAYBOOK_CMD="ansible-playbook $HOST_CMD $GIT_DEST/playbook.yml -K $VAULT_CMD"
 
   # Run playbook prompt

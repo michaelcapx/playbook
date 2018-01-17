@@ -40,38 +40,38 @@
     - { role: admin,  become: true, tags: ['base'] }
     - { role: ssh,    become: true, tags: ['base'] }
     - { role: git,    become: true, tags: ['base'] }
-    - { role: shell,  become: true, tags: ['base'] }
+    # - { role: shell,  become: true, tags: ['base'] }
 
     # Language roles
-    - { role: python, become: true, tags: ['languages'] }
-    - { role: ruby,   become: true, tags: ['languages'] }
-    - { role: node,   become: true, tags: ['languages'] }
+    # - { role: python, become: true, tags: ['languages'] }
+    # - { role: ruby,   become: true, tags: ['languages'] }
+    # - { role: node,   become: true, tags: ['languages'] }
 
     # Browser roles
-    - { role: chromium, become: true, tags: ['browser'] }
-    - { role: firefox,  become: true, tags: ['browser'] }
+    # - { role: chromium, become: true, tags: ['browser'] }
+    # - { role: firefox,  become: true, tags: ['browser'] }
 
     # Editor roles
     - { role: sublime, become: true, tags: ['editor'] }
 
     # Desktop roles
-    - { role: desktop,     become: true, tags: ['desktop'] }
-    - { role: gimp,        become: true, tags: ['desktop'] }
-    - { role: inkscape,    become: true, tags: ['desktop'] }
-    - { role: libreoffice, become: true, tags: ['desktop'] }
-    - { role: thunderbird, become: true, tags: ['desktop'] }
-    - { role: i3,          become: true, tags: ['desktop'] }
-    - { role: fonts,       become: true, tags: ['desktop'] }
-    - { role: themes,      become: true, tags: ['desktop'] }
-    - { role: xfce,        become: true, tags: ['desktop'] }
+    # - { role: desktop,     become: true, tags: ['desktop'] }
+    # - { role: gimp,        become: true, tags: ['desktop'] }
+    # - { role: inkscape,    become: true, tags: ['desktop'] }
+    # - { role: libreoffice, become: true, tags: ['desktop'] }
+    # - { role: thunderbird, become: true, tags: ['desktop'] }
+    # - { role: i3,          become: true, tags: ['desktop'] }
+    # - { role: fonts,       become: true, tags: ['desktop'] }
+    # - { role: themes,      become: true, tags: ['desktop'] }
+    # - { role: xfce,        become: true, tags: ['desktop'] }
 
     # Virtualization roles
-    - { role: docker,     become: true, tags: ['virtualization'] }
-    - { role: vagrant,    become: true, tags: ['virtualization'] }
+    # - { role: docker,     become: true, tags: ['virtualization'] }
+    # - { role: vagrant,    become: true, tags: ['virtualization'] }
 
     # Extra roles
-    - { role: dotfiles, become: true, tags: ['extras'] }
-    - { role: projects, become: true, tags: ['extras'] }
+    # - { role: dotfiles, become: true, tags: ['extras'] }
+    # - { role: projects, become: true, tags: ['extras'] }
 
   tasks:
 
