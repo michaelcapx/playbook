@@ -29,19 +29,19 @@ RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 # Add user with password-less sudo
 RUN set -x \
-  && useradd -m -s /bin/bash cytopia \
-  && echo "cytopia ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/cytopia
+  && useradd -m -s /bin/bash mimeticuser \
+  && echo "mimeticuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/mimeticuser
 
 # Copy files
-COPY ./ /home/cytopia/ansible
+COPY ./ /home/mimeticuser/ansible
 RUN set -x \
-  && chown -R cytopia:cytopia /home/cytopia/ansible
+  && chown -R mimeticuser:mimeticuser /home/mimeticuser/ansible
 
 # Switch to user
-USER cytopia
+USER mimeticuser
 
 # Change working directory
-WORKDIR /home/cytopia/ansible
+WORKDIR /home/mimeticuser/ansible
 
 # COPY initctl_faker .
 # RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
