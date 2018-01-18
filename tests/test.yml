@@ -7,8 +7,7 @@
 
   vars:
     ran_from_vagrant: false
-    test_user: "{{ ansible_env.USER }}"
-    test_home: "{{ ansible_env.HOME }}"
+    test_user: "{{ ansible_env.SUDO_USER }}"
     test_cases: []
 
   pre_tasks:
