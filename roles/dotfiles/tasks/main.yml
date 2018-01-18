@@ -1,48 +1,70 @@
 ---
 # tasks file for dotfiles
 
-- name: Create public dotfiles directory
-  file:
-    path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    state: directory
-  register: dotfiles_create
+# - name: Create public dotfiles directory
+#   file:
+#     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+#     state: directory
+#   register: dotfiles_create
 
 - name: Clone public dotfiles repository
   become: true
   become_user: "{{ dotfiles_user }}"
   git:
     repo: "{{ dotfiles_repo }}"
-    dest: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    update: yes
+    dest: "{{ dotfiles_home }}/{{ dotfiles_path }}.git"
+    update: no
     bare: yes
+    key_file: "/home/{{ dotfiles_user }}/.ssh/id_rsa"
     accept_hostkey: yes
-  failed_when: false
-  notify: checkout dotfiles
+  # failed_when: false
+  # notify: checkout dotfiles
 
-# Make sure the handler runs now and not at the end of the playbook
-- meta: flush_handlers
-
-- name: Configure repository
-  command: "git config --local user.email {{ dotfiles_git_email }}"
-  args:
-    chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    warn: false
-  when:
-    - dotfiles_create.changed
-    - dotfiles_git_email is defined and dotfiles_git_email != ''
-
-- name: Configure repository
-  command: "git config --local user.name {{ dotfiles_git_name }}"
-  args:
-    chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    warn: false
-  when:
-    - dotfiles_create.changed
-    - dotfiles_git_name is defined and dotfiles_git_name != ''
-
-- name: Fix dotfiles directory owner
+- name: Create public dotfiles directory
   file:
     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    owner: "{{ dotfiles_user }}"
-    group: "{{ dotfiles_user }}"
-    recurse: yes
+    state: directory
+  register: dotfiles_create
+
+- name: checkout dotfiles
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}.git/ --work-tree=$HOME checkout -f"
+  args:
+    chdir: "{{ dotfiles_home }}"
+  # notify: config dotfiles repo
+
+- name: config dotfiles repo
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}.git/ --work-tree=$HOME config --local status.showUntrackedFiles no"
+  args:
+    chdir: "{{ dotfiles_home }}"
+
+# Make sure the handler runs now and not at the end of the playbook
+# - meta: flush_handlers
+
+# - name: Configure repository
+#   command: "git config --local user.email {{ dotfiles_git_email }}"
+#   args:
+#     chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+#     warn: false
+#   when:
+#     - dotfiles_create.changed
+#     - dotfiles_git_email is defined and dotfiles_git_email != ''
+
+# - name: Configure repository
+#   command: "git config --local user.name {{ dotfiles_git_name }}"
+#   args:
+#     chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+#     warn: false
+#   when:
+#     - dotfiles_create.changed
+#     - dotfiles_git_name is defined and dotfiles_git_name != ''
+
+# - name: Fix dotfiles directory owner
+#   file:
+#     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
+#     owner: "{{ dotfiles_user }}"
+#     group: "{{ dotfiles_user }}"
+#     recurse: yes

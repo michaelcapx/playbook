@@ -11,7 +11,9 @@ dotfiles_home: "{{ ansible_env.HOME }}"
 dotfiles_path: .dotfiles
 
 # Default dotfiles Github repo.
-dotfiles_repo: https://github.com/michaelcapx/dotfiles.git
+# dotfiles_repo: https://github.com/michaelcapx/dotfiles.git
+# dotfiles_repo: ssh://git@github.com:michaelcapx/dotfiles.git
+dotfiles_repo: git@github.com:michaelcapx/dotfiles.git
 
 # Default dotfiles git name.
 dotfiles_git_name: "{{ mimetic_name | default('') }}"
