@@ -2,6 +2,12 @@
 # tasks file for i3
 
 # Install i3
+- name: Install i3 dependency PPAs
+  apt_repository:
+    repo: ppa:aguignard/ppa
+    state: present
+    update_cache: yes
+
 - name: Install i3 dependencies
   apt:
     name: "{{ item }}"

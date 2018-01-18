@@ -48,7 +48,7 @@
     # - { role: node,   become: true, tags: ['languages'] }
 
     # Browser roles
-    # - { role: chromium, become: true, tags: ['browser'] }
+    - { role: chromium, become: true, tags: ['browser'] }
     # - { role: firefox,  become: true, tags: ['browser'] }
 
     # Editor roles

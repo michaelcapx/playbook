@@ -73,7 +73,7 @@ chromium_policies_recommended:
   DefaultSearchProviderSearchURL: "https://duckduckgo.com/?q={searchTerms}"
   DefaultSearchProviderIconURL: "https://duckduckgo.com/favicon.ico"
   RestoreOnStartup: 4 # Open a list of URLs
-  RestoreOnStartupURLs: ["https://www.startpage.com"]
+  RestoreOnStartupURLs: ["https://www.target.com"]
   AllowDeletingBrowserHistory: true
   AudioCaptureAllowed: false
   BackgroundModeEnabled: false
