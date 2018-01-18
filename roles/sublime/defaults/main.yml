@@ -69,9 +69,9 @@ sublime_packages:
 # Array of Github repositories to install.
 sublime_git_repos: []
 
-sublime_plugin_prefs:
-  - "AlignTab.sublime-settings"
-  # - "AlignTab/Context.sublime-menu"
-  - "ColorHighlighter.sublime-settings"
-  - "Side Bar.sublime-settings"
-  - "hyper_click.sublime-settings"
+# sublime_plugin_prefs:
+#   - "AlignTab.sublime-settings"
+#   # - "AlignTab/Context.sublime-menu"
+#   - "ColorHighlighter.sublime-settings"
+#   - "Side Bar.sublime-settings"
+#   - "hyper_click.sublime-settings"

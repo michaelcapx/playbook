@@ -116,11 +116,11 @@
     group: "{{ sublime_user }}"
 
 # Sublime Plugin Preferences
-- name: Copy Sublime plugin preferences
-  copy:
-    src: "plugins/{{ item }}"
-    dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
-    mode: 0774
-    owner: "{{ sublime_user }}"
-    group: "{{ sublime_user }}"
-  with_items: "{{ sublime_plugin_prefs }}"
+# - name: Copy Sublime plugin preferences
+#   copy:
+#     src: "plugins/{{ item }}"
+#     dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
+#     mode: 0774
+#     owner: "{{ sublime_user }}"
+#     group: "{{ sublime_user }}"
+#   with_items: "{{ sublime_plugin_prefs }}"
