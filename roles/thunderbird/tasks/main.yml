@@ -21,12 +21,12 @@
     name: "{{ thunderbird_package_name }}"
     state: present
 
-- name: Ensure thunderbird extensions directory exist
-  file:
-    state: directory
-    path: "{{ thunderbird_ext_dir }}"
-    mode: 0755
-  become: true
+# - name: Ensure thunderbird extensions directory exist
+#   file:
+#     state: directory
+#     path: "{{ thunderbird_ext_dir }}"
+#     mode: 0755
+#   become: true
 
 # Install Official Thunderbird extensions
 - name: Fetch xpi download link from official thunderbird plugin page

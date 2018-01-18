@@ -54,7 +54,7 @@ sublime_packages:
   - "Laravel Blade Highlighter"
   - "LESS"
   - "Material Theme"
-  - "Nodejs"
+  # - "Nodejs"
   - "Nunjucks Syntax"
   - "Package Control"
   - "SCSS"

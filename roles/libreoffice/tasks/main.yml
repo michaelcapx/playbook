@@ -93,7 +93,7 @@
 # Configure LibreOffice
 - name: Ensure office2016 icon pack is copied
   copy:
-    src: "files/{{ libreoffice_icon_name }}"
+    src: "{{ libreoffice_icon_name }}"
     dest: "{{ libreoffice_icon_path }}/{{ libreoffice_icon_name }}"
     owner: root
     group: root
@@ -109,7 +109,7 @@
 
 - name: Ensure libreoffice base config is copied once
   copy:
-    src: "files/registrymodifications.xcu"
+    src: "registrymodifications.xcu"
     dest: "{{ libreoffice_config_path }}/registrymodifications.xcu"
     mode: 0600
   when: libreoffice_installed.rc == 1
@@ -130,7 +130,7 @@
 
 - name: Ensure libreoffice wrapper is present
   template:
-    src: templates/libreoffice6.0.j2
+    src: libreoffice6.0.j2
     dest: "{{ libreoffice_wrapper_path }}"
     owner: root
     group: root

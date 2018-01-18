@@ -17,9 +17,15 @@
 
 - name: Install Gimp
   apt:
+    name: "{{ gimp_package_name }}"
+    state: latest
+  when: gimp_add_apt_repo | succeeded
+
+- name: Install Gimp Extras
+  apt:
     name: "{{ item }}"
     state: latest
-  with_items: "{{ gimp_packages | list }}"
+  with_items: "{{ gimp_plugin_packages }}"
   when: gimp_add_apt_repo | succeeded
 
 # - name: Ensure gimp is installed
