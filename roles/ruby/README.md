@@ -23,3 +23,6 @@ This role takes inspiration from the following Ansible roles:
 - [Stouts.ruby](https://github.com/Stouts/Stouts.ruby)
 - [sansible.ruby](https://github.com/sansible/ruby)
 - [rvm_io.ruby](https://github.com/rvm/rvm1-ansible)
+
+- [invisiblelines.brightbox-ruby](https://github.com/invisiblelines/ansible-brightbox-ruby)
+- [slisli.ruby-brightbox](https://github.com/vterdunov/ansible-ruby-brightbox)

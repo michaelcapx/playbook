@@ -19,12 +19,12 @@
 
 - name: Install Rbenv PATH
   lineinfile:
-    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    dest: "{{ ruby_rbenv_profile }}"
     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
 - name: Initialize Rbenv
   lineinfile:
-    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    dest: "{{ ruby_rbenv_profile }}"
     line: 'eval "$(rbenv init -)"'
 
 - name: Creates plugin directory
@@ -38,12 +38,12 @@
     repo: https://github.com/rbenv/ruby-build.git
     dest: "{{ ruby_home }}/.rbenv/plugins/ruby-build"
     accept_hostkey: true
-  become: true
-  become_user: "{{ ruby_user }}"
+  # become: true
+  # become_user: "{{ ruby_user }}"
 
 - name: Install Ruby Build PATH
   lineinfile:
-    dest: "{{ ruby_home }}/{{ ruby_rbenv_profile }}"
+    dest: "{{ ruby_rbenv_profile }}"
     line: 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"'
 
 - name : Install ruby version

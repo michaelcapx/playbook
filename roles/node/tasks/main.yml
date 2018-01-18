@@ -61,6 +61,10 @@
     path: "/home/{{ node_user }}/.npmrc"
     line: "prefix={{ npm_config_prefix }}"
     create: yes
+    owner: "{{ node_user }}"
+    group: "{{ node_user }}"
+  # become: true
+  # become_user: "{{ node_user }}"
   when: node_user is defined and node_user != 'root'
 
 - name: Configure dotfile paths for node
