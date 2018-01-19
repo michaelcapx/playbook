@@ -7,13 +7,17 @@
 
   vars:
     ran_from_vagrant: false
-    test_user: "{{ ansible_env.SUDO_USER }}"
+    test_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
     test_cases: []
 
   pre_tasks:
     - name: Upgrade dist
       apt: update_cache=yes upgrade=dist
       when: ran_from_vagrant == "true"
+
+    - name: Print out test user
+      debug:
+        msg: "{{ test_user }}"
 
     - name: Install virtualbox packages when running in Vagrant
       apt:
@@ -24,8 +28,42 @@
         - virtualbox-guest-dkms
         - virtualbox-guest-x11
 
+    - name: Ensure system groups are present
+      become: yes
+      group:
+        name: "{{ item }}"
+        state: present
+        system: yes
+      when: ran_from_vagrant == "true"
+      with_items:
+        - adm
+        - sudo
+        - cdrom
+        - dip
+        - plugdev
+        - lpadmin
+        - www-data
+
   roles:
     # - { role: ../roles/testrole, become: true }
+    - { role: ../roles/common,      tags: ['base'] }
+    - { role: ../roles/admin,       tags: ['base'] }
+    - { role: ../roles/ssh,         tags: ['base'] }
+    - { role: ../roles/git,         tags: ['base'] }
+    - { role: ../roles/shell,       tags: ['base'] }
+    - { role: ../roles/python,      tags: ['languages'] }
+    - { role: ../roles/ruby,        tags: ['languages'] }
+    - { role: ../roles/node,        tags: ['languages'] }
+    - { role: ../roles/chromium,    tags: ['browser'] }
+    - { role: ../roles/firefox,     tags: ['browser'] }
+    - { role: ../roles/sublime,     tags: ['editor'] }
+    - { role: ../roles/desktop,     tags: ['desktop'] }
+    - { role: ../roles/themes,      tags: ['desktop'] }
+    - { role: ../roles/xfce,        tags: ['desktop'] }
+    - { role: ../roles/docker,      tags: ['virtualization'] }
+    - { role: ../roles/vagrant,     tags: ['virtualization'] }
+    - { role: ../roles/dotfiles,    tags: ['extras'] }
+    - { role: ../roles/projects,    tags: ['extras'] }
 
   tasks:
     - name: Display the Ansible version info

@@ -40,7 +40,7 @@
   when: ruby_packages | length
 
 - name : Set ruby version
-  shell: ruby-switch --set ruby{{ ruby_version | truncate(3,True,'',0) }}
+  shell: ruby-switch --set ruby{{ ruby_version }}
   become: yes
 
 # Install RubyGems

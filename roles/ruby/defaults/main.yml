@@ -2,7 +2,7 @@
 # defaults file for ruby
 
 # Ruby version to install.
-ruby_version: "2.4.2"
+ruby_version: "2.4"
 
 # Default ruby user.
 ruby_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
@@ -29,9 +29,9 @@ ruby_dependencies:
 
 # Array of ruby apt packages to install when installing via PPA
 ruby_packages:
-  - "ruby{{ ruby_version | truncate(3,True,'',0) }}"
-  - "ruby{{ ruby_version | truncate(3,True,'',0) }}-dev"
-  - "libruby{{ ruby_version | truncate(3,True,'',0) }}"
+  - "ruby{{ ruby_version }}"
+  - "ruby{{ ruby_version }}-dev"
+  - "libruby{{ ruby_version }}"
   - "ruby-switch"
 
 # A list of Ruby gems to install.
