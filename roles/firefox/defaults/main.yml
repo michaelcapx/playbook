@@ -40,3 +40,4 @@ firefox_preferences:
   browser.safebrowsing.malware.enabled: 'false'
   browser.search.defaultenginename: "'DuckDuckGo'"
   browser.startup.homepage: "'https://www.startpage.com'"
+  signon.RememberSignons: 'false'

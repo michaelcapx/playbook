@@ -110,12 +110,20 @@
     - launcher-1
     - launcher-2
     - launcher-9
+    - launcher-10
     - launcher-12
 
 - name: Copy chromium launcher file
   copy:
     src: chromium.desktop
     dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-1/chromium.desktop"
+    owner: "{{ xfce_user }}"
+    group: "{{ xfce_user }}"
+
+- name: Copy firefox launcher file
+  copy:
+    src: firefox.desktop
+    dest: "{{ xfce_home }}/.config/xfce4/panel/launcher-10/firefox.desktop"
     owner: "{{ xfce_user }}"
     group: "{{ xfce_user }}"
 
@@ -158,7 +166,7 @@
   become: true
   become_user: "{{ xfce_user }}"
   with_items:
-    - xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids -n -a -t int -s 7 -t int -s 2 -t int -s 12 -t int -s 1 -t int -s 9 -t int -s 3 -t int -s 15 -t int -s 4 -t int -s 11 -t int -s 6 -t int -s 13 -t int -s 8 -t int -s 5
+    - xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids -n -a -t int -s 7 -t int -s 2 -t int -s 12 -t int -s 1 -t int -s 10 -t int -s 9 -t int -s 3 -t int -s 15 -t int -s 4 -t int -s 11 -t int -s 6 -t int -s 13 -t int -s 8 -t int -s 5
     - xfconf-query -c xfce4-panel -p /plugins/plugin-3 -n -t string -s tasklist
     - xfconf-query -c xfce4-panel -p /plugins/plugin-3/flat-buttons -n -t bool -s true
     - xfconf-query -c xfce4-panel -p /plugins/plugin-3/window-scrolling -n -t bool -s false
@@ -181,6 +189,8 @@
     - xfconf-query -c xfce4-panel -p /plugins/plugin-11/style -n -t uint -s 0
     - xfconf-query -c xfce4-panel -p /plugins/plugin-1 -n -t string -s launcher
     - xfconf-query -c xfce4-panel -p /plugins/plugin-1/items -n -a -t string -s chromium.desktop
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-10 -n -t string -s launcher
+    - xfconf-query -c xfce4-panel -p /plugins/plugin-10/items -n -a -t string -s firefox.desktop
     - xfconf-query -c xfce4-panel -p /plugins/plugin-2 -n -t string -s launcher
     - xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -n -a -t string -s thunar.desktop
     - xfconf-query -c xfce4-panel -p /plugins/plugin-12 -n -t string -s launcher
