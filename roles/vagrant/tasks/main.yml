@@ -101,6 +101,7 @@
   when: vagrant_check_deb.rc == 1
 
 - name: Clean Vagrant deb file
+  become: yes
   file:
     path: /tmp/download-vagrant-latest.deb
     state: absent
