@@ -88,6 +88,7 @@
 
 # Whiskermenu
 - name: Copy menu icon
+  become: yes
   copy:
     src: ubuntu-logo-menu.png
     dest: /usr/share/pixmaps/ubuntu-logo-menu.png
