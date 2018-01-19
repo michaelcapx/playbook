@@ -4,28 +4,59 @@
 # Install Virtualbox
 # ID: curl https://www.virtualbox.org/download/oracle_vbox_2016.asc | gpg --list-packets
 - name: Configure the Oracle APT key
+  become: yes
   apt_key:
     url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
     id: A2F683C52980AECF
     state: present
+    validate_certs: yes
+  register: virtualbox_key
+
+- name: Update apt cache if key was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: virtualbox_key.changed
 
 - name: Configure the VirtualBox APT repositories
+  become: yes
   apt_repository:
     repo: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
     state: present
+    validate_certs: yes
+    update_cache: yes
+  register: virtualbox_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: virtualbox_repo.changed
+
 
 - name: Install VirtualBox
+  become: yes
   apt:
     name: "virtualbox-{{ virtualbox_version }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
 
-- name: Install VirtualBox shared packages
+- name: Install VirtualBox dependencies
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ virtualbox_shared_packages | list }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ virtualbox_dependencies | list }}"
+  when: virtualbox_dependencies | length
 
+# Setup Virtualbox
 - name: Ensure virtualbox group is present
+  become: yes
   group:
     name: vboxusers
     state: present
@@ -44,7 +75,7 @@
     groups: vboxusers
     append: yes
 
-# Install Vargrant
+# Install Vagrant
 - name: Check if Vagrant is installed
   command: dpkg-query -W vagrant
   register: vagrant_check_deb
@@ -52,12 +83,19 @@
   changed_when: vagrant_check_deb.rc == 1
 
 - name: Download Vagrant
+  become: yes
   get_url:
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb"
     dest: "/tmp/download-vagrant-latest.deb"
+    timeout: 30
   when: vagrant_check_deb.rc == 1
+  register: download_vagrant
+  until: download_vagrant | succeeded
+  retries: 10
+  delay: 5
 
 - name: Install Vagrant
+  become: yes
   apt:
     deb: "/tmp/download-vagrant-latest.deb"
   when: vagrant_check_deb.rc == 1

@@ -1,6 +1,12 @@
 # Ansible Role: Ruby
 
-Installs Ruby and bundler gem on Linux.
+Installs [Ruby](https://www.ruby-lang.org/en/) and [Ruby Gems](https://rubygems.org/) for GalliumOS.
+
+For more information, [visit the Brightbox Ruby page](http://brightbox.com/docs/ruby/ubuntu/).
+
+## Dependencies
+
+No dependencies.
 
 ## Credits
 
@@ -23,6 +29,13 @@ This role takes inspiration from the following Ansible roles:
 - [Stouts.ruby](https://github.com/Stouts/Stouts.ruby)
 - [sansible.ruby](https://github.com/sansible/ruby)
 - [rvm_io.ruby](https://github.com/rvm/rvm1-ansible)
-
 - [invisiblelines.brightbox-ruby](https://github.com/invisiblelines/ansible-brightbox-ruby)
 - [slisli.ruby-brightbox](https://github.com/vterdunov/ansible-ruby-brightbox)
+
+## License
+
+This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
+
+## Author Information
+
+This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

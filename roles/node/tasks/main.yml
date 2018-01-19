@@ -3,36 +3,58 @@
 
 # Install Dependencies
 - name: Ensure node dependencies are installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ node_dependencies | list }}"
+  when: node_dependencies | length
 
 # Install node via Nodesource PPA
 - name: Add Nodesource apt key
+  become: yes
   apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
     id: "68576280"
     state: present
+    validate_certs: yes
+  register: node_key
+
+- name: Update apt cache if key was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: node_key.changed
 
 - name: Add NodeSource repositories for Node.js
+  become: yes
   apt_repository:
     repo: "{{ item }}"
     state: present
+    validate_certs: yes
+    update_cache: yes
   with_items:
     - "deb https://deb.nodesource.com/node_{{ node_version }} {{ ansible_distribution_release }} main"
     - "deb-src https://deb.nodesource.com/node_{{ node_version }} {{ ansible_distribution_release }} main"
   register: node_repo
 
 - name: Update apt cache if repo was added
+  become: yes
   apt:
     update_cache: yes
+    cache_valid_time: 3600
   when: node_repo.changed
 
 - name: Ensure Node.js and npm are installed
+  become: yes
   apt:
     name: "nodejs={{ node_version|regex_replace('x', '') }}*"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
 
 # NPM Configuration
 - name: Create npm global directory
@@ -42,11 +64,11 @@
     group: "{{ node_user }}"
     state: directory
 
-- name: Add npm_config_prefix bin directory to global $PATH.
-  template:
-    src: npm.sh.j2
-    dest: /etc/profile.d/npm.sh
-    mode: 0644
+# - name: Add npm_config_prefix bin directory to global $PATH.
+#   template:
+#     src: npm.sh.j2
+#     dest: /etc/profile.d/npm.sh
+#     mode: 0644
 
 # NPM User Configuration
 - name: Set npm global packages prefix
@@ -63,8 +85,8 @@
     create: yes
     owner: "{{ node_user }}"
     group: "{{ node_user }}"
-  # become: true
-  # become_user: "{{ node_user }}"
+  become: true
+  become_user: "{{ node_user }}"
   when: node_user is defined and node_user != 'root'
 
 - name: Configure dotfile paths for node
@@ -92,5 +114,5 @@
   environment:
     NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
     NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
-    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
+    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm | default(false) }}"
   with_items: "{{ npm_packages }}"

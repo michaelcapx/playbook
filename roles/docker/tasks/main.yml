@@ -3,65 +3,96 @@
 
 # Docker Prerequisites
 - name: Ensure docker dependencies are installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ docker_dependencies | list }}"
+  when: docker_dependencies | length
 
 # Add Docker repository
 - name: Add Docker apt key
+  become: yes
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
+    validate_certs: yes
   register: docker_add_repository_key
   ignore_errors: true
 
+- name: Update apt cache if key was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: docker_add_repository_key.changed
+
 - name: Ensure curl is present (on older systems without SNI)
+  become: yes
   package:
     name: curl
     state: present
   when: docker_add_repository_key|failed
 
 - name: Add Docker apt key (alternative for older systems without SNI)
+  become: yes
   shell: "curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
   args:
     warn: no
   when: docker_add_repository_key|failed
 
 - name: Add Docker repository
+  become: yes
   apt_repository:
     repo: "{{ docker_apt_repository }}"
     state: present
+    validate_certs: yes
     update_cache: yes
+  register: docker_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: docker_repo.changed
 
 # Install Docker
 - name: Install Docker packages
+  become: yes
   apt:
     name: "{{ docker_package }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Ensure Docker is started and enabled at boot
+  become: yes
   service:
     name: docker
     state: started
     enabled: yes
 
 - name: Ensure that the docker service is functional
+  become: yes
   docker_ping:
   register: docker_result
   retries: 5
   delay: 10
   until: docker_result|success
-  become: yes
 
 - name: Ensure docker group is present
+  become: yes
   group:
     name: docker
     state: present
     system: yes
 
 - name: Add user to docker group
+  become: yes
   user:
     name: "{{ docker_user }}"
     groups: docker
@@ -75,6 +106,7 @@
   failed_when: false
 
 - name: Delete existing docker-compose version if it's different.
+  become: yes
   file:
     path: "{{ docker_compose_path }}"
     state: absent
@@ -109,24 +141,45 @@
 
 # Docker indicator
 - name: Install Docker PIP module
+  become: yes
   pip:
     name: docker
     state: present
     executable: /usr/bin/pip3
 
 - name: Add Docker indicator PPA repository
+  become: yes
   apt_repository:
     repo: ppa:yktooo/ppa
     state: present
+    validate_certs: yes
+    update_cache: yes
+  register: yktooo_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: yktooo_repo.changed
 
 - name: Install Docker indicator software package
+  become: yes
   apt:
     name: indicator-docker
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Change default Docker indicator icon
+  become: yes
   get_url:
     url: https://raw.githubusercontent.com/yktoo/indicator-docker/master/icons/ubuntu-mono-dark/indicator-docker.svg
     dest: /usr/share/icons/hicolor/22x22/status/indicator-docker.svg
     mode: 0644
     force: yes
+    timeout: 30
+  register: download_yktoo_icons
+  until: download_yktoo_icons | succeeded
+  retries: 10
+  delay: 5

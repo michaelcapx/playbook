@@ -3,79 +3,60 @@
 
 # Install Dependencies
 - name: Ensure ruby dependencies are installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ ruby_dependencies | list }}"
+  when: ruby_dependencies | length
 
-# Install Ruby via Rbenv
-- name: Install Rbenv
-  git:
-    repo: https://github.com/rbenv/rbenv.git
-    dest: "{{ ruby_home }}/.rbenv"
-    accept_hostkey: true
-  become: true
-  become_user: "{{ ruby_user }}"
+# Install Ruby via Brightbox PPA
+- name: Add ruby PPA repository
+  become: yes
+  apt_repository:
+    repo: ppa:brightbox/ruby-ng
+    state: present
+    validate_certs: yes
+    update_cache: yes
+  register: ruby_repo
 
-- name: Install Rbenv PATH
-  lineinfile:
-    dest: "{{ ruby_rbenv_profile }}"
-    line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ruby_repo.changed
 
-- name: Initialize Rbenv
-  lineinfile:
-    dest: "{{ ruby_rbenv_profile }}"
-    line: 'eval "$(rbenv init -)"'
+- name: Install ruby software packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ ruby_packages | list }}"
+  when: ruby_packages | length
 
-- name: Creates plugin directory
-  file:
-    path: "{{ ruby_home }}/.rbenv/plugins/"
-    mode: 0755
-    state: directory
-
-- name: Install Ruby Build
-  git:
-    repo: https://github.com/rbenv/ruby-build.git
-    dest: "{{ ruby_home }}/.rbenv/plugins/ruby-build"
-    accept_hostkey: true
-  # become: true
-  # become_user: "{{ ruby_user }}"
-
-- name: Install Ruby Build PATH
-  lineinfile:
-    dest: "{{ ruby_rbenv_profile }}"
-    line: 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"'
-
-- name : Install ruby version
-  shell: "{{ ruby_home }}/.rbenv/bin/rbenv install {{ ruby_version }}"
-  failed_when: false
-  become: true
-  become_user: "{{ ruby_user }}"
-
-- name : Set global ruby version
-  shell: "{{ ruby_home }}/.rbenv/bin/rbenv global {{ ruby_version }}"
-  become: true
-  become_user: "{{ ruby_user }}"
+- name : Set ruby version
+  shell: ruby-switch --set ruby{{ ruby_version | truncate(3,True,'',0) }}
+  become: yes
 
 # Install RubyGems
-- name: Install Bundler
+- name: Install bundler
+  become: yes
   gem:
     name: bundler
     state: present
     user_install: no
 
-- name: Install global Ruby gems
+- name: Install global ruby gems
+  become: yes
   gem:
     name: "{{ item.name | default(item) }}"
     state: "{{ item.state | default('present') }}"
     version: "{{ item.version | default(omit) }}"
-    user_install: yes
+    user_install: "{{ item.user_install | default('no') }}"
     executable: "{{ item.executable | default(omit) }}"
-  become: yes
-  become_user: "{{ ruby_user }}"
   with_items: "{{ ruby_gems }}"
-
-- name : Rehash Rbenv
-  shell: "{{ ruby_home }}/.rbenv/bin/rbenv rehash"
-  become: true
-  become_user: "{{ ruby_user }}"

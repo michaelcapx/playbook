@@ -1,11 +1,15 @@
 ---
 # defaults file for node
 
+# Set the version of Node.js to install ("0.12", "4.x", "5.x", "6.x", "8.x").
+# Version numbers from Nodesource: https://github.com/nodesource/distributions
+node_version: "8.x"
+
 # Default node user.
-node_user: "{{ ansible_env.USER }}"
+node_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default node home.
-node_home: "{{ ansible_env.HOME }}"
+node_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 node_dependencies:
@@ -15,29 +19,25 @@ node_dependencies:
   - git
   - curl
 
-# Set the version of Node.js to install ("0.12", "4.x", "5.x", "6.x", "8.x").
-# Version numbers from Nodesource: https://github.com/nodesource/distributions
-node_version: "8.x"
-
 # The directory for global installations.
 npm_config_prefix: "{{ node_home }}/.npm-global"
 
 # Set to true to suppress the UID/GID switching when running package scripts. If set explicitly to false, then installing as a non-root user will fail.
-npm_config_unsafe_perm: "false"
+npm_config_unsafe_perm: "true"
 
 # Define a list of global packages to be installed with NPM.
 npm_packages:
   - name: gulp-cli
-  - name: bower
-  - name: yarn
-  - name: grunt-cli
-  - name: browser-sync
-  - name: webpack
-  - name: webpack-dev-server
-  - name: yo
-  - name: less
-  - name: node-sass
-  - name: jslint
+  # - name: bower
+  # - name: yarn
+  # - name: grunt-cli
+  # - name: browser-sync
+  # - name: webpack
+  # - name: webpack-dev-server
+  # - name: yo
+  # - name: less
+  # - name: node-sass
+  # - name: jslint
   # - name: npm-check-updates
   # - name: phantomjs-prebuilt
   # - name: casperjs

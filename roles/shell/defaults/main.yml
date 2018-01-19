@@ -5,7 +5,7 @@
 shell_type: "{{ mimetic_shell | default('bash') }}"
 
 # Default shell user.
-shell_user: "{{ mimetic_user | default(ansible_env.USER) }}"
+shell_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default shell home.
 shell_home: "{{ mimetic_home | default(ansible_env.HOME) }}"

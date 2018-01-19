@@ -7,8 +7,8 @@ mimetic_pre_provision_scripts: []
 mimetic_post_provision_scripts: []
 
 # The main provision user.
-mimetic_user: "{{ ansible_env.USER }}"
-mimetic_home: "{{ ansible_env.HOME }}"
+mimetic_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
+mimetic_home: "/home/{{ mimetic_user }}"
 mimetic_name: "{{ vault_name | default(none) }}"
 mimetic_email: "{{ vault_email | default(none) }}"
 mimetic_shell: bash

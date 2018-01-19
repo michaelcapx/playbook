@@ -2,24 +2,21 @@
 # defaults file for desktop
 
 # Default desktop user.
-desktop_user: "{{ ansible_env.USER }}"
+desktop_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default desktop home.
-desktop_home: "{{ ansible_env.HOME }}"
-
-# Array of desktop apt package dependencies. These packages should be installed before all others.
-desktop_apt_dependencies:
-  - xvfb
-  - acpid
-  - imagemagick
+desktop_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
-desktop_apt_ppa:
+desktop_ppa:
   - { ppa: "ppa:yktooo/ppa",                       pkg: indicator-sound-switcher }
   - { ppa: "ppa:dawidd0811/neofetch",              pkg: neofetch }
   - { ppa: "ppa:giuspen/ppa",                      pkg: cherrytree }
   - { ppa: "ppa:eugenesan/ppa",                    pkg: keepassx }
-  - { ppa: "ppa:caffeine-developers/ppa",          pkg: caffeine }
+  - { ppa: "ppa:otto-kesselgulasch/gimp",          pkg: gimp }
+  - { ppa: "ppa:inkscape.dev/stable",              pkg: inkscape }
+  - { ppa: "ppa:libreoffice/libreoffice-5-4",      pkg: libreoffice }
+  # - { ppa: "ppa:transmissionbt/ppa",               pkg: transmission }
   # - { ppa: "ppa:thomas-schiex/blender",            pkg: blender }
   # - { ppa: "ppa:kirillshkrogalev/ffmpeg-next",     pkg: ffmpeg }
   # - { ppa: "ppa:obsproject/obs-studio",            pkg: obs-studio }
@@ -30,41 +27,36 @@ desktop_apt_ppa:
   # - { ppa: "ppa:remmina-ppa-team/remmina-next",    pkg: remmina-plugin-rdp }
 
 # Array of gui desktop software packages to install
-desktop_apt_packages_gui:
+desktop_packages_gui:
   - bleachbit
   - filezilla
   - gpick
-  - meld # Diff / merge tool
+  - meld
   - mpv
   - font-manager
-  - screenruler
   - transmission
-  - typecatcher
-  - lubuntu-software-center
   - xfpanel-switch
-  - easytag # audio files metadata management
-  - byzanz # screen recording
-  - geany # texteditor
-  - pinta # light paint.net equivalent
+  - easytag
   - rhythmbox
-  - ubuntu-restricted-extras # MP3, Microsoft fonts, Flash plugin, LAME and DVD playback
-  - unetbootin # create bootable USB drives
-  # - zathura
-  # - zathura-pdf-poppler
-  # - zathura-ps
+  - ubuntu-restricted-extras
 
 # Array of cli desktop software packages to install
-desktop_apt_packages_cli:
+desktop_packages_cli:
   - colortest
   - htop
   - httping
   - iftop
   - iotop
-  - xclip # to manipulate the clipboard
+  - xclip
   - lastpass-cli
   - trash-cli
-  - rxvt-unicode-256color
-  - sox # to play sounds
 
 # Array of desktop apt packages to install.
-desktop_apt_packages: "{{ desktop_apt_packages_gui + desktop_apt_packages_cli }}"
+desktop_packages: "{{ desktop_packages_gui + desktop_packages_cli }}"
+
+# Sets the default application alternatives.
+desktop_alternatives:
+  # - { name: "x-www-browser", link: "/usr/bin/x-www-browser", path: "/usr/bin/firefox", priority: 250 }
+  # - { name: "gnome-www-browser", link: "/usr/bin/gnome-www-browser", path: "/usr/bin/firefox", priority: 250 }
+  - { name: "x-www-browser", link: "/usr/bin/x-www-browser", path: "/usr/bin/chromium-browser", priority: 250 }
+  - { name: "gnome-www-browser", link: "/usr/bin/gnome-www-browser", path: "/usr/bin/chromium-browser", priority: 250 }

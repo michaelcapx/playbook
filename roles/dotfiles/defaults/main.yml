@@ -2,21 +2,16 @@
 # defaults file for dotfiles
 
 # Default dotfiles user.
-dotfiles_user: "{{ ansible_env.USER }}"
+dotfiles_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default dotfiles home.
-dotfiles_home: "{{ ansible_env.HOME }}"
+dotfiles_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+
+# Default ssh public & private key files.
+dotfiles_ssh_key: "{{ dotfiles_home }}/.ssh/id_rsa"
 
 # Default dotfiles path.
 dotfiles_path: .dotfiles
 
 # Default dotfiles Github repo.
-# dotfiles_repo: https://github.com/michaelcapx/dotfiles.git
-# dotfiles_repo: ssh://git@github.com:michaelcapx/dotfiles.git
 dotfiles_repo: git@github.com:michaelcapx/dotfiles.git
-
-# Default dotfiles git name.
-dotfiles_git_name: "{{ mimetic_name | default('') }}"
-
-# Default dotfiles git email.
-dotfiles_git_email: "{{ mimetic_email | default('') }}"

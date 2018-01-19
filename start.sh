@@ -12,7 +12,7 @@ set -e
 ###########################################################################
 
 if [[ $EUID -eq 0 ]]; then
-  echo "This script must NOT be run as root" 1>&2
+  echo -e "\033[1;31mThis script must NOT be run as root\033[0m" 1>&2
   exit 1
 fi
 

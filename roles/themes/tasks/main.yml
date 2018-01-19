@@ -3,41 +3,14 @@
 
 # Theme dependencies
 - name: Install theme dependencies
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ theme_dependencies | list }}"
-
-# Install Icons
-- name: Add icon PPA repositories
-  apt_repository:
-    repo: "{{ item.ppa }}"
-    state: present
-  with_items: "{{ theme_icons }}"
-  when: theme_icons | length
-
-- name: Install icon PPA packages
-  apt:
-    name: "{{ item.pkg }}"
-    state: present
-  with_items: "{{ theme_icons }}"
-  when: theme_icons | length
-
-# Install LXDM
-- name: Install lxdm dependencies
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ theme_lxdm_dependencies | list }}"
-
-- name: Ensure lxdm.conf is present
-  template:
-    src: templates/lxdm.conf.j2
-    dest: /etc/lxdm/lxdm.conf
-    owner: root
-    group: root
-    mode: 0644
   become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ theme_dependencies | list }}"
+  when: theme_dependencies | length
 
 # Install Theme
 - name: Install Arc-Theme
@@ -60,6 +33,7 @@
   when: arc_theme_git.changed
 
 - name: Make Arc-Theme
+  become: yes
   command: make install
   args:
     chdir: "{{ theme_home }}/.cache/arc-theme"
@@ -67,6 +41,7 @@
   when: arc_theme_git.changed
 
 - name: Delete Arc-Theme cache
+  become: yes
   file:
     path: "{{ theme_home }}/.cache/arc-theme"
     state: absent

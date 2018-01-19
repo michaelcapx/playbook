@@ -1,0 +1,13 @@
+---
+# vars file for themes
+
+# Array of theme apt package dependencies. These packages should be installed before all others.
+theme_dependencies:
+  - autoconf
+  - automake
+  - gtk2-engines-murrine
+  - gtk2-engines-pixbuf
+  - libgtk-3-dev
+  - optipng
+  - lxdm
+  - librsvg2-2

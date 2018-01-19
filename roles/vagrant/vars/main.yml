@@ -1,0 +1,6 @@
+---
+# vars file for vagrant
+
+# Additional shared packages to install.
+virtualbox_dependencies:
+  - dkms

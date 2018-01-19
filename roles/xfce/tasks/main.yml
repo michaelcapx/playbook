@@ -29,6 +29,7 @@
 
 # Imagemagick Configuration
 - name: Copy imagemagick desktop entry files
+  become: yes
   copy:
     src: imagemagick.desktop
     dest: "/usr/local/share/applications/{{ item }}"
@@ -148,7 +149,7 @@
     - xfconf-query -c thunar -p /last-view -n -t string -s ThunarIconView
     - xfconf-query -c thunar -p /last-icon-view-zoom-level -n -t string -s THUNAR_ZOOM_LEVEL_NORMAL
     - xfconf-query -c thunar -p /last-separator-position -n -t int -s 170
-    - xfconf-query -c thunar -p /last-show-hidden -n -t bool -s true
+    - xfconf-query -c thunar -p /last-show-hidden -n -t bool -s false
     - xfconf-query -c thunar -p /misc-single-click -n -t bool -s false
     - xfconf-query -c thunar -p /hidden-bookmarks -n -a -t string -s "network:///"
 

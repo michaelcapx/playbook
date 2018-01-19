@@ -2,29 +2,10 @@
 # defaults file for themes
 
 # Default theme user.
-theme_user: "{{ ansible_env.USER }}"
+theme_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default theme home.
-theme_home: "{{ ansible_env.HOME }}"
-
-# Array of theme apt package dependencies. These packages should be installed before all others.
-theme_dependencies:
-  - autoconf
-  - automake
-  - gtk2-engines-murrine
-  - gtk2-engines-pixbuf
-  - libgtk-3-dev
-  - optipng
-
-theme_lxdm_dependencies:
-  - lxdm
-  - librsvg2-2
-
-# Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
-theme_icons:
-  - { ppa: "ppa:moka/daily", pkg: moka-icon-theme }
-  - { ppa: "ppa:moka/daily", pkg: faba-icon-theme }
-  - { ppa: "ppa:moka/daily", pkg: faba-mono-icons }
+theme_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 
 # Main theme git repos.
 theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme
@@ -36,16 +17,3 @@ theme_iconset: "Numix-Circle-GalliumOS"
 theme_cursor: "DMZ-Black"
 theme_notify: "Numix"
 theme_wallpaper: "/usr/share/xfce4/backdrops/Untitled_0026_by_Mike_Sinko.jpg"
-
-# Find available themes via
-# $ ls -1 /usr/share/lxdm/themes/
-theme_lxdm: "GalliumOS" # Industrial
-
-# Find available gtk-themes via:
-# $ ls -1 /usr/share/themes/
-theme_lxdm_gtk: "Arc-GalliumOS" # Clearlooks
-
-# Show users instead of having to type the username
-theme_lxdm_show_user_list: yes
-
-theme_lxdm_show_bottom_pane: no

@@ -2,37 +2,57 @@
 # tasks file for sublime
 
 # Sublime Dependencies
-- name: assert that sublime repository channel is set correctly
-  assert:
-    that:
-      - sublime_repo_channel == 'stable' or sublime_repo_channel == 'dev'
-    msg: sublime_repo_channel must be 'stable' or 'dev'
-
 - name: Ensure sublime dependencies are installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ sublime_dependencies | list }}"
+  when: sublime_dependencies | length
 
 # Sublime Installation
 - name: Add sublime GPG key
+  become: yes
   apt_key:
     url: "{{ sublime_gpg_key }}"
     id: "{{ sublime_apt_key }}"
     state: present
+    validate_certs: yes
+  register: sublime_key
+
+- name: Update apt cache if key was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: sublime_key.changed
 
 - name: Add sublime repository
+  become: yes
   apt_repository:
     repo: "deb https://download.sublimetext.com/ apt/{{ sublime_repo_channel }}/"
     state: present
     filename: "sublime-text"
+    validate_certs: yes
     update_cache: yes
-  register: sublime_add_repo
+  register: sublime_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: sublime_repo.changed
 
 - name: Install latest sublime package
+  become: yes
   apt:
     name: sublime-text
     state: latest
+    update_cache: yes
+    cache_valid_time: 3600
   when: sublime_add_repo | succeeded
 
 # Sublime Directories
@@ -67,8 +87,8 @@
     mode: 0774
     owner: "{{ sublime_user }}"
     group: "{{ sublime_user }}"
-  register: task_result
-  until: task_result | succeeded
+  register: download_pkg_control
+  until: download_pkg_control | succeeded
   retries: 10
   delay: 5
 
@@ -80,14 +100,6 @@
     owner: "{{ sublime_user }}"
     group: "{{ sublime_user }}"
     backup: "{{ sublime_package_control_backup }}"
-
-# Git Clone Sublime Install User Packages
-- name: Clone Sublime Packages from Github
-  git:
-    repo: "{{ item.repo }}"
-    dest: "{{ sublime_user_preferences_dir }}/{{ item.name }}"
-  with_items: "{{ sublime_git_repos }}"
-  when: sublime_git_repos | length
 
 # Sublime License
 - name: Copy Sublime license file
@@ -114,13 +126,3 @@
     mode: 0774
     owner: "{{ sublime_user }}"
     group: "{{ sublime_user }}"
-
-# Sublime Plugin Preferences
-# - name: Copy Sublime plugin preferences
-#   copy:
-#     src: "plugins/{{ item }}"
-#     dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
-#     mode: 0774
-#     owner: "{{ sublime_user }}"
-#     group: "{{ sublime_user }}"
-#   with_items: "{{ sublime_plugin_prefs }}"

@@ -1,70 +1,41 @@
 ---
 # tasks file for dotfiles
 
-# - name: Create public dotfiles directory
-#   file:
-#     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-#     state: directory
-#   register: dotfiles_create
+- name: Check that the user SSH key exists
+  stat:
+    path: "{{ dotfiles_ssh_key }}"
+  register: dotfiles_ssh_key_exists
 
-- name: Clone public dotfiles repository
+- name: Clone dotfiles repository
   become: true
   become_user: "{{ dotfiles_user }}"
   git:
     repo: "{{ dotfiles_repo }}"
-    dest: "{{ dotfiles_home }}/{{ dotfiles_path }}.git"
+    dest: "{{ dotfiles_home }}/{{ dotfiles_path }}"
     update: no
     bare: yes
-    key_file: "/home/{{ dotfiles_user }}/.ssh/id_rsa"
+    key_file: "{{ dotfiles_ssh_key }}"
     accept_hostkey: yes
-  # failed_when: false
-  # notify: checkout dotfiles
+  when: dotfiles_ssh_key_exists.stat.exists == true
 
-- name: Create public dotfiles directory
-  file:
+- name: Ensure dotfiles directory exists
+  stat:
     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-    state: directory
-  register: dotfiles_create
+  register: dotfiles_created
+  when: dotfiles_created.stat.isdir is defined and dotfiles_created.stat.isdir
 
-- name: checkout dotfiles
+- name: Checkout dotfiles
   become: true
   become_user: "{{ dotfiles_user }}"
-  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}.git/ --work-tree=$HOME checkout -f"
+  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}/ --work-tree=$HOME checkout -f"
   args:
     chdir: "{{ dotfiles_home }}"
-  # notify: config dotfiles repo
+  when: dotfiles_created.stat.exists
 
-- name: config dotfiles repo
+- name: Config dotfiles repo
   become: true
   become_user: "{{ dotfiles_user }}"
-  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}.git/ --work-tree=$HOME config --local status.showUntrackedFiles no"
+  shell: "/usr/bin/git --git-dir=$HOME/{{ dotfiles_path }}/ --work-tree=$HOME config --local status.showUntrackedFiles no"
   args:
     chdir: "{{ dotfiles_home }}"
-
-# Make sure the handler runs now and not at the end of the playbook
-# - meta: flush_handlers
-
-# - name: Configure repository
-#   command: "git config --local user.email {{ dotfiles_git_email }}"
-#   args:
-#     chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-#     warn: false
-#   when:
-#     - dotfiles_create.changed
-#     - dotfiles_git_email is defined and dotfiles_git_email != ''
-
-# - name: Configure repository
-#   command: "git config --local user.name {{ dotfiles_git_name }}"
-#   args:
-#     chdir: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-#     warn: false
-#   when:
-#     - dotfiles_create.changed
-#     - dotfiles_git_name is defined and dotfiles_git_name != ''
-
-# - name: Fix dotfiles directory owner
-#   file:
-#     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
-#     owner: "{{ dotfiles_user }}"
-#     group: "{{ dotfiles_user }}"
-#     recurse: yes
+  when: dotfiles_created.stat.exists

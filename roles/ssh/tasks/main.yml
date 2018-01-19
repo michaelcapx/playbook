@@ -3,14 +3,18 @@
 
 # Install Dependencies
 - name: Ensure SSH dependencies are installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ ssh_dependencies | list }}"
   when: ssh_dependencies | length
 
 # Generate SSH Keys
-- name: Ensure SSH home directory exists.
+- name: Ensure SSH home directory exists
+  become: yes
   file:
     path: "{{ ssh_home }}/.ssh"
     owner: "{{ ssh_user }}"
@@ -24,6 +28,7 @@
   register: ssh_private_key_exists
 
 - name: Generate SSH Key
+  become: yes
   user:
     name: "{{ ssh_user }}"
     generate_ssh_key: "{{ ssh_generate_key | default(yes) }}"
@@ -31,12 +36,11 @@
     ssh_key_bits: "{{ ssh_key_bits | default(4096) }}"
     ssh_key_file: "{{ ssh_key_file | default('.ssh/id_rsa') }}"
     ssh_key_comment: "{{ ssh_key_comment | default(inventory_hostname) }}"
-  become: true
-  become_user: "{{ ssh_user }}"
   when: ssh_private_key_exists.stat.exists == false
   register: ssh_key_generated
 
 - name: Ensure the keys have restricted permissions
+  become: yes
   file:
     path: "{{ item }}"
     owner: "{{ ssh_user }}"

@@ -36,40 +36,36 @@
   roles:
 
     # Base roles
-    - { role: common, become: true, tags: ['base'] }
-    - { role: admin,  become: true, tags: ['base'] }
-    - { role: ssh,    become: true, tags: ['base'] }
-    - { role: git,    become: true, tags: ['base'] }
-    # - { role: shell,  become: true, tags: ['base'] }
+    - { role: common,      tags: ['base'] }
+    - { role: admin,       tags: ['base'] }
+    - { role: ssh,         tags: ['base'] }
+    - { role: git,         tags: ['base'] }
+    - { role: shell,       tags: ['base'] }
 
     # Language roles
-    # - { role: python, become: true, tags: ['languages'] }
-    # - { role: ruby,   become: true, tags: ['languages'] }
-    # - { role: node,   become: true, tags: ['languages'] }
+    - { role: python,      tags: ['languages'] }
+    - { role: ruby,        tags: ['languages'] }
+    - { role: node,        tags: ['languages'] }
 
     # Browser roles
-    - { role: chromium, become: true, tags: ['browser'] }
-    # - { role: firefox,  become: true, tags: ['browser'] }
+    # - { role: chromium,    tags: ['browser'] }
+    # - { role: firefox,     tags: ['browser'] }
 
     # Editor roles
-    - { role: sublime, become: true, tags: ['editor'] }
+    - { role: sublime,     tags: ['editor'] }
 
     # Desktop roles
-    - { role: desktop,     become: true, tags: ['desktop'] }
-    # - { role: gimp,        become: true, tags: ['desktop'] }
-    # - { role: inkscape,    become: true, tags: ['desktop'] }
-    # - { role: libreoffice, become: true, tags: ['desktop'] }
-    # - { role: fonts,       become: true, tags: ['desktop'] }
-    - { role: themes,      become: true, tags: ['desktop'] }
-    - { role: xfce,        become: true, tags: ['desktop'] }
+    - { role: desktop,     tags: ['desktop'] }
+    - { role: themes,      tags: ['desktop'] }
+    - { role: xfce,        tags: ['desktop'] }
 
     # Virtualization roles
-    - { role: docker,     become: true, tags: ['virtualization'] }
-    - { role: vagrant,    become: true, tags: ['virtualization'] }
+    - { role: docker,      tags: ['virtualization'] }
+    - { role: vagrant,     tags: ['virtualization'] }
 
     # Extra roles
-    # - { role: dotfiles, become: true, tags: ['extras'] }
-    # - { role: projects, become: true, tags: ['extras'] }
+    - { role: dotfiles,    tags: ['extras'] }
+    - { role: projects,    tags: ['extras'] }
 
   tasks:
 
@@ -78,11 +74,10 @@
       with_items: "{{ mimetic_post_provision_scripts | default([]) }}"
       when: mimetic_post_provision_scripts | length
 
-    - name: Autoremove apt packages
+    - name: Cleanup installation
       become: yes
       apt:
+        autoclean: yes
         autoremove: yes
-
-    - name: Cleanup apt installation
-      become: yes
-      command: apt-get clean warn=no
+        update_cache: yes
+        cache_valid_time: 3600

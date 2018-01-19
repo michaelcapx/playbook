@@ -3,37 +3,58 @@
 
 # Install Dependencies
 - name: Install desktop dependencies
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ desktop_apt_dependencies | list }}"
-  when: desktop_apt_dependencies | length
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ desktop_dependencies | list }}"
+  when: desktop_dependencies | length
 
 # Install PPA Packages
 - name: Add desktop PPA repositories
+  become: yes
   apt_repository:
     repo: "{{ item.ppa }}"
     state: present
-  with_items: "{{ desktop_apt_ppa }}"
-  when: desktop_apt_ppa | length
+    validate_certs: yes
+    update_cache: yes
+  with_items: "{{ desktop_ppa }}"
+  when: desktop_ppa | length
+  register: desktop_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: desktop_repo.changed
 
 - name: Install desktop PPA packages
+  become: yes
   apt:
     name: "{{ item.pkg }}"
     state: present
-  with_items: "{{ desktop_apt_ppa }}"
-  when: desktop_apt_ppa | length
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ desktop_ppa | list }}"
+  when: desktop_ppa | length
 
 # Install Desktop Packages
 - name: Install desktop software packages
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ desktop_apt_packages | list }}"
-  when: desktop_apt_packages | length
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ desktop_packages | list }}"
+  when: desktop_packages | length
 
 # Create Directories
 - name: Make sure /usr/local/share/applications exists
+  become: yes
   file:
     path: /usr/local/share/applications
     state: directory
@@ -41,6 +62,7 @@
     group: "{{ desktop_user }}"
 
 - name: Make sure startup application directory exists
+  become: yes
   file:
     path: "{{ desktop_home }}/.config/autostart"
     state: directory
@@ -49,8 +71,17 @@
 
 # Set Permissions
 - name: Set jack.sh with proper permissions
+  become: yes
   file:
     dest: /etc/acpi/jack.sh
     owner: root
     group: root
     mode: 0755
+
+- name: Set program alternatives
+  alternatives:
+    name: "{{ item.name }}"
+    link: "{{ item.link }}"
+    path: "{{ item.path }}"
+    priority: "{{ item.priority | default(50) }}"
+  with_items: "{{ desktop_alternatives }}"

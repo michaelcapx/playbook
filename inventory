@@ -1,14 +1,6 @@
 #
 # Inventory file
 #
-# Customize:
-# ----------
-# 1. Create a host_vars/<name>.yml file and directory.
-# 2. Customize host_vars/<name>.yml
-# 3. Add your <name> to an existing or new group to this 'inventory' file.
-# 4. Run the following for your specific profile:
-#
-# ansible-playbook -i inventory playbook.yml --diff --limit <name> --ask-become-pass
 
-[localhost]
+[local]
 localhost       ansible_connection=local

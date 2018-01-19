@@ -8,31 +8,9 @@ A user must exist for you to use this role, and a bare git repo containing all d
 
 https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 
-## Installation
+## Dependencies
 
-1. Initialize a bare git repository.
-
-    git init --bare $HOME/.dotfiles
-
-2. Create an alias.
-
-    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-3. Add the alias to the `.bashrc` file.
-
-    echo "alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.bashrc
-
-4. Source the `.bashrc` file.
-
-    source ~/.bashrc
-
-5. Configure git to not show untracked files.
-
-    dotfiles config --local status.showUntrackedFiles no
-
-6. Add files to the git repo.
-
-    dotfiles add ~/.bashrc
+No dependencies.
 
 ## Credits
 
@@ -45,3 +23,12 @@ This role takes inspiration from the following Ansible roles:
 - [markushartman.dotfiles](https://github.com/markushartman/ansible-role-dotfiles)
 - [kentrino.dotfiles](https://github.com/kentrino/ansible-role-dotfiles)
 - [escapace.dotfiles](https://github.com/escapace/ansible-dotfiles)
+
+
+## License
+
+This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
+
+## Author Information
+
+This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

@@ -3,16 +3,18 @@
 
 # Setup Admin User
 - name: Create admin user account
+  become: yes
   user:
     name: "{{ admin_user }}"
     comment: "{{ admin_fullname | default(omit) }}"
     group: "{{ admin_group }}"
-    groups: "{{ admin_groups | join(',') | default([]) }}"
+    groups: "{{ admin_groups | join(',') }}"
     state: present
     append: yes
   register: setup_admin
 
 - name: Setting admin user's home permission
+  become: yes
   file:
     dest: "{{ admin_home }}"
     owner: "{{ admin_user }}"

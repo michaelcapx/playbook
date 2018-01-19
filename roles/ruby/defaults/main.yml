@@ -1,11 +1,14 @@
 ---
 # defaults file for ruby
 
+# Ruby version to install.
+ruby_version: "2.4.2"
+
 # Default ruby user.
-ruby_user: "{{ ansible_env.USER }}"
+ruby_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
 
 # Default ruby home.
-ruby_home: "{{ ansible_env.HOME }}"
+ruby_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 ruby_dependencies:
@@ -24,16 +27,20 @@ ruby_dependencies:
   - python-software-properties
   - libffi-dev
 
-# Ruby version to install.
-ruby_version: "2.4.2"
-
-# Path to ruby rbenv file.
-ruby_rbenv_profile: "{{ ruby_home }}/.{{ 'zshrc_local' if ansible_user_shell == '/bin/zsh' else 'bashrc' }}"
+# Array of ruby apt packages to install when installing via PPA
+ruby_packages:
+  - "ruby{{ ruby_version | truncate(3,True,'',0) }}"
+  - "ruby{{ ruby_version | truncate(3,True,'',0) }}-dev"
+  - "libruby{{ ruby_version | truncate(3,True,'',0) }}"
+  - "ruby-switch"
 
 # A list of Ruby gems to install.
 ruby_gems:
   - name: rails
-    state: present
     version: 5.1.4
   - name: sass
   - name: boom
+  - name: rake
+  # - name: bundler
+  #   state: present # present/absent/latest, default: present
+  #   version: "~> 1.15.1" # default: N/A

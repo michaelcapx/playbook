@@ -1,0 +1,8 @@
+---
+# vars file for desktop
+
+# Array of desktop apt package dependencies. These packages should be installed before all others.
+desktop_dependencies:
+  - xvfb
+  - acpid
+  - imagemagick

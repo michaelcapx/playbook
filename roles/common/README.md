@@ -2,6 +2,10 @@
 
 Base role to install some common packages and utilites.
 
+## Dependencies
+
+No dependencies.
+
 ## Credits
 
 This role takes inspiration from the following Ansible roles:
@@ -20,3 +24,11 @@ This role takes inspiration from the following Ansible roles:
 - [stuvusIT.common](https://github.com/stuvusIT/common)
 - [Stouts.foundation](https://github.com/Stouts/Stouts.foundation)
 - [kbrebanov.common](https://github.com/kbrebanov/ansible-common)
+
+## License
+
+This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
+
+## Author Information
+
+This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

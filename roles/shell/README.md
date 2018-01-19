@@ -2,6 +2,10 @@
 
 Sets up the main user's shell.
 
+## Dependencies
+
+No dependencies.
+
 ## Credits
 
 This role takes inspiration from the following Ansible roles:
@@ -22,3 +26,11 @@ This role takes inspiration from the following Ansible roles:
 - [mmacia.ohmyzsh](https://github.com/samyroad/ansible-ohmyzsh)
 - [mashimom.oh-my-zsh](https://github.com/mashimom/ohmyzsh_plbk)
 - [gantsign.oh-my-zsh](https://github.com/gantsign/ansible-role-oh-my-zsh)
+
+## License
+
+This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
+
+## Author Information
+
+This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

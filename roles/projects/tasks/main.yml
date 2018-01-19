@@ -1,6 +1,7 @@
 ---
 # tasks file for projects
 
+# Clone repository
 - name: Create projects-installer directory
   file:
     path: "{{ projects_path }}"
@@ -14,7 +15,8 @@
     update: yes
     accept_hostkey: yes
 
-- name: Configure repository
+# Configure repository
+- name: Configure repository email
   command: "git config --local user.email {{ projects_git_email }}"
   args:
     chdir: "{{ projects_path }}"
@@ -23,7 +25,7 @@
     - projects_directory_create.changed
     - projects_git_email is defined and projects_git_email != ''
 
-- name: Configure repository
+- name: Configure repository name
   command: "git config --local user.name {{ projects_git_name }}"
   args:
     chdir: "{{ projects_path }}"
@@ -33,6 +35,7 @@
     - projects_git_name is defined and projects_git_name != ''
 
 - name: Fix projects-installer directory owner
+  become: yes
   file:
     path: "{{ projects_path }}"
     owner: "{{ projects_user }}"

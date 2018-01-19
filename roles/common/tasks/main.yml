@@ -3,6 +3,7 @@
 
 # Upgrade System Packages
 - name: Upgrade apt packages
+  become: yes
   apt:
     upgrade: "{{ common_apt_upgrade_type }}"
     force: "{{ common_apt_upgrade_force }}"
@@ -12,6 +13,7 @@
 
 # Update Package List
 - name: Update apt packages
+  become: yes
   apt:
     update_cache: yes
     cache_valid_time: "{{ common_apt_cache_time }}"
@@ -19,18 +21,18 @@
 
 # Remove packages
 - name: Remove apt packages
+  become: yes
   apt:
     name: "{{ item }}"
     state: absent
     purge: yes
+    autoclean: yes
     autoremove: yes
   with_items: "{{ common_apt_remove_packages }}"
 
-- name: Cleanup apt installation
-  command: apt-get clean warn=no
-
 # Install Dependencies
 - name: Install apt dependencies
+  become: yes
   apt:
     name: "{{ item }}"
     state: "{{ common_apt_state }}"
@@ -40,6 +42,7 @@
 
 # Install Basic Packages
 - name: Install base apt packages
+  become: yes
   apt:
     name: "{{ item }}"
     state: "{{ common_apt_state }}"
@@ -49,6 +52,7 @@
 
 # Install Custom Packages
 - name: Install extra apt packages (if any are configured)
+  become: yes
   apt:
     name: "{{ item }}"
     state: "{{ common_apt_state }}"

@@ -11,7 +11,7 @@ Ansible playbook for setting up an Ubuntu desktop & server environment for raipi
 
 To reset GalliumOS, run the following from a crosh shell:
 
-    cd ; curl -Os https://chrx.org/go && sh go -U yourname -H foobarhost
+    cd ; curl -Os https://chrx.org/go && sh go -U yourname -H yourhostname
 
 Then, from GalliumOS session, open the terminal and run:
 
@@ -31,18 +31,9 @@ Then, from GalliumOS session, open the terminal and run:
 
 3. Run the Ansible playbook from inside this directory.
 
-    ansible-playbook playbook.yml -i inventory -K --vault-id @prompt
+    $ ansible-playbook playbook.yml -i inventory -K --vault-id @prompt
 
 4. Enter your SUDO and vault password when prompted. 
-
-## Testing
-
-To run basic integration tests using Docker:
-
-  1. [Install Docker](https://docs.docker.com/engine/installation/).
-  2. In this project directory, run: `sh tests/run-tests.sh`
-
-The project's automated tests are run via Travis CI, and the more comprehensive test suite covers multiple use cases and deployment techniques.
 
 ## Credits
 

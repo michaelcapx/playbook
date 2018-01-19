@@ -3,10 +3,14 @@
 
 # Install Git
 - name: Ensure git is installed
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items: "{{ git_packages | list }}"
+  when: git_packages | length
 
 # Configure git
 - name: Configure .gitconfig file
@@ -20,7 +24,7 @@
 - name: Add .gitignore file
   template:
     src: gitignore.j2
-    dest: "{{ git_home }}/{{ git_config.core.excludesfile | basename }}"
+    dest: "{{ git_ignore_file }}"
     owner: "{{ git_user }}"
     group: "{{ git_user }}"
   when: git_ignore and git_config.core is defined and git_config.core.excludesfile is defined
@@ -38,10 +42,16 @@
 
 # Add SSH keys to Github & Bitbucket
 - name: Download ssh-keyreg script
+  become: yes
   get_url:
     url: https://raw.githubusercontent.com/b4b4r07/ssh-keyreg/master/bin/ssh-keyreg
     dest: /usr/local/bin/ssh-keyreg
+    timeout: 30
     mode: 0555
+  register: download_ssh_keyreg
+  until: download_ssh_keyreg | succeeded
+  retries: 10
+  delay: 5
 
 - name: Check that the user ssh key exists
   stat:
