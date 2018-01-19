@@ -46,6 +46,7 @@
 
 - name: Kill chrome keyring
   command: killall gnome-keyring-daemon
+  ignore_errors: yes
   when: chrome_gnome_keyring_daemon_status.rc == 0
 
 # Set Chromium Preferences

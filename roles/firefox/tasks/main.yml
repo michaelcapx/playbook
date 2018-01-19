@@ -107,6 +107,6 @@
     src: user.js.j2
     dest: "{{ item.profile_path }}/user.js"
   with_items: "{{ firefox_profile_register.results }}"
-  when: firefox_preferences is defined
+  when: firefox_preferences is defined and firefox_profile_register.profile_path is defined
   become: true
   become_user: "{{ firefox_user }}"

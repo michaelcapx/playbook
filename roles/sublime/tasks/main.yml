@@ -53,7 +53,7 @@
     state: latest
     update_cache: yes
     cache_valid_time: 3600
-  when: sublime_add_repo | succeeded
+  when: sublime_repo | succeeded
 
 # Sublime Directories
 - name: Ensure sublime config directory permissions
