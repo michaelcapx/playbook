@@ -21,6 +21,12 @@ To run basic integration tests using Vagrant:
   3. To re-run the playbook: `vagrant provision`.
   4. To destroy the virtual machine: `vagrant destroy`.
 
+### Local Testing
+
+To quickly test the playbook syntax, perform a [dry-run](https://docs.ansible.com/ansible/latest/playbooks_checkmode.html) with the following command:
+
+    $ ansible-playbook -i inventory playbook.yml -K --ask-vault-pass --check --diff 
+
 ### Automated Testing
 
 The project's automated tests are run via Travis CI, and the more comprehensive test suite covers multiple use cases and deployment techniques.
