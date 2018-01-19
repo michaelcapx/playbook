@@ -1,0 +1,4 @@
+{%- set preferences = firefox_preferences | default({}) %}
+{% for pref, value in preferences.iteritems() %}
+user_pref("{{ pref }}", {{ value }});
+{% endfor %}

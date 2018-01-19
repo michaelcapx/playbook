@@ -1,0 +1,17 @@
+---
+# vars file for firefox
+
+# Firefox configuration paths.
+firefox_config: "{{ firefox_home }}/.mozilla/firefox"
+firefox_addons_dir: /usr/lib/firefox-addons/extensions
+firefox_global_prefs: /etc/firefox/firefox.js
+
+# Array of firefox apt package dependencies.
+firefox_dependencies:
+  - python-xmltodict
+  - python-requests
+
+# Array of firefox apt packages to install.
+firefox_packages:
+  - firefox
+  - firefox-locale-en

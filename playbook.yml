@@ -48,8 +48,8 @@
     - { role: node,        tags: ['languages'] }
 
     # Browser roles
-    # - { role: chromium,    tags: ['browser'] }
-    # - { role: firefox,     tags: ['browser'] }
+    - { role: chromium,    tags: ['browser'] }
+    - { role: firefox,     tags: ['browser'] }
 
     # Editor roles
     - { role: sublime,     tags: ['editor'] }
