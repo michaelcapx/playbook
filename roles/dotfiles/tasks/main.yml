@@ -22,7 +22,7 @@
   stat:
     path: "{{ dotfiles_home }}/{{ dotfiles_path }}"
   register: dotfiles_created
-  when: dotfiles_created.stat.isdir is defined and dotfiles_created.stat.isdir
+  # when: dotfiles_created.stat.isdir is defined and dotfiles_created.stat.isdir
 
 - name: Checkout dotfiles
   become: true
