@@ -63,12 +63,14 @@
 
 # Weather icons
 - name: Clone weather icons
+  become: yes
   git:
     repo: https://github.com/kevlar1818/xfce4-weather-mono-icons
     dest: "{{ xfce_home }}/.cache/xfce4-weather-mono-icons"
   register: xfce_weather_icons_git
 
 - name: Copy weather icons
+  become: yes
   copy:
     src: "{{ xfce_home }}/.cache/xfce4-weather-mono-icons/{{ item }}"
     dest: /usr/share/xfce4/weather/icons
