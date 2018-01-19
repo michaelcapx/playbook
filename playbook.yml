@@ -43,9 +43,9 @@
     - { role: shell,       tags: ['base'] }
 
     # Language roles
-    # - { role: python,      tags: ['languages'] }
-    # - { role: ruby,        tags: ['languages'] }
-    # - { role: node,        tags: ['languages'] }
+    - { role: python,      tags: ['languages'] }
+    - { role: ruby,        tags: ['languages'] }
+    - { role: node,        tags: ['languages'] }
 
     # Browser roles
     - { role: chromium,    tags: ['browser'] }
@@ -60,12 +60,12 @@
     - { role: xfce,        tags: ['desktop'] }
 
     # Virtualization roles
-    # - { role: docker,      tags: ['virtualization'] }
-    # - { role: vagrant,     tags: ['virtualization'] }
+    - { role: docker,      tags: ['virtualization'] }
+    - { role: vagrant,     tags: ['virtualization'] }
 
     # Extra roles
-    # - { role: dotfiles,    tags: ['extras'] }
-    # - { role: projects,    tags: ['extras'] }
+    - { role: dotfiles,    tags: ['extras'] }
+    - { role: projects,    tags: ['extras'] }
 
   tasks:
 
