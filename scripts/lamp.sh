@@ -69,9 +69,9 @@ pre_install() {
   sudo apt-get -y upgrade
   sudo apt-get install -y software-properties-common curl
 
-  usermod -a -G www-data $LINUX_USER
-  id $LINUX_USER
-  groups $LINUX_USER
+  sudo usermod -a -G www-data $USER
+  id $USER
+  groups $USER
 }
 
 ###########################################################################
@@ -178,73 +178,73 @@ install_php() {
   fi
 
   php_pkgs=(
-    php7.2
-    libapache2-mod-php7.2
-    # php7.2-apcu
-    php7.2-bcmath
-    php7.2-bz2
-    php7.2-cgi
-    php7.2-cli
-    php7.2-common
-    php7.2-curl
-    php7.2-dev
-    # php7.2-fpm
-    php7.2-gd
-    php7.2-intl
-    php7.2-imagick
-    php7.2-imap
-    php7.2-json
-    php7.2-ldap
-    php7.2-mbstring
-    php7.2-mcrypt
-    php7.2-memcached
-    php7.2-mongodb
-    php7.2-mysql
-    php7.2-opcache
-    php7.2-pgsql
-    php7.2-readline
-    php7.2-redis
-    php7.2-soap
-    php7.2-sqlite3
-    # php7.2-xdebug
-    php7.2-xml
-    php7.2-xmlrpc
-    php7.2-yaml
-    php7.2-zip
-    php-xdebug
+    php7.1
+    libapache2-mod-php7.1
+    # php7.1-apcu
+    php7.1-bcmath
+    php7.1-bz2
+    php7.1-cgi
+    php7.1-cli
+    php7.1-common
+    php7.1-curl
+    php7.1-dev
+    # php7.1-fpm
+    php7.1-gd
+    php7.1-intl
+    php7.1-imagick
+    php7.1-imap
+    php7.1-json
+    php7.1-ldap
+    php7.1-mbstring
+    php7.1-mcrypt
+    php7.1-memcached
+    php7.1-mongodb
+    php7.1-mysql
+    php7.1-opcache
+    php7.1-pgsql
+    php7.1-readline
+    php7.1-redis
+    php7.1-soap
+    php7.1-sqlite3
+    php7.1-xdebug
+    php7.1-xml
+    php7.1-xmlrpc
+    php7.1-yaml
+    php7.1-zip
+    # php-xdebug
     php-pear
   )
 
   # Install PHP Packages
   sudo apt-get install -yq --allow-downgrades --allow-remove-essential --allow-change-held-packages "${php_pkgs[@]}"
 
-  update-alternatives --set php /usr/bin/php7.2
+  # sudo update-alternatives --set php /usr/bin/php7.1
 
   # Set Some PHP CLI Settings
-  sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.2/cli/php.ini
-  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.2/cli/php.ini
-  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.2/cli/php.ini
-  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.2/cli/php.ini
+  sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/cli/php.ini
+  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/cli/php.ini
 
   # Set Some PHP Apache Settings
-  sudo sed -i "s/error_reporting = .*/error_reporting = E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_ERROR | E_CORE_ERROR/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/upload_max_filesize = .*/upload_max_filesize = 100M/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/max_input_time = .*/max_input_time = 30/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/;error_log = syslog/error_log = \/var\/log\/php\/error.log/" /etc/php/7.2/apache2/php.ini
-  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.2/apache2/php.ini
+  sudo sed -i "s/error_reporting = .*/error_reporting = E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_ERROR | E_CORE_ERROR/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/upload_max_filesize = .*/upload_max_filesize = 100M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/max_input_time = .*/max_input_time = 30/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;error_log = syslog/error_log = \/var\/log\/php\/error.log/" /etc/php/7.1/apache2/php.ini
+  sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.1/apache2/php.ini
 
   # Configure PHP Xdebug options
-  echo 'xdebug.remote_enable = 1' | sudo tee --append /etc/php/7.2/mods-available/xdebug.ini > /dev/null
-  echo 'xdebug.remote_connect_back = 1' | sudo tee --append /etc/php/7.2/mods-available/xdebug.ini > /dev/null
-  echo 'xdebug.remote_port = 9000' | sudo tee --append /etc/php/7.2/mods-available/xdebug.ini > /dev/null
-  echo 'xdebug.max_nesting_level = 512' | sudo tee --append /etc/php/7.2/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.remote_enable = 1' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.remote_connect_back = 1' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.remote_port = 9000' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
+  echo 'xdebug.max_nesting_level = 512' | sudo tee --append /etc/php/7.1/mods-available/xdebug.ini > /dev/null
 
   # Configure PHP Opcache options
-  echo 'opcache.revalidate_freq = 0' | sudo tee --append /etc/php/7.2/mods-available/opcache.ini > /dev/null
+  echo 'opcache.revalidate_freq = 0' | sudo tee --append /etc/php/7.1/mods-available/opcache.ini > /dev/null
 
   # Create the log directory for PHP and give ownership to the Apache system user
   sudo mkdir /var/log/php
@@ -284,24 +284,26 @@ install_composer() {
   sudo chown -Rv $USER ${HOME}/.composer
 
   # Add Composer Global Bin To Path
-  # printf "\nPATH=\"$(sudo su - $USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a /home/$USER/.profile
-  echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.bashrc
-  source ${HOME}/.bashrc
+  printf "\nPATH=\"$(sudo su - $USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a /home/$USER/.profile
+  source ${HOME}/.profile
+
+  # echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.bashrc
+  # source ${HOME}/.bashrc
 
   # Require Global Composer Packages
-  composer global require "laravel/installer=~1.1"
-  composer global require "laravel/envoy=~1.0"
-  composer global require "phpunit/phpunit=@stable"
-  composer global require "phpunit/dbunit=@stable"
+  composer global require "laravel/installer"
+  composer global require "laravel/envoy"
+  # composer global require "phpunit/phpunit=@stable"
+  # composer global require "phpunit/dbunit=@stable"
   # composer global require "phpdocumentor/phpdocumentor=@stable"
-  composer global require "sebastian/phpcpd=@stable"
-  composer global require "phploc/phploc=@stable"
-  composer global require "phpmd/phpmd=@stable"
-  composer global require "squizlabs/php_codesniffer=@stable"
-  composer global require "hirak/prestissimo=^0.3"
-  composer global require "friendsofphp/php-cs-fixer=@stable"
-  composer global require "codeception/codeception=@stable"
-  composer global require "tightenco/jigsaw=@stable"
+  # composer global require "sebastian/phpcpd=@stable"
+  # composer global require "phploc/phploc=@stable"
+  # composer global require "phpmd/phpmd=@stable"
+  # composer global require "squizlabs/php_codesniffer=@stable"
+  # composer global require "hirak/prestissimo=^0.3"
+  # composer global require "friendsofphp/php-cs-fixer=@stable"
+  # composer global require "codeception/codeception=@stable"
+  # composer global require "tightenco/jigsaw=@stable"
 
   # sudo git clone https://github.com/laravel/spark-installer.git /usr/local/share/spark-installer
   # sudo composer install -d /usr/local/share/spark-installer
@@ -395,7 +397,7 @@ install_mongodb() {
 
   # Install python dependencies
   sudo apt-get install python-pip
-  sudo pip pymongo
+  sudo pip install pymongo
 
   # Importing the Public Key
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -407,10 +409,25 @@ install_mongodb() {
   # Install MongoDB
   sudo apt-get install -yq mongodb-org
 
+  sudo tee /etc/systemd/system/mongodb.service <<EOL
+[Unit]
+Description=High-performance, schema-free document-oriented database
+After=network.target
+
+[Service]
+User=mongodb
+ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
   # Start mongodb
-  sudo systemctl start mongod
-  sudo systemctl status mongodb
-  sudo systemctl enable mongodb
+  # sudo systemctl start mongod
+  # sudo systemctl unmask mongodb
+  sudo systemctl start mongodb
+  # sudo systemctl status mongodb
+  # sudo systemctl enable mongodb
 
   e_success "MongoDB installed"
 }
@@ -636,8 +653,8 @@ install_zray() {
   e_title "Installing Zend Z-Ray"
 
   sudo wget http://repos.zend.com/zend-server/early-access/ZRay-Homestead/zray-standalone-php72.tar.gz -O - | sudo tar -xzf - -C /opt
-  sudo ln -sf /opt/zray/zray.ini /etc/php/7.2/cli/conf.d/zray.ini
-  sudo ln -sf /opt/zray/zray.ini /etc/php/7.2/fpm/conf.d/zray.ini
+  sudo ln -sf /opt/zray/zray.ini /etc/php/7.1/cli/conf.d/zray.ini
+  sudo ln -sf /opt/zray/zray.ini /etc/php/7.1/fpm/conf.d/zray.ini
   sudo ln -sf /opt/zray/lib/zray.so /usr/lib/php/20170718/zray.so
   sudo chown -R vagrant:vagrant /opt/zray
 
@@ -767,7 +784,7 @@ post_install() {
 ###########################################################################
 
 lamp_start() {
-  e_header "Running Development Setup"
+  e_header "Running LAMP Setup"
 
   pre_install
   install_apache
@@ -775,24 +792,24 @@ lamp_start() {
   install_php
   install_composer
   install_wpcli
-  install_sqlite
-  install_postgresql
-  install_mongodb
-  install_couchdb
-  install_golang
-  install_beanstalkd
-  install_memcached
-  install_redis
+  # install_sqlite
+  # install_postgresql
+  # install_mongodb # BROKEN
+  # install_couchdb # BROKEN
+  # install_golang
+  # install_beanstalkd
+  # install_memcached
+  # install_redis
   install_adminer
   install_phpmyadmin
-  install_pimpmylog
-  install_ngrok
-  install_blackfire
-  install_zray
-  install_phantomjs
-  install_flyway
-  install_mailhog
-  install_supervisor
+  # install_pimpmylog
+  # install_ngrok
+  # install_blackfire
+  # install_zray # BROKEN
+  # install_phantomjs
+  # install_flyway
+  # install_mailhog
+  # install_supervisor
   post_install
 }
 
