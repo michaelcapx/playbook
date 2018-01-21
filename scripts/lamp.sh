@@ -284,7 +284,10 @@ install_composer() {
   sudo chown -Rv $USER ${HOME}/.composer
 
   # Add Composer Global Bin To Path
-  printf "\nPATH=\"$(sudo su - $USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a /home/$USER/.profile
+  # printf "\nPATH=\"$(sudo su - $USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a /home/$USER/.profile
+  # source ${HOME}/.profile
+
+  echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.profile
   source ${HOME}/.profile
 
   # echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.bashrc
