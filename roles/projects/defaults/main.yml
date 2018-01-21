@@ -11,7 +11,9 @@ projects_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
 projects_path: "{{ projects_home }}/Documents/projects"
 
 # Default projects repo.
-projects_repo: "https://github.com/michaelcapx/projects.git"
+# projects_repo: "https://github.com/michaelcapx/projects.git"
+projects_repo: git@github.com:michaelcapx/projects.git
+playbook_repo: git@github.com:michaelcapx/projects.git
 
 # Default projects git name.
 projects_git_name: "{{ mimetic_name | default('') }}"

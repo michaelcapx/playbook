@@ -752,6 +752,22 @@ EOL
 }
 
 ###########################################################################
+# Install Hostess
+# https://github.com/cbednarski/hostess
+###########################################################################
+
+install_hostess() {
+
+  e_title "Installing Hostess"
+
+  sudo wget --quiet -O /usr/local/bin/hostess https://github.com/cbednarski/hostess/releases/download/v0.2.0/hostess_linux_amd64
+  sudo chmod +x /usr/local/bin/hostess
+
+  e_success "Hostess installed"
+
+}
+
+###########################################################################
 # Install Supervisor
 ###########################################################################
 
@@ -809,6 +825,7 @@ lamp_start() {
   # install_phantomjs
   # install_flyway
   # install_mailhog
+  # install_hostess
   # install_supervisor
   post_install
 }
