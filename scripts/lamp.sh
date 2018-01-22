@@ -811,7 +811,7 @@ lamp_start() {
   install_php
   install_composer
   install_wpcli
-  # install_sqlite
+  install_sqlite
   # install_postgresql
   # install_mongodb # BROKEN
   # install_couchdb # BROKEN
@@ -828,7 +828,7 @@ lamp_start() {
   # install_phantomjs
   # install_flyway
   # install_mailhog
-  # install_hostess
+  install_hostess
   # install_supervisor
   post_install
 }
