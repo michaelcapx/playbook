@@ -16,6 +16,7 @@ desktop_ppa:
   - { ppa: "ppa:otto-kesselgulasch/gimp",          pkg: gimp }
   - { ppa: "ppa:inkscape.dev/stable",              pkg: inkscape }
   - { ppa: "ppa:libreoffice/libreoffice-5-4",      pkg: libreoffice }
+  - { ppa: "ppa:serge-rider/dbeaver-ce",           pkg: dbeaver-ce }
   # - { ppa: "ppa:transmissionbt/ppa",               pkg: transmission }
   # - { ppa: "ppa:thomas-schiex/blender",            pkg: blender }
   # - { ppa: "ppa:kirillshkrogalev/ffmpeg-next",     pkg: ffmpeg }
@@ -35,8 +36,6 @@ desktop_packages_gui:
   - mpv
   - font-manager
   - transmission
-  - xfpanel-switch
-  - easytag
   - rhythmbox
   - ubuntu-restricted-extras
 
