@@ -287,7 +287,7 @@ install_composer() {
   # printf "\nPATH=\"$(sudo su - $USER -c 'composer config -g home 2>/dev/null')/vendor/bin:\$PATH\"\n" | tee -a /home/$USER/.profile
   # source ${HOME}/.profile
 
-  echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.profile
+  echo "export PATH=\$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.profile
   source ${HOME}/.profile
 
   # echo "export PATH=$HOME/.composer/vendor/bin:\$PATH" >> ${HOME}/.bashrc
