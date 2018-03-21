@@ -130,7 +130,7 @@
 # Sublime Plugin Preferences
 - name: Copy Sublime plugin preferences
   copy:
-    src: "{{ item }}"
+    src: "packages/{{ item }}"
     dest: "{{ sublime_user_preferences_dir }}/{{ item }}"
     mode: 0774
     owner: "{{ sublime_user }}"
@@ -152,7 +152,7 @@
 
 - name: Copy AlignTab preferences
   copy:
-    src: "AlignTab/Context.sublime-menu"
+    src: "packages/AlignTab/Context.sublime-menu"
     dest: "{{ sublime_user_preferences_dir }}/AlignTab/Context.sublime-menu"
     mode: 0774
     owner: "{{ sublime_user }}"

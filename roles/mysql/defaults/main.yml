@@ -37,4 +37,4 @@ mysql_users:
   - name: homestead
     host: localhost
     password: secret
-    priv: *.*:ALL,GRANT,OPTION
+    priv: "*.*:ALL,GRANT,OPTION"

@@ -64,9 +64,9 @@
     - { role: vagrant,     tags: ['virtualization'] }
 
     # Server roles
-    - { role: mysql,      tags: ['server'] }
-    - { role: php,        tags: ['server'] }
-    - { role: composer,   tags: ['server'] }
+    # - { role: mysql,      tags: ['server'] }
+    # - { role: php,        tags: ['server'] }
+    # - { role: composer,   tags: ['server'] }
 
     # Extra roles
     # - { role: dotfiles,    tags: ['extras'] }

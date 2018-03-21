@@ -171,15 +171,22 @@
     update_cache: yes
     cache_valid_time: 3600
 
+# - name: Change default Docker indicator icon
+#   become: yes
+#   get_url:
+#     url: https://raw.githubusercontent.com/yktoo/indicator-docker/master/icons/ubuntu-mono-dark/indicator-docker.svg
+#     dest: /usr/share/icons/hicolor/22x22/status/indicator-docker.svg
+#     mode: 0644
+#     force: yes
+#     timeout: 30
+#   register: download_yktoo_icons
+#   until: download_yktoo_icons | succeeded
+#   retries: 10
+#   delay: 5
+
 - name: Change default Docker indicator icon
   become: yes
-  get_url:
-    url: https://raw.githubusercontent.com/yktoo/indicator-docker/master/icons/ubuntu-mono-dark/indicator-docker.svg
-    dest: /usr/share/icons/hicolor/22x22/status/indicator-docker.svg
+  copy:
+    src: "indicator-docker.svg"
+    dest: "/usr/share/icons/hicolor/22x22/status/indicator-docker.svg"
     mode: 0644
-    force: yes
-    timeout: 30
-  register: download_yktoo_icons
-  until: download_yktoo_icons | succeeded
-  retries: 10
-  delay: 5

@@ -62,6 +62,7 @@
   shell: ssh-keyreg --path {{ git_ssh_keyfile }} --user {{ git_github_user }}:{{ git_github_password }} github
   become: true
   become_user: "{{ git_user }}"
+  ignore_errors: yes
   when:
     - git_github_user is defined and git_github_user != ''
     - git_github_password is defined and git_github_password != ''
@@ -71,16 +72,18 @@
   shell: ssh-keyreg --path {{ git_ssh_keyfile }} --user {{ git_bitbucket_user }}:{{ git_bitbucket_password }} bitbucket
   become: true
   become_user: "{{ git_user }}"
+  ignore_errors: yes
   when:
     - git_bitbucket_user is defined and git_bitbucket_user != ''
     - git_bitbucket_password is defined and git_bitbucket_password != ''
     - git_ssh_key_exists.stat.exists == true
 
-- name: Test github connection
-  command: ssh -o StrictHostKeyChecking=no -T git@github.com
-  register: github_test_var
-  failed_when: github_test_var.rc not in [0, 1, 255]
+# - name: Test github connection
+#   command: ssh -o StrictHostKeyChecking=no -T git@github.com
+#   register: github_test_var
+#   ignore_errors: yes
+#   failed_when: github_test_var.rc not in [0, 1, 255]
 
-- name: Display the Github test var
-  debug:
-    var: github_test_var
+# - name: Display the Github test var
+#   debug:
+#     var: github_test_var
