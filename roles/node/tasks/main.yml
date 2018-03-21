@@ -91,7 +91,7 @@
 
 - name: Configure dotfile paths for node
   lineinfile:
-    path: "/home/{{ node_user }}/.profile"
+    path: "/home/{{ node_user }}/.bash_path"
     line: "{{ item }}"
     create: yes
     owner: "{{ node_user }}"

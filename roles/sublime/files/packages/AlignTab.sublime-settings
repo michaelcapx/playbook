@@ -1,0 +1,6 @@
+{
+  //   define your own patterns
+  "named_patterns": {
+    "sass": "(?<=:) /l1l1f"
+  }
+}

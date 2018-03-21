@@ -63,9 +63,14 @@
     - { role: docker,      tags: ['virtualization'] }
     - { role: vagrant,     tags: ['virtualization'] }
 
+    # Server roles
+    - { role: mysql,      tags: ['server'] }
+    - { role: php,        tags: ['server'] }
+    - { role: composer,   tags: ['server'] }
+
     # Extra roles
-    - { role: dotfiles,    tags: ['extras'] }
-    - { role: projects,    tags: ['extras'] }
+    # - { role: dotfiles,    tags: ['extras'] }
+    # - { role: projects,    tags: ['extras'] }
 
   tasks:
 

@@ -1,0 +1,77 @@
+---
+# tasks file for mysql
+
+# Setup/install tasks
+- name: Ensure MySQL packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ mysql_packages | list }}"
+  when: mysql_packages | length
+
+- name: Ensure MySQL is started to change root password
+  service:
+    name: mysql
+    state: started
+
+- name: Set MySQL root user password
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    priv: "*.*:ALL,GRANT"
+    state: present
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+# Secure installation tasks
+- name: Delete anonymous MySQL server users
+  mysql_user:
+    user: ""
+    host: "{{ item }}"
+    state: absent
+  with_items:
+    - localhost
+    - "{{ inventory_hostname }}"
+    - "{{ ansible_hostname }}"
+
+- name: Remove the MySQL test database
+  mysql_db:
+    db: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+# Databases tasks
+- name: Ensure MySQL databases are present
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: present
+  with_items: "{{ mysql_databases }}"
+
+# Users tasks
+- name: Ensure MySQL users are present
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:USAGE') }}"
+    state: "{{ item.state | default('present') }}"
+    append_privs: "{{ item.append_privs | default('no') }}"
+    encrypted: "{{ item.encrypted | default('no') }}"
+  with_items: "{{ mysql_users }}"
+  no_log: true
+
+# Enable tasks
+- name: Ensure MySQL is started and enabled on boot
+  service:
+    name: mysql
+    state: started
+    enabled: yes

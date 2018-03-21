@@ -85,3 +85,12 @@
     path: "{{ item.path }}"
     priority: "{{ item.priority | default(50) }}"
   with_items: "{{ desktop_alternatives }}"
+
+# Sound Switcher
+- name: Copy Sound Switcher preference file
+  copy:
+    src: "indicator-sound-switcher.json"
+    dest: "{{ desktop_home }}/.config/indicator-sound-switcher.json"
+    mode: 0664
+    owner: "{{ desktop_user }}"
+    group: "{{ desktop_user }}"

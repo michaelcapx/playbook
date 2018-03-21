@@ -1,0 +1,29 @@
+---
+# defaults file for php
+
+# Default php user.
+php_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+
+# Default php home.
+php_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+
+# Build dependencies for packages (will be installed with apt).
+php_packages:
+  - php7.1
+  - php7.1-cli
+  - php7.1-common
+  - php7.1-curl
+  - php7.1-json
+  - php7.1-mbstring
+  - php7.1-mcrypt
+  - php7.1-mysql
+  - php7.1-opcache
+  - php7.1-readline
+  - php7.1-xml
+  - php7.1-zip
+  - php7.1-gd
+  - php7.1-intl
+  - php7.1-imagick
+  - php7.1-imap
+  - php7.1-xmlrpc
+  - php7.1-yaml

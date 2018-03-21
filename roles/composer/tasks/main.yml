@@ -1,0 +1,53 @@
+---
+# tasks file for composer
+
+- name: Check Composer version
+  command: "composer --version"
+  register: composer_installed
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
+
+- name: Install Composer
+  shell: "curl -sS https://getcomposer.org/installer | php && mv -f ./composer.phar {{ composer_path }}"
+  args:
+    creates: "{{ composer_path }}"
+    warn: false
+  when: composer_installed | failed
+
+- name: Make Composer executable
+  file:
+    path: "{{ composer_path }}"
+    mode: 0755
+
+- name: Ensure composer directory exists
+  file:
+    path: "{{ composer_home_path }}"
+    owner: "{{ composer_user }}"
+    group: "{{ composer_user }}"
+    state: directory
+
+- name: Add composer_home_path bin directory to global $PATH
+  copy:
+    dest: "{{ composer_home }}/.bash_path"
+    content: "export PATH={{ composer_home_path }}/vendor/bin:$PATH"
+    mode: 0664
+
+# Composer global require
+- name: Install configured globally-required packages
+  command: >
+    {{ composer_path }} global require {{ item.name }}:{{ item.release | default('@stable') }} --no-progress
+    creates={{ composer_home_path }}/vendor/{{ item.name }}
+  environment:
+    COMPOSER_HOME: "{{ composer_home_path }}"
+  become: yes
+  become_user: "{{ composer_user }}"
+  register: composer_global_require_result
+  with_items: "{{ composer_global_packages }}"
+  when: composer_global_packages|length > 0
+
+# https://github.com/cpriego/valet-linux
+# - name: Install Laravel Valet
+#   shell: valet install
+#   become: yes
+#   become_user: "{{ composer_user }}"

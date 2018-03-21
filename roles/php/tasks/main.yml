@@ -1,0 +1,31 @@
+---
+# tasks file for php
+
+# Add repository
+- name: Add PHP repository
+  become: yes
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    validate_certs: yes
+    update_cache: yes
+  register: php_repo
+
+- name: Update apt cache if repo was added
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: php_repo.changed
+
+# Install packages
+- name: Ensure PHP packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    install_recommends: yes
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ php_packages | list }}"
+  when: php_packages | length

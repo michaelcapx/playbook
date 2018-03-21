@@ -1,0 +1,40 @@
+---
+# defaults file for mysql
+
+# Default mysql user.
+mysql_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+
+# Default mysql home.
+mysql_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+
+# Build dependencies for packages (will be installed with apt).
+mysql_packages:
+  - mysql-common
+  - mysql-server
+  - mysql-client
+  - python-mysqldb
+  - libmysqlclient-dev
+  - mytop
+
+# MySQL connection settings
+mysql_bind_address: '0.0.0.0'
+mysql_port: "3306"
+
+# The default root user installed by mysql - almost always root
+mysql_root_home: /root
+mysql_root_username: root
+mysql_root_password: root
+
+# Databases
+mysql_databases: []
+#   - name: example
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     replicate: 1
+
+# Users
+mysql_users:
+  - name: homestead
+    host: localhost
+    password: secret
+    priv: *.*:ALL,GRANT,OPTION

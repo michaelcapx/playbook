@@ -1,5 +1,41 @@
 ---
 # bash shell tasks
 
-- name: Setup custom bash prompt PS1
-  shell: echo 'PS1="\`if [ \$? = 0 ]; then echo \[\e[37m\]^_^[\u@\H:\w]\\$ \[\e[0m\]; else echo \[\e[31m\]O_O[\u@\H:\w]\\$ \[\e[0m\]; fi\`"' >> {{ shell_home }}/.bashrc
+# - name: Setup custom bash prompt PS1
+#   shell: echo 'PS1="\`if [ \$? = 0 ]; then echo \[\e[37m\]^_^[\u@\H:\w]\\$ \[\e[0m\]; else echo \[\e[31m\]O_O[\u@\H:\w]\\$ \[\e[0m\]; fi\`"' >> {{ shell_home }}/.bashrc
+
+# Bash Prompt
+- name: Copy custom bash prompt
+  copy:
+    src: "bash_prompt.sh"
+    dest: "{{ shell_home }}/.bash_prompt"
+    mode: 0644
+    owner: "{{ shell_user }}"
+    group: "{{ shell_user }}"
+
+- name: Source custom bash prompt
+  blockinfile:
+    path: "{{ shell_home }}/.bashrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      if [ -f ~/.bash_prompt ]; then
+          . ~/.bash_prompt
+      fi
+
+# Bash Path
+- name: Copy custom bash prompt
+  copy:
+    src: "bash_path.sh"
+    dest: "{{ shell_home }}/.bash_path"
+    mode: 0644
+    owner: "{{ shell_user }}"
+    group: "{{ shell_user }}"
+
+- name: Source custom bash path
+  blockinfile:
+    path: "{{ shell_home }}/.bashrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      if [ -f ~/.bash_path ]; then
+          . ~/.bash_path
+      fi

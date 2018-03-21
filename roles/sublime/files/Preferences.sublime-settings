@@ -10,6 +10,7 @@
     "word_wrap": "auto",
     "draw_minimap_border": true,
     "caret_style": "phase",
+    "dpi_scale": 1.10,
     "line_padding_top": 3,
     "line_padding_bottom": 3,
     "trim_trailing_white_space_on_save": true,
@@ -57,6 +58,11 @@
       "css",
       "SCSS",
       "js"
+    ],
+
+    "ignored_packages":
+    [
+      "Vintage"
     ],
 
     // Material theme preferences
