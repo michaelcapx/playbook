@@ -242,7 +242,7 @@ install_adminer() {
 
   sudo mkdir /usr/share/adminer
   sudo wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/latest.php
-  sudo ln -s /usr/share/adminer/latest.php /usr/share/adminer/adminer.php
+  sudo ln -s /usr/share/adminer/latest.php /usr/share/adminer/index.php
 
   e_success "Adminer installed"
 }
