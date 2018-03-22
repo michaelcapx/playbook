@@ -68,6 +68,7 @@ pre_install() {
   sudo apt-get -y update
   sudo apt-get -y upgrade
   sudo apt-get install -y software-properties-common curl
+  sudo apt-get install -y network-manager libnss3-tools jq xsel
 
   sudo usermod -a -G www-data $USER
   id $USER
