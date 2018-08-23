@@ -60,8 +60,8 @@
     - { role: xfce,        tags: ['desktop'] }
 
     # Virtualization roles
-    - { role: docker,      tags: ['virtualization'] }
-    - { role: vagrant,     tags: ['virtualization'] }
+    # - { role: docker,      tags: ['virtualization'] }
+    # - { role: vagrant,     tags: ['virtualization'] }
 
     # Server roles
     # - { role: mysql,      tags: ['server'] }
