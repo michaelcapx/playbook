@@ -20,15 +20,15 @@ firefox_global_addons:
   - { url: "https://addons.mozilla.org/firefox/downloads/file/759731/user_agent_switcher-0.2.0-an+fx.xpi", guid: "{75afe46a-7a50-4c6b-b866-c43a1075b071}" } # User-Agent Switcher
   - { url: "https://addons.mozilla.org/firefox/downloads/file/782402/privacy_badger-2017.11.20-an+fx.xpi", guid: "jid1-MnnxcxisBPnSXQ@jetpack" } # Privacy Badger
   - { url: "https://addons.mozilla.org/firefox/downloads/file/774252/decentraleyes-2.0.1-an+fx.xpi", guid: "jid1-BoFifL9Vbdl2zQ@jetpack" } # Decentraleyes
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/696544/google_search_link_fix-1.6.5-an+fx.xpi", guid: "jid0-XWJxt5VvCXkKzQK99PhZqAn7Xbg@jetpack" } # Google search link fix
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/671858/link_cleaner-1.5-an+fx.xpi", guid: "{6d85dea2-0fb4-4de3-9f8c-264bce9a2296}" } # Link Cleaner
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/797370/https_by_default-0.4.3-an+fx.xpi", guid: "https-by-default@robwu.nl" } # HTTPS by default
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/805796/noscript_security_suite-10.1.5.6-an+fx.xpi", guid: "{73a6fe31-595d-460b-a920-fcc0f8843232}" } # NoScript Security Suite
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/770443/canvasblocker-0.4.2-an+fx.xpi", guid: "CanvasBlocker@kkapsner.de" } # CanvasBlocker
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/740362/firefox_lightbeam-2.0.4-an+fx-linux.xpi", guid: "jid1-F9UJ2thwoAm5gQ@jetpack" } # Firefox Lightbeam
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/802894/umatrix-1.1.18-an+fx.xpi", guid: "uMatrix@raymondhill.net" } # uMatrix
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/696544/google_search_link_fix-1.6.5-an+fx.xpi", guid: "jid0-XWJxt5VvCXkKzQK99PhZqAn7Xbg@jetpack" } # Google search link fix
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/671858/link_cleaner-1.5-an+fx.xpi", guid: "{6d85dea2-0fb4-4de3-9f8c-264bce9a2296}" } # Link Cleaner
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/797370/https_by_default-0.4.3-an+fx.xpi", guid: "https-by-default@robwu.nl" } # HTTPS by default
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/805796/noscript_security_suite-10.1.5.6-an+fx.xpi", guid: "{73a6fe31-595d-460b-a920-fcc0f8843232}" } # NoScript Security Suite
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/770443/canvasblocker-0.4.2-an+fx.xpi", guid: "CanvasBlocker@kkapsner.de" } # CanvasBlocker
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/740362/firefox_lightbeam-2.0.4-an+fx-linux.xpi", guid: "jid1-F9UJ2thwoAm5gQ@jetpack" } # Firefox Lightbeam
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/802894/umatrix-1.1.18-an+fx.xpi", guid: "uMatrix@raymondhill.net" } # uMatrix
   - { url: "https://addons.mozilla.org/firefox/downloads/file/738809/smart_referer-0.2.3-an+fx.xpi", guid: "smart-referer@meh.paranoid.pk" } # Smart Referer
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/797312/violentmonkey-2.8.22-an+fx.xpi", guid: "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" } # Violentmonkey
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/797312/violentmonkey-2.8.22-an+fx.xpi", guid: "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" } # Violentmonkey
 
 # Harden firefox with external preferences.
 firefox_harden: false
