@@ -19,6 +19,7 @@ common_apt_update: yes
 # Array of packages to purge from system.
 common_apt_remove_packages:
   - xterm
+  - xscreensaver
   - simple-scan
 
 # Determines the state for packages installed on the system. Available values are `present` or `latest`.
