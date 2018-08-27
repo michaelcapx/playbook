@@ -1,0 +1,12 @@
+---
+# defaults file for minecraft
+
+# Default minecraft user.
+minecraft_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default minecraft home.
+minecraft_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+minecraft_direct_dl: http://teamshiginima.com/update/ShiginimaSE_v4100.zip
+minecraft_short_url: https://k31.us/4100direct
+minecraft_nofile_url: https://nofile.io/g/q5PjJfCCLZirsCcvOZZfwAuBo3oGarjjWekNSrMXgSGUtj1ncdvm6L94gTQlka0S/ShiginimaSE_v4100.zip

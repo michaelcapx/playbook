@@ -1,0 +1,8 @@
+---
+# defaults file for bash
+
+# Default bash user.
+bash_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default bash home.
+bash_home: "{{ master_home | default(ansible_env.HOME) }}"

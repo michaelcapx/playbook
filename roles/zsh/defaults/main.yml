@@ -1,0 +1,8 @@
+---
+# defaults file for zsh
+
+# Default zsh user.
+zsh_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default zsh home.
+zsh_home: "{{ master_home | default(ansible_env.HOME) }}"

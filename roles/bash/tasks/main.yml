@@ -1,0 +1,47 @@
+---
+# bash tasks
+
+# Bash Prompt
+- name: Copy custom bash prompt
+  copy:
+    src: "bash_prompt.sh"
+    dest: "{{ bash_home }}/.bash_prompt"
+    mode: 0644
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
+
+- name: Source custom bash prompt
+  blockinfile:
+    path: "{{ bash_home }}/.bashrc"
+    marker: "# {mark} Prompt configuration."
+    block: |
+      if [ -f ~/.bash_prompt ]; then
+          . ~/.bash_prompt
+      fi
+
+# Bash Path
+- name: Copy custom bash path
+  copy:
+    src: "bash_path.sh"
+    dest: "{{ bash_home }}/.bash_path"
+    mode: 0644
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
+
+- name: Source custom bash path
+  blockinfile:
+    path: "{{ bash_home }}/.bashrc"
+    marker: "# {mark} Path configuration."
+    block: |
+      if [ -f ~/.bash_path ]; then
+          . ~/.bash_path
+      fi
+
+# Bash Aliases
+- name: Copy custom bash aliases
+  copy:
+    src: "bash_aliases.sh"
+    dest: "{{ bash_home }}/.bash_aliases"
+    mode: 0644
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"

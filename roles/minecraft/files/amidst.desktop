@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=Amidst
+Comment=Amidst
+Icon=/usr/share/pixmaps/amidst.png
+Exec=java -jar /usr/local/bin/Amidst.jar
+StartupNotify=false
+Categories=Game;
+Terminal=false
