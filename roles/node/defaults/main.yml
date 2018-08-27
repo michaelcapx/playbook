@@ -6,10 +6,10 @@
 node_version: "8.x"
 
 # Default node user.
-node_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+node_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default node home.
-node_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+node_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 node_dependencies:

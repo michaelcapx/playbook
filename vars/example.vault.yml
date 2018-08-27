@@ -1,4 +1,6 @@
 ---
+vault_user: Username
+vault_password: yourpassword
 vault_name: Your Name
 vault_email: youremail@email.com
 vault_username: gitusername

@@ -3,18 +3,22 @@
 # http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
 
 # Playbook provision scripts
-mimetic_pre_provision_scripts: []
-mimetic_post_provision_scripts: []
+master_pre_provision_scripts: []
+master_post_provision_scripts: []
 
-# The main provision user.
-mimetic_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
-mimetic_home: "/home/{{ mimetic_user }}"
-mimetic_name: "{{ vault_name | default(none) }}"
-mimetic_email: "{{ vault_email | default(none) }}"
-mimetic_shell: bash
+# General configuration
+master_apt_cache_time: 86400
+
+# The main provision user
+master_user: "{{ vault_user | default(ansible_env.SUDO_USER, true) | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
+master_password: "{{ vault_password | default(none) }}"
+master_home: "/home/{{ master_user }}"
+master_name: "{{ vault_name | default(none) }}"
+master_email: "{{ vault_email | default(none) }}"
+master_shell: bash
 
 # Github/Bitbucket credentials
-mimetic_github_user: "{{ vault_github_user | default('') }}"
-mimetic_github_password: "{{ vault_github_password | default('') }}"
-mimetic_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
-mimetic_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"
+master_github_user: "{{ vault_github_user | default('') }}"
+master_github_password: "{{ vault_github_password | default('') }}"
+master_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
+master_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"

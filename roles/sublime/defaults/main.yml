@@ -2,10 +2,10 @@
 # defaults file for sublime
 
 # Default sublime user.
-sublime_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+sublime_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default sublime home.
-sublime_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+sublime_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Array of packages to install via packagecontrol.io.
 sublime_packages:

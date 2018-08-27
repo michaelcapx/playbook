@@ -2,10 +2,10 @@
 # defaults file for mysql
 
 # Default mysql user.
-mysql_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+mysql_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default mysql home.
-mysql_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+mysql_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 mysql_packages:

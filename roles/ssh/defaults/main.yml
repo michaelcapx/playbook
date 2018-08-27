@@ -5,10 +5,10 @@
 ssh_dependencies: []
 
 # Default SSH user
-ssh_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+ssh_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default SSH home directory
-ssh_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+ssh_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Default ssh public & private key files.
 ssh_privkey: "{{ ssh_home }}/.ssh/id_rsa"
@@ -19,4 +19,4 @@ ssh_generate_key: yes
 ssh_key_type: rsa
 ssh_key_bits: 4096
 ssh_key_file: .ssh/id_rsa
-ssh_key_comment: "{{ mimetic_email | default(inventory_hostname) }}"
+ssh_key_comment: "{{ master_email | default(inventory_hostname) }}"

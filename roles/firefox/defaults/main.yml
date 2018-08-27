@@ -2,10 +2,10 @@
 # defaults file for firefox
 
 # Default firefox user.
-firefox_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+firefox_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default firefox home.
-firefox_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+firefox_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Firefox profiles dictionary.
 firefox_profiles:

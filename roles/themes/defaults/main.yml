@@ -2,10 +2,10 @@
 # defaults file for themes
 
 # Default theme user.
-theme_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+theme_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default theme home.
-theme_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+theme_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Main theme git repos.
 theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme

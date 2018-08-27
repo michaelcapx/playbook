@@ -7,15 +7,15 @@
 
   pre_tasks:
 
-    - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
-      pause:
-        prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-      when: ansible_distribution != "GalliumOS" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
+    # - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
+    #   pause:
+    #     prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
+    #   when: ansible_distribution != "GalliumOS" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
 
     - name: Run configured pre-provision shell scripts
       script: "{{ item }}"
-      with_items: "{{ mimetic_pre_provision_scripts | default([]) }}"
-      when: mimetic_pre_provision_scripts | length
+      with_items: "{{ master_pre_provision_scripts | default([]) }}"
+      when: master_pre_provision_scripts | length
 
     - name: Include optional configuration files
       include_vars: "{{ item }}"
@@ -42,6 +42,10 @@
     - { role: git,         tags: ['base'] }
     - { role: shell,       tags: ['base'] }
 
+    # Shell roles
+    - { role: bash, when: master_shell == 'bash', tags: ['shell'] }
+    # - { role: zsh,  when: master_shell == 'zsh',  tags: ['shell'] }
+
     # Language roles
     - { role: python,      tags: ['languages'] }
     - { role: ruby,        tags: ['languages'] }
@@ -53,11 +57,16 @@
 
     # Editor roles
     - { role: sublime,     tags: ['editor'] }
+    # - { role: vscode,      tags: ['editor'] }
 
     # Desktop roles
     - { role: desktop,     tags: ['desktop'] }
     - { role: themes,      tags: ['desktop'] }
     - { role: xfce,        tags: ['desktop'] }
+
+    # App roles
+    # - { role: app,         tags: ['app'] }
+    # - { role: minecraft,   tags: ['app'] }
 
     # Virtualization roles
     # - { role: docker,      tags: ['virtualization'] }
@@ -76,8 +85,8 @@
 
     - name: Run configured post-provision shell scripts
       script: "{{ item }}"
-      with_items: "{{ mimetic_post_provision_scripts | default([]) }}"
-      when: mimetic_post_provision_scripts | length
+      with_items: "{{ master_post_provision_scripts | default([]) }}"
+      when: master_post_provision_scripts | length
 
     - name: Cleanup installation
       become: yes

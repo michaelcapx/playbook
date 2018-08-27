@@ -2,10 +2,10 @@
 # defaults file for dotfiles
 
 # Default dotfiles user.
-dotfiles_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+dotfiles_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default dotfiles home.
-dotfiles_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+dotfiles_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Default ssh public & private key files.
 dotfiles_ssh_key: "{{ dotfiles_home }}/.ssh/id_rsa"

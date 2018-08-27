@@ -2,10 +2,10 @@
 # defaults file for php
 
 # Default php user.
-php_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+php_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default php home.
-php_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+php_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 php_packages:

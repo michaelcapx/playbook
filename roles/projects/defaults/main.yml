@@ -2,10 +2,10 @@
 # defaults file for projects
 
 # Default projects user.
-projects_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+projects_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default projects home.
-projects_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+projects_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Default projects path.
 projects_path: "{{ projects_home }}/Documents/projects"
@@ -16,7 +16,7 @@ projects_repo: git@github.com:michaelcapx/projects.git
 playbook_repo: git@github.com:michaelcapx/projects.git
 
 # Default projects git name.
-projects_git_name: "{{ mimetic_name | default('') }}"
+projects_git_name: "{{ master_name | default('') }}"
 
 # Default projects git email.
-projects_git_email: "{{ mimetic_email | default('') }}"
+projects_git_email: "{{ master_email | default('') }}"

@@ -1,0 +1,32 @@
+### OS Generated ###
+*~
+.DS_Store
+.DS_Store?
+.Trash-*
+
+### Dotfiles ###
+*.box
+*.log
+*.out
+*.swp
+*.py[co]
+
+### IDE Files ###
+*.sublime-project
+*.sublime-workspace
+
+### Virtualbox ###
+.virtualbox
+vbox_host.cfg
+
+### Vagrant ###
+.vagrant
+*.box
+
+### Ansible ###
+*.retry
+.vault
+tests/test.sh
+
+### Other ###
+!empty

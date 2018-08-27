@@ -2,10 +2,10 @@
 # defaults file for desktop
 
 # Default desktop user.
-desktop_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+desktop_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default desktop home.
-desktop_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+desktop_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
 desktop_ppa:
