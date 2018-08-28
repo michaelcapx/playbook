@@ -58,6 +58,15 @@
     manage_dir: yes
   when: ssh_key_generated.changed
 
+- name: Install SSH agent helper
+  copy:
+    src: start-agent
+    dest: "{{ ssh_home }}/.ssh/start-agent"
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: 0600
+  when: ssh_key_generated.changed
+
 - name: Start ssh-agent in the background
   shell: eval "$(ssh-agent -s)" && ssh-add {{ ssh_privkey }}
   become: true

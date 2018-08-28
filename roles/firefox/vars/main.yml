@@ -1,10 +1,12 @@
 ---
 # vars file for firefox
 
+firefox_ppa: ppa:mozillateam/firefox-next
+
 # Firefox configuration paths.
 firefox_config: "{{ firefox_home }}/.mozilla/firefox"
 firefox_addons_dir: /usr/lib/firefox-addons/extensions
-firefox_global_prefs: /etc/firefox/firefox.js
+firefox_global_prefs: /etc/firefox/syspref.js
 
 # Array of firefox apt package dependencies.
 firefox_dependencies:

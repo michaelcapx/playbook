@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: A basic role providing some common tools and system configurations
-  company: "Polymimetic"
+  description: A basic role providing some common tools and system configurations.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

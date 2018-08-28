@@ -21,7 +21,7 @@
 - name: Add Firefox Next repository
   become: yes
   apt_repository:
-    repo: ppa:mozillateam/firefox-next
+    repo: "{{ firefox_ppa }}"
     state: present
     validate_certs: yes
     update_cache: yes
@@ -76,37 +76,44 @@
   delay: 5
 
 # Set Global Firefox Preferences
-- name: Set global firefox preferences
+- name: Copy global firefox preferences
   become: yes
-  get_url:
-    url: "https://raw.githubusercontent.com/pyllyukko/user.js/5f3a460167fcfb8e4d4152b03c319fd002de8dc0/user.js"
-    checksum: "sha256:9344793e14856f51332d9e6e2d8fb9c579da78c5af1a57d09ff62a817d2cc3d5"
+  copy:
+    src: "syspref.js"
     dest: "{{ firefox_global_prefs }}"
-    timeout: 30
     mode: 0644
-    backup: yes
-    force: yes
-  when: firefox_harden
-  register: dl_firefox_prefs
-  until: dl_firefox_prefs | succeeded
-  retries: 10
-  delay: 5
 
-- name: Configure global firefox preferences as default
-  become: yes
-  replace:
-    dest: "{{ firefox_global_prefs }}"
-    regexp: 'user_pref\('
-    replace: 'pref('
-    backup: yes
-  when: firefox_harden
+# - name: Set global firefox preferences
+#   become: yes
+#   get_url:
+#     url: "https://raw.githubusercontent.com/pyllyukko/user.js/5f3a460167fcfb8e4d4152b03c319fd002de8dc0/user.js"
+#     checksum: "sha256:9344793e14856f51332d9e6e2d8fb9c579da78c5af1a57d09ff62a817d2cc3d5"
+#     dest: "{{ firefox_global_prefs }}"
+#     timeout: 30
+#     mode: 0644
+#     backup: yes
+#     force: yes
+#   when: firefox_harden
+#   register: dl_firefox_prefs
+#   until: dl_firefox_prefs | succeeded
+#   retries: 10
+#   delay: 5
+
+# - name: Configure global firefox preferences as default
+#   become: yes
+#   replace:
+#     dest: "{{ firefox_global_prefs }}"
+#     regexp: 'user_pref\('
+#     replace: 'pref('
+#     backup: yes
+#   when: firefox_harden
 
 # Configure Firefox Preferences
-- name: Set firefox user preferences
-  template:
-    src: user.js.j2
-    dest: "{{ item.profile_path }}/user.js"
-  with_items: "{{ firefox_profile_register.results }}"
-  when: firefox_preferences is defined and firefox_profile_register.profile_path is defined
-  become: true
-  become_user: "{{ firefox_user }}"
+# - name: Set firefox user preferences
+#   template:
+#     src: user.js.j2
+#     dest: "{{ item.profile_path }}/user.js"
+#   with_items: "{{ firefox_profile_register.results }}"
+#   when: firefox_preferences is defined and firefox_profile_register.profile_path is defined
+#   become: true
+#   become_user: "{{ firefox_user }}"

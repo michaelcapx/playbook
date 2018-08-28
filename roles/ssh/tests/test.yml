@@ -10,6 +10,13 @@
   pre_tasks:
     - name: Update apt cache
       apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+
+    - name: Display the Ansible version info
+      debug:
+        var: ansible_version
+        verbosity: 4
 
     - name: Display all variables/facts known for a host
       debug:

@@ -29,15 +29,3 @@ firefox_global_addons:
   # - { url: "https://addons.mozilla.org/firefox/downloads/file/802894/umatrix-1.1.18-an+fx.xpi", guid: "uMatrix@raymondhill.net" } # uMatrix
   - { url: "https://addons.mozilla.org/firefox/downloads/file/738809/smart_referer-0.2.3-an+fx.xpi", guid: "smart-referer@meh.paranoid.pk" } # Smart Referer
   # - { url: "https://addons.mozilla.org/firefox/downloads/file/797312/violentmonkey-2.8.22-an+fx.xpi", guid: "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" } # Violentmonkey
-
-# Harden firefox with external preferences.
-firefox_harden: false
-
-# Firefox custom preferences object
-firefox_preferences:
-  geo.ip: 'false'
-  browser.safebrowsing.enabled: 'false'
-  browser.safebrowsing.malware.enabled: 'false'
-  browser.search.defaultenginename: "'DuckDuckGo'"
-  browser.startup.homepage: "'https://www.startpage.com'"
-  signon.RememberSignons: 'false'

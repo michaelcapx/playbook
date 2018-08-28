@@ -26,6 +26,7 @@ vbox_host.cfg
 ### Ansible ###
 *.retry
 .vault
+tests/test.sh
 
 ### Other ###
 !empty

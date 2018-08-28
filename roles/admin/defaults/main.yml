@@ -4,6 +4,9 @@
 # Default admin user.
 admin_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
+# Default admin password
+admin_password: "{{ master_password | default(omit) }}"
+
 # Default admin home.
 admin_home: "{{ master_home | default(ansible_env.HOME) }}"
 
@@ -33,3 +36,14 @@ admin_xdg_directories:
   - { name: MUSIC,       path: "$HOME",           dir: Music,     state: absent  }
   - { name: PICTURES,    path: "$HOME",           dir: Pictures,  state: absent  }
   - { name: VIDEOS,      path: "$HOME",           dir: Videos,    state: absent  }
+
+# Home folder encryption switch.
+admin_home_encryption: false
+
+# The time (in seconds) to set the current apt cache. Current default is set for one day.
+admin_apt_cache_time: "{{ master_apt_cache_time | default(86400) }}"
+
+# Home folder encyption dependencies.
+admin_encryption_dependencies:
+  - ecryptfs-utils
+  - cryptsetup

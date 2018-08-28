@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Creates and configures the main user account
-  company: "Polymimetic"
+  description: Creates and configures the main user account.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

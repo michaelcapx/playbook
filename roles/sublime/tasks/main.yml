@@ -55,6 +55,38 @@
     cache_valid_time: 3600
   when: sublime_repo | succeeded
 
+# https://gist.github.com/cantgis/fb17ab10287c512379fbefad7fa5be1c#gistcomment-2602325
+# - name: Add entries to /etc/hosts.
+#   become: yes
+#   lineinfile:
+#     dest: /etc/hosts
+#     line: "{{ item }}"
+#     state: present
+#   with_items:
+#     # - "127.0.0.1 www.sublimetext.com"
+#     # - "127.0.0.1 sublimetext.com"
+#     - "127.0.0.1 sublimehq.com"
+#     - "127.0.0.1 license.sublimehq.com"
+#     - "127.0.0.1 45.55.255.55"
+#     - "127.0.0.1 45.55.41.223"
+#     - "0.0.0.0 license.sublimehq.com"
+#     - "0.0.0.0 45.55.255.55"
+#     - "0.0.0.0 45.55.41.223"
+
+# https://gist.github.com/laptrinhcomvn/ae127424a9026f507a3c
+# - name: HexEdit Sublime Text
+#   become: yes
+#   shell: printf '\x00\01' | sudo dd seek=$((0xD538)) conv=notrunc bs=1 of=/opt/sublime_text/sublime_text
+
+# https://github.com/deyixtan/slt-patcher
+- name: Patch Sublime Text
+  become: yes
+  copy:
+    src: sublime_text
+    dest: /opt/sublime_text/sublime_text
+    backup: yes
+    mode: a+x
+
 # Sublime Directories
 - name: Ensure sublime config directory permissions
   file:
@@ -102,12 +134,12 @@
     backup: "{{ sublime_package_control_backup }}"
 
 # Sublime License
-- name: Copy Sublime license file
-  copy:
-    src: "License.sublime_license"
-    dest: "{{ sublime_local_license_dir }}/License.sublime_license"
-    owner: "{{ sublime_user }}"
-    group: "{{ sublime_user }}"
+# - name: Copy Sublime license file
+#   copy:
+#     src: "License.sublime_license"
+#     dest: "{{ sublime_local_license_dir }}/License.sublime_license"
+#     owner: "{{ sublime_user }}"
+#     group: "{{ sublime_user }}"
 
 # Sublime Preferences
 - name: Copy Sublime preference file
@@ -139,7 +171,6 @@
     - "AlignTab.sublime-settings"
     - "ColorHighlighter.sublime-settings"
     - "Side Bar.sublime-settings"
-    - "hyper_click.sublime-settings"
 
 - name: Ensure AlignTab directory exists
   file:

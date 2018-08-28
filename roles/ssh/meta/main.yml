@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Generates SSH keys & configuration
-  company: "Polymimetic"
+  description: Generates SSH keys & configuration.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

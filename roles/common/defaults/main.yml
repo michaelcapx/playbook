@@ -8,7 +8,7 @@ common_apt_upgrade_type: safe
 common_apt_upgrade_force: no
 
 # The time (in seconds) to set the current apt cache. Current default is set for one day.
-common_apt_cache_time: 86400
+common_apt_cache_time: "{{ master_apt_cache_time | default(86400) }}"
 
 # Determines if apt should upgrade packages.
 common_apt_upgrade: yes
@@ -80,6 +80,8 @@ common_apt_packages_disk:
   - exfat-utils
   - exfat-fuse
   - ntfs-3g
+  - ecryptfs-utils
+  - cryptsetup
 
 # Array of base apt packages to install.
 common_apt_add_packages: "{{ common_apt_packages_default + common_apt_packages_archive + common_apt_packages_disk }}"
