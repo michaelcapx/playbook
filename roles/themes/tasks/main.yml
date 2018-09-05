@@ -46,6 +46,28 @@
     path: "{{ theme_home }}/.cache/arc-theme"
     state: absent
 
+# Install Black Theme
+- name: Install Black-Arc-Theme
+  git:
+    repo: "{{ theme_black_repo }}"
+    dest: "{{ theme_home }}/.cache/arc-black-ubuntu"
+    update: yes
+    accept_hostkey: yes
+  register: black_theme_git
+  become: true
+  become_user: "{{ theme_user }}"
+
+- name: Copy Black-Arc-Theme
+  become: yes
+  command: "cp -R {{ theme_home }}/.cache/arc-black-ubuntu* /usr/share/themes"
+  when: black_theme_git.changed
+
+- name: Delete Black-Arc-Theme cache
+  become: yes
+  file:
+    path: "{{ theme_home }}/.cache/arc-black-ubuntu"
+    state: absent
+
 # Theme config
 - name: Set Theme settings
   shell: "{{ item }}"
