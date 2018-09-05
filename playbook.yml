@@ -15,11 +15,7 @@
     - name: Include optional configuration files
       include_vars: "{{ item }}"
       with_fileglob:
-        - "{{ playbook_dir }}/vault.yml"
         - "{{ playbook_dir }}/vars/vault.yml"
-        - "{{ playbook_dir }}/vars/secrets.yml"
-        - "{{ playbook_dir }}/secrets.yml"
-        - "{{ playbook_dir }}/local.config.yml"
 
     - name: Upgrade packages
       become: yes
@@ -35,11 +31,11 @@
     - { role: admin,       tags: ['base'] }
     - { role: ssh,         tags: ['base'] }
     - { role: git,         tags: ['base'] }
-    - { role: shell,       tags: ['base'] }
+    - { role: desktop,     tags: ['base'] }
 
     # Shell roles
     - { role: bash, when: master_shell == 'bash', tags: ['shell'] }
-    # - { role: zsh,  when: master_shell == 'zsh',  tags: ['shell'] }
+    - { role: zsh,  when: master_shell == 'zsh',  tags: ['shell'] }
 
     # Language roles
     - { role: python,      tags: ['languages'] }
@@ -52,16 +48,31 @@
 
     # Editor roles
     - { role: sublime,     tags: ['editor'] }
+    # - { role: atom,        tags: ['editor'] }
     # - { role: vscode,      tags: ['editor'] }
 
-    # Desktop roles
-    - { role: desktop,     tags: ['desktop'] }
-    - { role: themes,      tags: ['desktop'] }
-    - { role: xfce,        tags: ['desktop'] }
+    # Theme roles
+    - { role: themes,      tags: ['theme'] }
+    - { role: xfce,        tags: ['theme'] }
 
     # App roles
-    # - { role: app,         tags: ['app'] }
-    # - { role: minecraft,   tags: ['app'] }
+    # - { role: albert,    when: '"albert" in master_installed_apps',    tags: ['app'] }
+    # - { role: audacity,    when: '"audacity" in master_installed_apps',    tags: ['app'] }
+    # - { role: bleachbit,    when: '"bleachbit" in master_installed_apps',    tags: ['app'] }
+    # - { role: blender,    when: '"blender" in master_installed_apps',    tags: ['app'] }
+    # - { role: cherrytree, when: '"cherrytree" in master_installed_apps', tags: ['app'] }
+    # - { role: dbeaver, when: '"dbeaver" in master_installed_apps', tags: ['app'] }
+    # - { role: filezilla,    when: '"filezilla" in master_installed_apps',    tags: ['app'] }
+    # - { role: gimp, when: '"gimp" in master_installed_apps', tags: ['app'] }
+    # - { role: inkscape, when: '"inkscape" in master_installed_apps', tags: ['app'] }
+    # - { role: keepass, when: '"keepass" in master_installed_apps', tags: ['app'] }
+    # - { role: libreoffice, when: '"libreoffice" in master_installed_apps', tags: ['app'] }
+    # - { role: minecraft,    when: '"minecraft" in master_installed_apps',    tags: ['app'] }
+    # - { role: notepadqq,    when: '"notepadqq" in master_installed_apps',    tags: ['app'] }
+    # - { role: obs,    when: '"obs" in master_installed_apps',    tags: ['app'] }
+    # - { role: remmina, when: '"remmina" in master_installed_apps', tags: ['app'] }
+    # - { role: tor, when: '"tor" in master_installed_apps', tags: ['app'] }
+    # - { role: transmission, when: '"transmission" in master_installed_apps', tags: ['app'] }
 
     # Virtualization roles
     # - { role: docker,      tags: ['virtualization'] }
@@ -73,8 +84,8 @@
     # - { role: composer,   tags: ['server'] }
 
     # Extra roles
-    # - { role: dotfiles,    tags: ['extras'] }
-    # - { role: projects,    tags: ['extras'] }
+    # - { role: dotfiles, when: master_dotfiles_enabled,    tags: ['extras'] }
+    # - { role: security, when: master_security_enabled, tags: ['extras'] }
 
   tasks:
 

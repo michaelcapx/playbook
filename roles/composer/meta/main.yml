@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Installs Composer for GalliumOS
-  company: "Polymimetic"
+  description: Installs and configures Composer, the PHP Dependency Manager.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

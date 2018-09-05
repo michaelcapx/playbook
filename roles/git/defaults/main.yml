@@ -1,18 +1,18 @@
 ---
 # defaults file for git
 
+# Default git user.
+git_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default git home.
+git_home: "{{ master_home | default(ansible_env.HOME) }}"
+
 # Array of git packages to install.
 git_packages:
   - git
   - git-core
   - git-svn
   - git-extras
-
-# Default git user.
-git_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
-
-# Default git home.
-git_home: "{{ master_home | default(ansible_env.HOME) }}"
 
 # Github/BitBucket Keys
 git_github_user: "{{ master_github_user | default('') }}"

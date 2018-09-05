@@ -1,0 +1,45 @@
+---
+# tasks file for dbeaver
+
+# DBeaver PPA installation
+- name: Add DBeaver PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ dbeaver_ppa }}"
+    state: present
+  register: dbeaver_repo
+  when: dbeaver_install_type == "ppa"
+
+- name: Ensure DBeaver packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ dbeaver_packages | list }}"
+  when: dbeaver_install_type == "ppa" and dbeaver_packages | length
+
+# DBeaver Deb installation
+- name: Check if DBeaver is installed
+  command: dpkg-query -W dbeaver
+  register: dbeaver_check_deb
+  failed_when: dbeaver_check_deb.rc > 1
+  changed_when: dbeaver_check_deb.rc == 1
+  when: dbeaver_install_type == "deb"
+
+- name: Download DBeaver
+  get_url:
+    url: "{{ dbeaver_deb }}"
+    dest: "{{ dbeaver_tmp_path }}"
+  when: dbeaver_install_type == "deb" and dbeaver_check_deb.rc == 1
+
+- name: Install DBeaver
+  apt:
+    deb: "{{ dbeaver_tmp_path }}"
+  when: dbeaver_install_type == "deb" and dbeaver_check_deb.rc == 1
+
+- name: Clean DBeaver deb file
+  file:
+    path: "{{ dbeaver_tmp_path }}"
+    state: absent
+  when: dbeaver_install_type == "deb"

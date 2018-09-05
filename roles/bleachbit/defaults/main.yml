@@ -1,0 +1,8 @@
+---
+# defaults file for bleachbit
+
+# Default bleachbit user.
+bleachbit_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default bleachbit home.
+bleachbit_home: "{{ master_home | default(ansible_env.HOME) }}"

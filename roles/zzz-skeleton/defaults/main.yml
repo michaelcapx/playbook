@@ -1,0 +1,8 @@
+---
+# defaults file for <ROLENAME|Lower>
+
+# Default <ROLENAME|Lower> user.
+<ROLENAME|Lower>_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default <ROLENAME|Lower> home.
+<ROLENAME|Lower>_home: "{{ master_home | default(ansible_env.HOME) }}"

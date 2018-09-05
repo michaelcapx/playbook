@@ -2,15 +2,14 @@
 set -e
 ###########################################################################
 #
-# Minecraft Bootstrap Installer
-# https://github.com/polymimetic/ansible-role-minecraft
+# Minecraft Installer
 #
 # This script is intended to replicate the ansible role in a shell script
 # format. It can be useful for debugging purposes or as a quick installer
 # when it is inconvenient or impractical to run the ansible playbook.
 #
 # Usage:
-# wget -qO - https://raw.githubusercontent.com/polymimetic/ansible-role-minecraft/master/install.sh | bash
+# wget -qO - https://raw.githubusercontent.com/michaelcapx/playbook/master/roles/minecraft/install.sh | bash
 #
 ###########################################################################
 
@@ -23,8 +22,8 @@ fi
 # Constants and Global Variables
 ###########################################################################
 
-readonly GIT_REPO="https://github.com/polymimetic/ansible-role-minecraft.git"
-readonly GIT_RAW="https://raw.githubusercontent.com/polymimetic/ansible-role-minecraft/master"
+readonly GIT_REPO="https://github.com/michaelcapx/playbook.git"
+readonly GIT_RAW="https://raw.githubusercontent.com/michaelcapx/playbook/master"
 
 ###########################################################################
 # Basic Functions
@@ -41,7 +40,7 @@ function e_title()   { echo -e "\033[1;35m$@.......\033[0m"; }      # magenta
 # Install Minecraft
 ###########################################################################
 
-install_minecraft() {
+start_install() {
   e_title "Installing Minecraft"
 
   e_success "Minecraft installed"
@@ -52,7 +51,7 @@ install_minecraft() {
 ###########################################################################
 
 program_start() {
-  install_minecraft
+  start_install
 }
 
 program_start

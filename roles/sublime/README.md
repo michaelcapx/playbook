@@ -1,6 +1,10 @@
-# Ansible Role: Sublime
+# Ansible Role: Sublime Text
 
 Installs [Sublime Text](https://www.sublimetext.com/) text editor.
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 

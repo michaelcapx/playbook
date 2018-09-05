@@ -1,8 +1,0 @@
----
-# tasks file for shell
-
-- include_tasks: bash.yml
-  when: shell_type == 'bash'
-
-- include_tasks: zsh.yml
-  when: shell_type == 'zsh'

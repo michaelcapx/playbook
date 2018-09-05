@@ -1,0 +1,18 @@
+---
+# tasks file for notepadqq
+
+- name: Add Notepadqq PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ notepadqq_ppa }}"
+    state: present
+  register: notepadqq_repo
+
+- name: Ensure Notepadqq packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ notepadqq_packages | list }}"
+  when: notepadqq_packages | length

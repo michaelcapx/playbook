@@ -1,0 +1,15 @@
+---
+# defaults file for albert
+
+# Default albert user.
+albert_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default albert home.
+albert_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# albert repository
+albert_ppa: ppa:nilarimogard/webupd8
+
+# albert packages
+albert_packages:
+  - albert

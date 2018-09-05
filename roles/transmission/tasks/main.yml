@@ -1,0 +1,18 @@
+---
+# tasks file for transmission
+
+- name: Add Transmission PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ transmission_ppa }}"
+    state: present
+  register: transmission_repo
+
+- name: Ensure Transmission packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ transmission_packages | list }}"
+  when: transmission_packages | length

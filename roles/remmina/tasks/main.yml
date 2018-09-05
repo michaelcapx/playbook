@@ -1,0 +1,18 @@
+---
+# tasks file for remmina
+
+- name: Add Remmina PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ remmina_ppa }}"
+    state: present
+  register: remmina_repo
+
+- name: Ensure Remmina packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ remmina_packages | list }}"
+  when: remmina_packages | length

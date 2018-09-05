@@ -22,3 +22,28 @@ master_github_user: "{{ vault_github_user | default('') }}"
 master_github_password: "{{ vault_github_password | default('') }}"
 master_bitbucket_user: "{{ vault_bitbucket_user | default('') }}"
 master_bitbucket_password: "{{ vault_bitbucket_password | default('') }}"
+
+# Configuration options
+master_security_enabled: false
+master_dotfiles_enabled: false
+
+# Comment out any extra utilities you don't want to install. If you don't want
+# to install *any* extras, set this value to an empty set, e.g. `[]`.
+master_installed_apps:
+  - albert
+  - audacity
+  - bleachbit
+  - blender
+  - cherrytree
+  - dbeaver
+  - filezilla
+  - gimp
+  - inkscape
+  - keepass
+  - libreoffice
+  - minecraft
+  - notepadqq
+  - obs
+  - remmina
+  - tor
+  - transmission

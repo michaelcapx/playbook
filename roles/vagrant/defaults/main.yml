@@ -1,6 +1,12 @@
 ---
 # defaults file for vagrant
 
+# Default vagrant user.
+vagrant_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default vagrant home.
+vagrant_home: "{{ master_home | default(ansible_env.HOME) }}"
+
 # The virtualbox version to install.
 virtualbox_version: "5.2"
 

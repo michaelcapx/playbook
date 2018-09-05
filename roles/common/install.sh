@@ -40,34 +40,91 @@ function e_title()   { echo -e "\033[1;35m$@.......\033[0m"; }      # magenta
 # Install Common
 ###########################################################################
 
-install_common() {
+start_install() {
   e_title "Installing Common"
 
   # Update & upgrade linux
   sudo apt -y update && time sudo apt -y upgrade
 
   # Remove apt packages
-  sudo apt purge -y \
-  xterm xscreensaver simple-scan
+  pkg_remove=(
+    xterm
+    xscreensaver
+    simple-scan
+  )
+
+  sudo apt purge -y "${pkg_remove[@]}"
 
   # Cleanup packages
   sudo apt clean -y
 
   # Install dependencies
-  sudo apt install -y \
-  software-properties-common git ssh curl nano sudo wget
+  pkg_deps=(
+    software-properties-common
+    git
+    ssh
+    curl
+    nano
+    sudo
+    wget
+  )
+
+  sudo apt install -y "${pkg_deps[@]}"
 
   # Install base packages
-  sudo apt install -y \
-  apt-transport-https build-essential unattended-upgrades dos2unix gcc htop libglib2.0-dev libmcrypt4 libpcre3-dev make mcrypt ntp pwgen pv re2c supervisor whois vim
+  pkg_base=(
+    apt-transport-https
+    build-essential
+    unattended-upgrades
+    dos2unix
+    gcc
+    htop
+    libglib2.0-dev
+    libmcrypt4
+    libpcre3-dev
+    make
+    mcrypt
+    ntp
+    pwgen
+    pv
+    re2c
+    supervisor
+    whois
+    vim
+  )
+
+  sudo apt install -y "${pkg_base[@]}"
 
   # Install archive packages
-  sudo apt install -y \
-  arj bzip2 cabextract gzip mpack p7zip-full p7zip-rar rar sharutils tar unace unrar unzip uudeview zip
+  pkg_archive=(
+    arj
+    bzip2
+    cabextract
+    gzip
+    mpack
+    p7zip-full
+    p7zip-rar
+    rar
+    sharutils
+    tar
+    unace
+    unrar
+    unzip
+    uudeview
+    zip
+  )
+
+  sudo apt install -y "${pkg_archive[@]}"
 
   # Install disk packages
-  sudo apt install -y \
-  cifs-utils exfat-utils exfat-fuse ntfs-3g
+  pkg_disk=(
+    cifs-utils
+    exfat-utils
+    exfat-fuse
+    ntfs-3g
+  )
+
+  sudo apt install -y "${pkg_disk[@]}"
 
   e_success "Common installed"
 }
@@ -77,7 +134,7 @@ install_common() {
 ###########################################################################
 
 program_start() {
-  install_common
+  start_install
 }
 
 program_start

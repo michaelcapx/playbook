@@ -1,0 +1,18 @@
+---
+# tasks file for libreoffice
+
+- name: Add LibreOffice PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ libreoffice_ppa }}"
+    state: present
+  register: libreoffice_repo
+
+- name: Ensure LibreOffice packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ libreoffice_packages | list }}"
+  when: libreoffice_packages | length

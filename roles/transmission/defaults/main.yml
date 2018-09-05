@@ -1,0 +1,15 @@
+---
+# defaults file for transmission
+
+# Default transmission user.
+transmission_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default transmission home.
+transmission_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# transmission repository
+transmission_ppa: ppa:transmissionbt/ppa
+
+# transmission packages
+transmission_packages:
+  - transmission

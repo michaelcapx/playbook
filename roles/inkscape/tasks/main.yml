@@ -1,0 +1,18 @@
+---
+# tasks file for inkscape
+
+- name: Add Inkscape PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ inkscape_ppa }}"
+    state: present
+  register: inkscape_repo
+
+- name: Ensure Inkscape packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ inkscape_packages | list }}"
+  when: inkscape_packages | length

@@ -1,0 +1,15 @@
+---
+# defaults file for inkscape
+
+# Default inkscape user.
+inkscape_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default inkscape home.
+inkscape_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# inkscape repository
+inkscape_ppa: ppa:inkscape.dev/stable
+
+# inkscape packages
+inkscape_packages:
+  - inkscape

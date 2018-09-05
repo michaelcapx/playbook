@@ -1,0 +1,33 @@
+---
+# tasks file for obs
+- name: Add FFMpeg PPA repository
+  become: yes
+  apt_repository:
+    repo: ppa:kirillshkrogalev/ffmpeg-next
+    state: present
+  register: obs_ffmpeg_repo
+
+- name: Ensure OBS dependencies are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ obs_dependencies | list }}"
+  when: obs_dependencies | length
+
+- name: Add OBS Studio PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ obs_ppa }}"
+    state: present
+  register: obs_repo
+
+- name: Ensure OBS Studio packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ obs_packages | list }}"
+  when: obs_packages | length

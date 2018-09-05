@@ -1,0 +1,11 @@
+---
+# tasks file for filezilla
+
+- name: Ensure Filezilla packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ filezilla_packages | list }}"
+  when: filezilla_packages | length

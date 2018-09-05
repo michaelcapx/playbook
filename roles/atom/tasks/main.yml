@@ -1,0 +1,24 @@
+---
+# tasks file for atom
+
+- name: Add Atom PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ atom_ppa }}"
+    state: present
+  register: atom_repo
+
+- name: Ensure Atom packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ atom_packages | list }}"
+  when: atom_packages | length
+
+- name: Setup Atom Packages
+  apm:
+    name: sync-settings # All others packages are managed by sync-settings
+  become: true
+  become_user: "{{ atom_user }}"

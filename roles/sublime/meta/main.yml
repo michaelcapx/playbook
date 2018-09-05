@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Installs Sublime Text 3 text editor for GalliumOS
-  company: "Polymimetic"
+  description: Installs Sublime Text 3 text editor.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

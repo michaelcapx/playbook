@@ -1,0 +1,12 @@
+---
+# defaults file for filezilla
+
+# Default filezilla user.
+filezilla_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default filezilla home.
+filezilla_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# filezilla PPA packages.
+filezilla_packages:
+  - filezilla

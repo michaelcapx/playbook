@@ -1,0 +1,18 @@
+---
+# tasks file for audacity
+
+- name: Add Audacity PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ audacity_ppa }}"
+    state: present
+  register: audacity_repo
+
+- name: Ensure Audacity packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ audacity_packages | list }}"
+  when: audacity_packages | length

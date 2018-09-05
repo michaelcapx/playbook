@@ -1,0 +1,18 @@
+---
+# tasks file for tor
+
+- name: Add Tor PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ tor_ppa }}"
+    state: present
+  register: tor_repo
+
+- name: Ensure Tor packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ tor_packages | list }}"
+  when: tor_packages | length

@@ -1,6 +1,10 @@
 # Ansible Role: Minecraft
 
-Installs Minecraft.
+Installs and configures [Minecraft](https://minecraft.net/).
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 

@@ -1,0 +1,15 @@
+---
+# defaults file for libreoffice
+
+# Default libreoffice user.
+libreoffice_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default libreoffice home.
+libreoffice_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# libreoffice repository
+libreoffice_ppa: ppa:libreoffice/ppa
+
+# libreoffice packages
+libreoffice_packages:
+  - libreoffice

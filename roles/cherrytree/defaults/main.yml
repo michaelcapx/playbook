@@ -1,0 +1,15 @@
+---
+# defaults file for cherrytree
+
+# Default cherrytree user.
+cherrytree_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default cherrytree home.
+cherrytree_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# cherrytree repository
+cherrytree_ppa: ppa:giuspen/ppa
+
+# cherrytree packages
+cherrytree_packages:
+  - cherrytree

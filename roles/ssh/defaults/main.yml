@@ -1,14 +1,14 @@
 ---
 # defaults file for ssh
 
-# Build dependencies for packages (will be installed with apt).
-ssh_dependencies: []
-
-# Default SSH user
+# Default ssh user.
 ssh_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
-# Default SSH home directory
+# Default ssh home.
 ssh_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# Build dependencies for packages (will be installed with apt).
+ssh_dependencies: []
 
 # Default ssh public & private key files.
 ssh_privkey: "{{ ssh_home }}/.ssh/id_rsa"

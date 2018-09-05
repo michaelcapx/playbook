@@ -1,15 +1,15 @@
 ---
 # defaults file for node
 
-# Set the version of Node.js to install ("0.12", "4.x", "5.x", "6.x", "8.x").
-# Version numbers from Nodesource: https://github.com/nodesource/distributions
-node_version: "8.x"
-
 # Default node user.
 node_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 
 # Default node home.
 node_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# Set the version of Node.js to install ("0.12", "4.x", "5.x", "6.x", "8.x").
+# Version numbers from Nodesource: https://github.com/nodesource/distributions
+node_version: "8.x"
 
 # Build dependencies for packages (will be installed with apt).
 node_dependencies:

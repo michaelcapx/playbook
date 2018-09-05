@@ -1,6 +1,10 @@
-# Ansible Role: VSCode
+# Ansible Role: Visual Studio Code
 
-Installs [Visual Studio Code](https://code.visualstudio.com/) text editor.
+Installs and configures [Visual Studio Code](https://code.visualstudio.com/) text editor.
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 

@@ -1,0 +1,15 @@
+---
+# defaults file for tor
+
+# Default tor user.
+tor_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default tor home.
+tor_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# tor repository
+tor_ppa: ppa:webupd8team/tor-browser
+
+# tor packages
+tor_packages:
+  - tor-browser

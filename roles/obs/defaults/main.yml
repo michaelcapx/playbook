@@ -1,0 +1,19 @@
+---
+# defaults file for obs
+
+# Default obs user.
+obs_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default obs home.
+obs_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# OBS dependency packages
+obs_dependencies:
+  - ffmpeg
+
+# OBS Studio repository
+obs_ppa: ppa:obsproject/obs-studio
+
+# OBS Studio packages
+obs_packages:
+  - obs-studio

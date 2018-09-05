@@ -1,0 +1,15 @@
+---
+# defaults file for audacity
+
+# Default audacity user.
+audacity_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default audacity home.
+audacity_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# audacity repository
+audacity_ppa: ppa:ubuntuhandbook1/audacity
+
+# audacity packages
+audacity_packages:
+  - audacity

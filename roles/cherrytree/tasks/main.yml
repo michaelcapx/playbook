@@ -1,0 +1,18 @@
+---
+# tasks file for cherrytree
+
+- name: Add Cherrytree PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ cherrytree_ppa }}"
+    state: present
+  register: cherrytree_repo
+
+- name: Ensure Cherrytree packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ cherrytree_packages | list }}"
+  when: cherrytree_packages | length

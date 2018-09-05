@@ -42,7 +42,7 @@ function e_title()   { echo -e "\033[1;35m$@.......\033[0m"; }      # magenta
 # https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
 ###########################################################################
 
-install_ssh() {
+start_install() {
   e_title "Installing SSH keys"
 
   local ssh_name=""
@@ -81,7 +81,7 @@ install_ssh() {
 ###########################################################################
 
 program_start() {
-  install_ssh
+  start_install
 }
 
 program_start

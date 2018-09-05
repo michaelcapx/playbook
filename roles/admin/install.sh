@@ -44,7 +44,7 @@ function e_title()   { echo -e "\033[1;35m$@.......\033[0m"; }      # magenta
 # https://www.computerhope.com/unix/chfn.htm
 ###########################################################################
 
-install_admin() {
+start_install() {
   e_title "Setting up user account"
 
   local user_fullname=""
@@ -85,7 +85,7 @@ install_admin() {
 ###########################################################################
 
 program_start() {
-  install_admin
+  start_install
 }
 
 program_start

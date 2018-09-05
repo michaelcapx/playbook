@@ -1,0 +1,18 @@
+---
+# tasks file for blender
+
+- name: Add Blender PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ blender_ppa }}"
+    state: present
+  register: blender_repo
+
+- name: Ensure Blender packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ blender_packages | list }}"
+  when: blender_packages | length

@@ -1,0 +1,15 @@
+---
+# defaults file for atom
+
+# Default atom user.
+atom_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default atom home.
+atom_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# atom repository
+atom_ppa: ppa:webupd8team/atom
+
+# atom packages
+atom_packages:
+  - atom

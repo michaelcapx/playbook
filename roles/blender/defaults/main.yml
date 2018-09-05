@@ -1,0 +1,15 @@
+---
+# defaults file for blender
+
+# Default blender user.
+blender_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default blender home.
+blender_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# blender repository
+blender_ppa: ppa:thomas-schiex/blender
+
+# blender packages
+blender_packages:
+  - blender

@@ -1,0 +1,31 @@
+---
+# tasks file for gimp
+
+- name: Add Gimp PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ gimp_ppa }}"
+    state: present
+  register: gimp_repo
+
+- name: Ensure Gimp packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ gimp_packages | list }}"
+  when: gimp_packages | length
+
+- name: Add Gimp configs
+  lineinfile:
+    dest: "{{ gimp_home }}/.gimp-2.8/sessionrc"
+    regexp: "{{ item.param }}"
+    line: "{{ item.value }}"
+    create: true
+  with_items :
+    - { param: "single-window-mode", value: "(single-window-mode yes)" }
+    - { param: "default-snap-to-canvas", value: "(default-snap-to-canvas yes)" }
+    - { param: "default-snap-to-grid", value: "(default-snap-to-grid yes)" }
+  become: true
+  become_user: "{{ gimp_user }}"

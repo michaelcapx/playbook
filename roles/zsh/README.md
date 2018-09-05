@@ -1,6 +1,10 @@
 # Ansible Role: Zsh
 
-Sets up the main user's zsh shell.
+Sets up the zsh shell.
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 

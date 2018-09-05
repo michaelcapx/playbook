@@ -18,18 +18,9 @@
   apt_repository:
     repo: "{{ item.ppa }}"
     state: present
-    validate_certs: yes
-    update_cache: yes
   with_items: "{{ desktop_ppa }}"
   when: desktop_ppa | length
   register: desktop_repo
-
-- name: Update apt cache if repo was added
-  become: yes
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-  when: desktop_repo.changed
 
 - name: Install desktop PPA packages
   become: yes

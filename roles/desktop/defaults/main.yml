@@ -7,18 +7,16 @@ desktop_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
 # Default desktop home.
 desktop_home: "{{ master_home | default(ansible_env.HOME) }}"
 
+# Array of desktop apt package dependencies. These packages should be installed before all others.
+desktop_dependencies:
+  - xvfb
+  - acpid
+  - imagemagick
+
 # Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
 desktop_ppa:
   - { ppa: "ppa:yktooo/ppa",                       pkg: indicator-sound-switcher }
   # - { ppa: "ppa:dawidd0811/neofetch",              pkg: neofetch }
-  # - { ppa: "ppa:giuspen/ppa",                      pkg: cherrytree }
-  # - { ppa: "ppa:eugenesan/ppa",                    pkg: keepassx }
-  # - { ppa: "ppa:otto-kesselgulasch/gimp",          pkg: gimp }
-  # - { ppa: "ppa:inkscape.dev/stable",              pkg: inkscape }
-  # - { ppa: "ppa:libreoffice/libreoffice-5-4",      pkg: libreoffice }
-  # - { ppa: "ppa:serge-rider/dbeaver-ce",           pkg: dbeaver-ce }
-  # - { ppa: "ppa:transmissionbt/ppa",               pkg: transmission }
-  # - { ppa: "ppa:thomas-schiex/blender",            pkg: blender }
   # - { ppa: "ppa:kirillshkrogalev/ffmpeg-next",     pkg: ffmpeg }
   # - { ppa: "ppa:obsproject/obs-studio",            pkg: obs-studio }
   # - { ppa: "ppa:ubuntuhandbook1/audacity",         pkg: audacity }
@@ -29,14 +27,14 @@ desktop_ppa:
 
 # Array of gui desktop software packages to install
 desktop_packages_gui:
-  - bleachbit
-  - filezilla
+  # - bleachbit
+  # - filezilla
   # - gpick
   - meld
   - mpv
-  - font-manager
-  - transmission
-  - rhythmbox
+  # - font-manager
+  # - transmission
+  # - rhythmbox
   - ubuntu-restricted-extras
 
 # Array of cli desktop software packages to install

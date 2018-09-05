@@ -1,6 +1,6 @@
 # Ansible Role: Dotfiles
 
-Installs personal dotfiles. Ansible role for bare cloning dotfiles to dotfiles_user's $HOME/.dotfiles.git
+Clones a bare repository of personal dotfiles.
 
 ## Requirements
 
@@ -23,12 +23,3 @@ This role takes inspiration from the following Ansible roles:
 - [markushartman.dotfiles](https://github.com/markushartman/ansible-role-dotfiles)
 - [kentrino.dotfiles](https://github.com/kentrino/ansible-role-dotfiles)
 - [escapace.dotfiles](https://github.com/escapace/ansible-dotfiles)
-
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

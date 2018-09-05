@@ -1,0 +1,15 @@
+---
+# defaults file for notepadqq
+
+# Default notepadqq user.
+notepadqq_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default notepadqq home.
+notepadqq_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# notepadqq repository
+notepadqq_ppa: ppa:notepadqq-team/notepadqq
+
+# notepadqq packages
+notepadqq_packages:
+  - notepadqq

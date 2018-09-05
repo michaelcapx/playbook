@@ -1,0 +1,15 @@
+---
+# defaults file for keepass
+
+# Default keepass user.
+keepass_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default keepass home.
+keepass_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# keepass repository
+keepass_ppa: ppa:phoerious/keepassxc
+
+# keepass packages
+keepass_packages:
+  - keepassxc

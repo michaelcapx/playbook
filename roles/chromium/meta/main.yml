@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Installs and configures the chromium web browser
-  company: "Polymimetic"
+  description: Installs and configures the Chromium web browser.
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:

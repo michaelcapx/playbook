@@ -1,0 +1,15 @@
+---
+# defaults file for gimp
+
+# Default gimp user.
+gimp_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default gimp home.
+gimp_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# gimp repository
+gimp_ppa: ppa:otto-kesselgulasch/gimp
+
+# gimp packages
+gimp_packages:
+  - gimp

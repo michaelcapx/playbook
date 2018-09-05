@@ -1,6 +1,12 @@
 ---
 # defaults file for common
 
+# Default common user.
+common_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default common home.
+common_home: "{{ master_home | default(ansible_env.HOME) }}"
+
 # The type of upgrade to perform before installing apt packages. Valid values include: yes, no, safe, full and dist.
 common_apt_upgrade_type: safe
 

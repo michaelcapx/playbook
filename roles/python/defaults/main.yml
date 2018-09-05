@@ -1,6 +1,12 @@
 ---
 # defaults file for python
 
+# Default python user.
+python_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default python home.
+python_home: "{{ master_home | default(ansible_env.HOME) }}"
+
 # Build dependencies for packages (will be installed with apt).
 python_dependencies:
   - build-essential

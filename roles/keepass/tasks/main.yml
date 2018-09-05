@@ -1,0 +1,18 @@
+---
+# tasks file for keepass
+
+- name: Add Keepass PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ keepass_ppa }}"
+    state: present
+  register: keepass_repo
+
+- name: Ensure Keepass packages are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ keepass_packages | list }}"
+  when: keepass_packages | length

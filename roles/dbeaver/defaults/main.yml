@@ -1,0 +1,24 @@
+---
+# defaults file for dbeaver
+
+# Default DBeaver user.
+dbeaver_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default DBeaver home.
+dbeaver_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# DBeaver installation method. Valid values are 'ppa' or 'deb'.
+dbeaver_install_type: ppa
+
+# DBeaver PPA repository.
+dbeaver_ppa: ppa:serge-rider/dbeaver-ce
+
+# DBeaver PPA packages.
+dbeaver_packages:
+  - dbeaver-ce
+
+# DBeaver Deb download URL.
+dbeaver_deb: https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
+
+# DBeaver tmp download directory.
+dbeaver_tmp_path: /tmp/download-dbeaver-latest.deb

@@ -2,6 +2,10 @@
 
 Sets up the bash shell.
 
+## Requirements
+
+No requirements.
+
 ## Dependencies
 
 No dependencies.

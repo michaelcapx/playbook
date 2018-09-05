@@ -1,0 +1,16 @@
+---
+# defaults file for remmina
+
+# Default remmina user.
+remmina_user: "{{ master_user | default(ansible_env.SUDO_USER) }}"
+
+# Default remmina home.
+remmina_home: "{{ master_home | default(ansible_env.HOME) }}"
+
+# Remmina repository
+remmina_ppa: ppa:remmina-ppa-team/remmina-next
+
+# Remmina packages
+remmina_packages:
+  - remmina
+  - remmina-plugin-rdp

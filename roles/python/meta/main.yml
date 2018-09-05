@@ -4,9 +4,7 @@ dependencies: []
   # if you add dependencies to this list.
 
 galaxy_info:
-  author: polymimetic
-  description: Installs Python and Pip (Python package manager) for GalliumOS
-  company: "Polymimetic"
+  description: Installs Python and Pip (Python package manager).
   license: license (BSD, MIT)
   min_ansible_version: 2.2
   platforms:
