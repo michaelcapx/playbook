@@ -1,0 +1,15 @@
+---
+# Inkscape installation
+
+- name: Add Inkscape PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:inkscape.dev/stable"
+    state: present
+
+- name: Ensure Inkscape packages are installed
+  become: yes
+  apt:
+    name: inkscape
+    state: present
+    update_cache: yes

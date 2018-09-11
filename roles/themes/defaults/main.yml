@@ -2,17 +2,20 @@
 # defaults file for themes
 
 # Default theme user.
-theme_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+theme_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default theme home.
-theme_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+theme_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Main theme git repos.
 theme_arc_repo: https://github.com/alexwaibel/arc-grey-flatabulous-theme
+theme_black_repo: https://github.com/vooze/arc-black-ubuntu
 
 # Theme XFCE parameters.
 theme_name: "Arc-Grey-Flatabulous-Darker"
 theme_window: "Arc-Grey-Flatabulous-Darker"
+# theme_name: "arc-black-ubuntu"
+# theme_window: "arc-black-ubuntu"
 theme_iconset: "Numix-Circle-GalliumOS"
 theme_cursor: "DMZ-Black"
 theme_notify: "Numix"

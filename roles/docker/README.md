@@ -1,6 +1,10 @@
 # Ansible Role: Docker
 
-An Ansible Role that installs [Docker](https://www.docker.com) on GalliumOS.
+Installs and configures [Docker](https://www.docker.com).
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 
@@ -28,12 +32,3 @@ This role takes inspiration from the following Ansible roles:
 - [avinetworks.docker](https://github.com/avinetworks/ansible-role-docker)
 - [nexeck.docker](https://github.com/nexeck/ansible-docker)
 - [grycap.docker](https://github.com/grycap/ansible-role-docker)
-
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

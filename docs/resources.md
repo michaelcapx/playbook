@@ -109,6 +109,7 @@ Theming
 - [Installing Fira in Ubuntu](https://stevescott.ca/2016-10-20-installing-the-fira-font-in-ubuntu.html)
 - [Installing Source Code Pro fonts in Ubuntu](https://gist.github.com/lucasdavila/3875946)
 - [Download all OpenSans fonts from Google Fonts](https://gist.github.com/JamieMason/23fd333e079a9f523b16d3ab8198dace)
+- [Top Programming Fonts](https://github.com/hbin/top-programming-fonts)
 
 ### Rice Guides
 
@@ -449,6 +450,7 @@ Dotfiles
 - [thezimmee](https://github.com/thezimmee/os-zimmee)
 - [927589452](https://github.com/927589452/yadm)
 - [wkentaro](https://github.com/wkentaro/dotfiles)
+- [sonph](https://github.com/sonph/dotfiles)
 
 Commands
 --------

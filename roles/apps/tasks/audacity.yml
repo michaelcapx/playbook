@@ -1,0 +1,15 @@
+---
+# Audacity installation
+
+- name: Add Audacity PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:ubuntuhandbook1/audacity"
+    state: present
+
+- name: Ensure Audacity packages are installed
+  become: yes
+  apt:
+    name: audacity
+    state: present
+    update_cache: yes

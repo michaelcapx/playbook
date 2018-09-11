@@ -55,6 +55,15 @@
     cache_valid_time: 3600
   when: sublime_repo | succeeded
 
+# https://github.com/deyixtan/slt-patcher
+- name: Patch Sublime Text
+  become: yes
+  copy:
+    src: sublime_text
+    dest: /opt/sublime_text/sublime_text
+    backup: yes
+    mode: a+x
+
 # Sublime Directories
 - name: Ensure sublime config directory permissions
   file:
@@ -139,7 +148,6 @@
     - "AlignTab.sublime-settings"
     - "ColorHighlighter.sublime-settings"
     - "Side Bar.sublime-settings"
-    - "hyper_click.sublime-settings"
 
 - name: Ensure AlignTab directory exists
   file:

@@ -1,13 +1,54 @@
 ---
 # tasks file for admin
 
+# Setup Admin Groups
+- name: Ensure user group exists
+  become: yes
+  group:
+    name: "{{ admin_group | default(admin_user) }}"
+    state: present
+
+- name: Ensure system groups exist
+  become: yes
+  group:
+    name: "{{ item }}"
+    state: present
+    system: yes
+  with_items: "{{ admin_groups }}"
+
+# Generate Admin Password
+- name: Ensure mkpasswd is installed
+  command: which mkpasswd
+  register: admin_check_mkpasswd
+  ignore_errors: yes
+  failed_when: admin_check_mkpasswd.rc > 1
+  changed_when: admin_check_mkpasswd.rc == 1
+
+- name: Ensure mkpasswd (through whois) is installed
+  become: yes
+  apt:
+    name: whois
+    state: present
+  when: admin_check_mkpasswd.rc > 1
+
+- name: Generate user password
+  command: "mkpasswd --method=sha-512 {{ admin_password }}"
+  register: admin_password_hash
+  when: admin_password is defined and admin_password != ''
+
+- name: Set user password fact
+  set_fact:
+    admin_encrypted_pass: "{{ admin_password_hash.stdout }}"
+    when: admin_password_hash is defined and admin_password_hash != ''
+
 # Setup Admin User
 - name: Create admin user account
   become: yes
   user:
     name: "{{ admin_user }}"
+    password: "{{ admin_encrypted_pass | default(omit) }}"
     comment: "{{ admin_fullname | default(omit) }}"
-    group: "{{ admin_group }}"
+    group: "{{ admin_group | default(admin_user) }}"
     groups: "{{ admin_groups | join(',') }}"
     state: present
     append: yes

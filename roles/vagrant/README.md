@@ -1,6 +1,10 @@
 # Ansible Role: Vagrant
 
-Installs [Vagrant](https://www.vagrantup.com/) & [Virtualbox](https://www.virtualbox.org/) for GalliumOS.
+Installs [Vagrant](https://www.vagrantup.com/) & [Virtualbox](https://www.virtualbox.org/).
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 
@@ -36,11 +40,3 @@ This role takes inspiration from the following Ansible roles:
 - [kbrebanov.virtualbox](https://github.com/kbrebanov/ansible-virtualbox)
 - [ferrarimarco.virtualbox](https://github.com/ferrarimarco/ansible-role-virtualbox)
 - [markushartman.virtualbox](https://github.com/markushartman/ansible-role-virtualbox)
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

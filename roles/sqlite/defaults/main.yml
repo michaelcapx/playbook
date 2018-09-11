@@ -1,0 +1,7 @@
+---
+# defaults file for sqlite
+
+# Build dependencies for packages (will be installed with apt).
+sqlite_packages:
+  - sqlite3
+  - libsqlite3-dev

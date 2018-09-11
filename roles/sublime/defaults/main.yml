@@ -2,10 +2,10 @@
 # defaults file for sublime
 
 # Default sublime user.
-sublime_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+sublime_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default sublime home.
-sublime_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+sublime_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Array of packages to install via packagecontrol.io.
 sublime_packages:
@@ -13,24 +13,29 @@ sublime_packages:
   - "AlignTab"
   - "BracketHighlighter"
   - "Color Highlighter"
+  - "CSS3"
   - "DocBlockr"
+  - "Dotfiles Syntax Highlighting"
   - "EditorConfig"
   - "GitGutter"
-  - "HyperClick"
+  # - "HyperClick"
   - "Jinja2"
   - "Laravel 5 Artisan"
-  - "Laravel 5 Snippets"
+  # - "Laravel 5 Snippets"
   - "Laravel Blade Highlighter"
   - "LESS"
+  - "Markdown​Highlighting"
   - "Material Theme"
+  - "nginx"
   - "Nodejs"
   - "Nunjucks Syntax"
   - "Package Control"
+  - "Pug"
   - "SCSS"
   - "SideBarEnhancements"
-  - "TodoReview"
+  # - "TodoReview"
   - "Vue Syntax Highlight"
   - "Dockerfile Syntax Highlighting"
-  - "RegReplace"
-  - "SublimeCodeIntel"
-  - "SublimeLinter"
+  # - "RegReplace"
+  # - "SublimeCodeIntel"
+  # - "SublimeLinter"

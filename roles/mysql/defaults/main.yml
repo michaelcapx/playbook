@@ -2,10 +2,10 @@
 # defaults file for mysql
 
 # Default mysql user.
-mysql_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+mysql_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default mysql home.
-mysql_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+mysql_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 mysql_packages:
@@ -17,6 +17,8 @@ mysql_packages:
   - mytop
 
 # MySQL connection settings
+mysql_conf: /etc/mysql/mysql.conf.d/mysqld.cnf
+# mysql_conf: /etc/mysql/my.cnf
 mysql_bind_address: '0.0.0.0'
 mysql_port: "3306"
 
@@ -35,6 +37,13 @@ mysql_databases: []
 # Users
 mysql_users:
   - name: homestead
-    host: localhost
+    host: "0.0.0.0"
     password: secret
     priv: "*.*:ALL,GRANT,OPTION"
+
+# Adminer
+# adminer_install_dir: /opt/adminer
+adminer_install_dir: /usr/share/adminer
+adminer_install_filename: adminer.php
+adminer_symlink_dirs:
+  - /usr/share/adminer/index.php

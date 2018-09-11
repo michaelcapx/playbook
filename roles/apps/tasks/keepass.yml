@@ -1,0 +1,15 @@
+---
+# Keepass installation
+
+- name: Add Keepass PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:phoerious/keepassxc"
+    state: present
+
+- name: Ensure Keepass packages are installed
+  become: yes
+  apt:
+    name: keepassxc
+    state: present
+    update_cache: yes

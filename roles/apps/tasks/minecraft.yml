@@ -1,0 +1,93 @@
+---
+# Minecraft installation
+
+- name: Check if Java is installed
+  command: java -version
+  register: apps_check_java
+  ignore_errors: yes
+  failed_when: apps_check_java.rc > 1
+  changed_when: apps_check_java.rc == 1
+
+- name: Ensure Java is installed
+  apt:
+    name: default-jre
+    state: present
+  when: apps_check_java.rc > 1
+
+# Remote Copy
+
+# - name: Unarchive a file that needs to be downloaded (added in 2.0)
+#   unarchive:
+#     src: http://teamshiginima.com/update/ShiginimaSE_v4100.zip
+#     dest: "{{ apps_home }}/Downloads/Shiginima"
+#     remote_src: yes
+
+# - name: Ensure Minecraft present
+#   get_url:
+#     url: http://teamshiginima.com/update/ShiginimaSE_v4100.zip
+#     dest: "{{ apps_home }}/Downloads"
+#     timeout: 30
+#     mode: 0774
+#     owner: "{{ apps_user }}"
+#     group: "{{ apps_user }}"
+#   register: apps_download_minecraft
+#   until: apps_download_minecraft | succeeded
+#   retries: 10
+#   delay: 5
+
+# - name: Unarchive a file that is already on the remote machine
+#   unarchive:
+#     src: "{{ apps_home }}/Downloads/ShiginimaSE_v4100.zip"
+#     dest: "{{ apps_home }}/Downloads/Shiginima"
+#     remote_src: yes
+
+# - name: Copy Minecraft launcher
+#   copy:
+#     src: "{{ apps_home }}/Downloads/Shiginima/Jar For OSX-Linux-Windows/Shiginima Launcher SE v4.100.jar"
+#     dest: /usr/local/bin/Minecraft.jar
+
+# Local Copy
+- name: Copy Minecraft launcher
+  copy:
+    src: Minecraft.jar
+    dest: /usr/local/bin/Minecraft.jar
+
+# Desktop Setup
+- name: Copy Minecraft icon
+  copy:
+    src: minecraft.png
+    dest: /usr/share/pixmaps/minecraft.png
+
+- name: Create Minecraft desktop file
+  copy:
+    src: minecraft.desktop
+    dest: /usr/local/share/applications/minecraft.desktop
+    owner: "{{ apps_user }}"
+    group: "{{ apps_user }}"
+
+# Amidst Install
+
+- name: Ensure Amidst present
+  get_url:
+    url: https://github.com/toolbox4minecraft/amidst/releases/download/v4.3-beta4/amidst-v4-3-beta4.jar
+    dest: /usr/local/bin/Amidst.jar
+    timeout: 30
+    mode: a+x
+    owner: "{{ apps_user }}"
+    group: "{{ apps_user }}"
+  register: download_amidst
+  until: download_amidst | succeeded
+  retries: 10
+  delay: 5
+
+- name: Copy Amidst icon
+  copy:
+    src: amidst-128x128.png
+    dest: /usr/share/pixmaps/amidst.png
+
+- name: Create Amidst desktop file
+  copy:
+    src: amidst.desktop
+    dest: /usr/local/share/applications/amidst.desktop
+    owner: "{{ apps_user }}"
+    group: "{{ apps_user }}"

@@ -2,10 +2,10 @@
 # defaults file for xfce
 
 # Default xfce user.
-xfce_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+xfce_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default xfce home.
-xfce_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+xfce_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Weather indicator parameters.
 xfce_weather_loc: "Melbourne, Florida"

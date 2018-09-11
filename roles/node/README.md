@@ -1,6 +1,10 @@
 # Ansible Role: Node
 
-Installs [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) for GalliumOS.
+Installs [Node.js](https://nodejs.org), [NPM](https://www.npmjs.com) package manager, and [Yarn](https://yarnpkg.com).
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 
@@ -17,11 +21,8 @@ This role takes inspiration from the following Ansible roles:
 - [Stouts.nodejs](https://github.com/Stouts/Stouts.nodejs)
 - [tersmitten.nodejs](https://github.com/Oefenweb/ansible-nodejs)
 - [leanbit.nvm](https://github.com/leanbit/ansible-nvm)
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).
+- [ocha.yarn](https://github.com/ocha/ansible-role-yarn)
+- [oefenweb.yarn](https://github.com/Oefenweb/ansible-yarn)
+- [manala.npm](https://github.com/manala/ansible-role-npm)
+- [manala.yarn](https://github.com/manala/ansible-role-yarn)
+- [lifeofguenter.nodejs](https://github.com/lifeofguenter/ansible-role-nodejs)

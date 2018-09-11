@@ -1,0 +1,15 @@
+---
+# Notepadqq installation
+
+- name: Add Notepadqq PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:notepadqq-team/notepadqq"
+    state: present
+
+- name: Ensure Notepadqq packages are installed
+  become: yes
+  apt:
+    name: notepadqq
+    state: present
+    update_cache: yes

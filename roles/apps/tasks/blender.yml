@@ -1,0 +1,15 @@
+---
+# Blender installation
+
+- name: Add Blender PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:thomas-schiex/blender"
+    state: present
+
+- name: Ensure Blender packages are installed
+  become: yes
+  apt:
+    name: blender
+    state: present
+    update_cache: yes

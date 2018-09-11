@@ -1,0 +1,15 @@
+---
+# Albert installation
+
+- name: Add Albert PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:nilarimogard/webupd8"
+    state: present
+
+- name: Ensure Albert packages are installed
+  become: yes
+  apt:
+    name: albert
+    state: present
+    update_cache: yes

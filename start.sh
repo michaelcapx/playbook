@@ -21,6 +21,7 @@ fi
 ###########################################################################
 
 readonly GIT_REPO="https://github.com/michaelcapx/playbook.git"
+readonly GIT_BRANCH="master"
 readonly GIT_DEST="$HOME/Downloads/playbook"
 
 ###########################################################################
@@ -95,7 +96,7 @@ run_playbook() {
   # Cloning the ansible playbook
   if [[ ! -d "$GIT_DEST" ]]; then
     mkdir -p $GIT_DEST
-    git clone --recursive $GIT_REPO $GIT_DEST
+    git clone --recursive -b $GIT_BRANCH $GIT_REPO $GIT_DEST
   fi
 
   # Install dependencies if they exist
@@ -146,11 +147,12 @@ run_playbook() {
 
 if [[ -f /etc/lsb-release ]]; then
   if [[ $(cat /etc/lsb-release | grep "DISTRIB_ID=Ubuntu" -c) = 1 ]]; then
-    e_success "Running GalliumOS bootstrap script....."
+    e_success "Running bootstrap script....."
     install_core
     install_python
     install_ansible
     run_playbook
+    e_success "All Done!"
   else
     e_error "Cannot identify operating system. Aborting..."
     exit 1

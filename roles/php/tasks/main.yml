@@ -11,13 +11,6 @@
     update_cache: yes
   register: php_repo
 
-- name: Update apt cache if repo was added
-  become: yes
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-  when: php_repo.changed
-
 # Install packages
 - name: Ensure PHP packages are installed
   become: yes
@@ -29,3 +22,28 @@
     cache_valid_time: 3600
   with_items: "{{ php_packages | list }}"
   when: php_packages | length
+
+# Configuration
+- name: Configure PHP settings
+  become: yes
+  lineinfile:
+    dest: "/etc/php/{{ php_version }}/cli/php.ini"
+    regexp: "^{{ item.param }} ="
+    line: "{{ item.param }} = {{ item.value }}"
+  with_items :
+    - { param: error_reporting, value: "E_ALL" }
+    - { param: display_errors, value: "On" }
+    - { param: memory_limit, value: "512M" }
+    - { param: date.timezone , value: "UTC" }
+    # - { param: post_max_size, value: "128M" }
+    # - { param: upload_max_filesize, value: "128M" }
+    # - { param: max_input_time, value: "30" }
+    # - { param: max_execution_time, value: "30" }
+    # - { param: short_open_tag, value: "Off" }
+    # - { param: cgi.fix_pathinfo , value: "0" }
+    # - { param: phar.readonly , value: "Off" }
+    # - { param: expose_php , value: "On" }
+
+- name: Disable XDebug On The CLI
+  become: yes
+  command: phpdismod -s cli xdebug

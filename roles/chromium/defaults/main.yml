@@ -2,10 +2,10 @@
 # defaults file for chromium
 
 # Default chromium user.
-chromium_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+chromium_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default chromium home.
-chromium_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+chromium_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Define user browser preferences.
 chromium_preferences_json:

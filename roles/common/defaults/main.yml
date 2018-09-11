@@ -19,7 +19,6 @@ common_apt_update: yes
 # Array of packages to purge from system.
 common_apt_remove_packages:
   - xterm
-  - xscreensaver
   - simple-scan
 
 # Determines the state for packages installed on the system. Available values are `present` or `latest`.
@@ -43,11 +42,14 @@ common_apt_packages_default:
   - dos2unix
   - gcc
   - htop
+  - jq
   - libglib2.0-dev
   - libmcrypt4
   - libpcre3-dev
+  - libnss3-tools
   - make
   - mcrypt
+  - network-manager
   - ntp
   - pwgen
   - pv
@@ -55,6 +57,7 @@ common_apt_packages_default:
   - supervisor
   - whois
   - vim
+  - xsel
 
 # Array of archive apt packages. These packages should be able to zip and unzip most files and folders.
 common_apt_packages_archive:
@@ -80,6 +83,8 @@ common_apt_packages_disk:
   - exfat-utils
   - exfat-fuse
   - ntfs-3g
+  - ecryptfs-utils
+  - cryptsetup
 
 # Array of base apt packages to install.
 common_apt_add_packages: "{{ common_apt_packages_default + common_apt_packages_archive + common_apt_packages_disk }}"

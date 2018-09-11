@@ -1,0 +1,12 @@
+#
+# Start SSH agent and add keys
+#
+
+ls ~/.ssh/*.pub >/dev/null 2>&1
+rc=$?
+if [ -z "$SSH_AGENT_PID" -a $rc -eq 0 ]; then
+	eval $(ssh-agent -s)
+	for f in ~/.ssh/*.pub; do
+		ssh-add "${f%.pub}"
+	done
+fi

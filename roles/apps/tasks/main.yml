@@ -1,0 +1,73 @@
+---
+# tasks file for apps
+
+# Install PPA Packages
+- name: Add PPA repositories
+  become: yes
+  apt_repository:
+    repo: "{{ item.ppa }}"
+    state: present
+  with_items: "{{ apps_ppa }}"
+  when: apps_ppa | length
+  register: apps_repo
+
+- name: Install PPA packages
+  become: yes
+  apt:
+    name: "{{ item.pkg }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ apps_ppa | list }}"
+  when: apps_ppa | length
+
+- include_tasks: albert.yml
+  when: '"albert" in apps_installed'
+
+- include_tasks: audacity.yml
+  when: '"audacity" in apps_installed'
+
+- include_tasks: bleachbit.yml
+  when: '"bleachbit" in apps_installed'
+
+- include_tasks: blender.yml
+  when: '"blender" in apps_installed'
+
+- include_tasks: cherrytree.yml
+  when: '"cherrytree" in apps_installed'
+
+- include_tasks: dbeaver.yml
+  when: '"dbeaver" in apps_installed'
+
+- include_tasks: filezilla.yml
+  when: '"filezilla" in apps_installed'
+
+- include_tasks: gimp.yml
+  when: '"gimp" in apps_installed'
+
+- include_tasks: inkscape.yml
+  when: '"inkscape" in apps_installed'
+
+- include_tasks: keepass.yml
+  when: '"keepass" in apps_installed'
+
+- include_tasks: libreoffice.yml
+  when: '"libreoffice" in apps_installed'
+
+- include_tasks: minecraft.yml
+  when: '"minecraft" in apps_installed'
+
+- include_tasks: notepadqq.yml
+  when: '"notepadqq" in apps_installed'
+
+- include_tasks: obs.yml
+  when: '"obs" in apps_installed'
+
+- include_tasks: remmina.yml
+  when: '"remmina" in apps_installed'
+
+- include_tasks: tor.yml
+  when: '"tor" in apps_installed'
+
+- include_tasks: transmission.yml
+  when: '"transmission" in apps_installed'

@@ -1,0 +1,27 @@
+---
+# OBS Studio installation
+
+- name: Add OBS Studio PPA repository
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - ppa:kirillshkrogalev/ffmpeg-next
+    - ppa:obsproject/obs-studio
+
+- name: Ensure OBS Studio dependencies are installed
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - ffmpeg
+
+- name: Ensure OBS Studio packages are installed
+  become: yes
+  apt:
+    name: obs-studio
+    state: present
+    update_cache: yes

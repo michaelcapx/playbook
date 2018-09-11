@@ -12,35 +12,53 @@
   with_items: "{{ mysql_packages | list }}"
   when: mysql_packages | length
 
+- name: Configure MySQL Password Lifetime
+  become: yes
+  lineinfile:
+    dest: "{{ mysql_conf }}"
+    regexp: "default_password_lifetime\s*=.*"
+    line: "default_password_lifetime = 0"
+    state: present
+    backrefs: yes
+
+- name: Configure MySQL listen IP address
+  become: yes
+  lineinfile:
+    dest: "{{ mysql_conf }}"
+    regexp: "bind-address\s*=.*"
+    line: "bind-address = {{ mysql_bind_address }}"
+    state: present
+    backrefs: yes
+
 - name: Ensure MySQL is started to change root password
+  become: yes
   service:
     name: mysql
     state: started
 
-# - name: Set MySQL root user password
-#   mysql_user:
-#     name: root
-#     password: "{{ mysql_root_password }}"
-#     host: "{{ item }}"
-#     priv: "*.*:ALL,GRANT"
-#     state: present
-#   with_items:
-#     - 127.0.0.1
-#     - ::1
-#     - localhost
+- name: Set MySQL root user password
+  become: yes
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    priv: "*.*:ALL,GRANT"
+    state: present
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: Configure MySQL for easy access as root user
+  become: yes
+  template:
+    src: "root.my.cnf.j2"
+    dest: "/root/.my.cnf"
+    mode: 0600
 
 # Secure installation tasks
-- name: Delete anonymous MySQL server users
-  mysql_user:
-    user: ""
-    host: "{{ item }}"
-    state: absent
-  with_items:
-    - localhost
-    - "{{ inventory_hostname }}"
-    - "{{ ansible_hostname }}"
-
 - name: Remove the MySQL test database
+  become: yes
   mysql_db:
     db: test
     state: absent
@@ -49,6 +67,7 @@
 
 # Databases tasks
 - name: Ensure MySQL databases are present
+  become: yes
   mysql_db:
     name: "{{ item.name }}"
     collation: "{{ item.collation | default('utf8_general_ci') }}"
@@ -58,6 +77,7 @@
 
 # Users tasks
 - name: Ensure MySQL users are present
+  become: yes
   mysql_user:
     name: "{{ item.name }}"
     host: "{{ item.host | default('localhost') }}"
@@ -71,7 +91,32 @@
 
 # Enable tasks
 - name: Ensure MySQL is started and enabled on boot
+  become: yes
   service:
     name: mysql
-    state: started
+    state: restarted
     enabled: yes
+
+# Install Adminer
+- name: Ensure Adminer directory exists
+  become: yes
+  file:
+    path: "{{ adminer_install_dir }}"
+    state: directory
+    recurse: yes
+
+- name: Download Adminer to configured directory
+  become: yes
+  get_url:
+    url: https://www.adminer.org/latest.php
+    dest: "{{ adminer_install_dir }}/{{ adminer_install_filename }}"
+    mode: 0644
+    timeout: 60
+
+- name: Symlink Adminer into configured directories
+  become: yes
+  file:
+    src: "{{ adminer_install_dir }}/{{ adminer_install_filename }}"
+    dest: "{{ item }}"
+    state: link
+  with_items: "{{ adminer_symlink_dirs }}"

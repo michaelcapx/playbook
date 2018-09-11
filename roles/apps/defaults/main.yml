@@ -1,0 +1,36 @@
+---
+# defaults file for apps
+
+# Default apps user.
+apps_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
+
+# Default apps home.
+apps_home: "{{ config_home | default(ansible_env.HOME) }}"
+
+# Array of Personal Package Archives (PPAs) to add. Additional PPAs can be found at: https://launchpad.net/.
+apps_ppa:
+  - { ppa: "ppa:dawidd0811/neofetch", pkg: neofetch }
+
+# Temporary download directory.
+apps_tmp_path: /tmp
+
+# Comment out any extra applications you don't want to install. If you don't want
+# to install *any* applications, set this value to an empty set, e.g. `[]`.
+apps_installed:
+  # - albert
+  # - audacity
+  - bleachbit
+  # - blender
+  # - cherrytree
+  # - dbeaver
+  - filezilla
+  - gimp
+  - inkscape
+  - keepass
+  - libreoffice
+  # - minecraft
+  # - notepadqq
+  # - obs
+  - remmina
+  - tor
+  - transmission

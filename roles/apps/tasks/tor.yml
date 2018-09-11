@@ -1,0 +1,15 @@
+---
+# Tor installation
+
+- name: Add Tor PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:webupd8team/tor-browser"
+    state: present
+
+- name: Ensure Tor packages are installed
+  become: yes
+  apt:
+    name: tor-browser
+    state: present
+    update_cache: yes

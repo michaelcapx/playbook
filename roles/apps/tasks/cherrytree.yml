@@ -1,0 +1,15 @@
+---
+# Cherrytree installation
+
+- name: Add Cherrytree PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:giuspen/ppa"
+    state: present
+
+- name: Ensure Cherrytree packages are installed
+  become: yes
+  apt:
+    name: cherrytree
+    state: present
+    update_cache: yes

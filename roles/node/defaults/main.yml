@@ -6,10 +6,10 @@
 node_version: "8.x"
 
 # Default node user.
-node_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+node_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default node home.
-node_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+node_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Build dependencies for packages (will be installed with apt).
 node_dependencies:
@@ -28,15 +28,15 @@ npm_config_unsafe_perm: "true"
 # Define a list of global packages to be installed with NPM.
 npm_packages:
   - name: gulp-cli
-  # - name: bower
+  - name: bower
   # - name: yarn
-  # - name: grunt-cli
-  # - name: browser-sync
-  # - name: webpack
-  # - name: webpack-dev-server
+  - name: grunt-cli
+  - name: browser-sync
+  - name: webpack
+  - name: webpack-dev-server
   # - name: yo
   # - name: less
-  # - name: node-sass
+  - name: node-sass
   # - name: jslint
   # - name: npm-check-updates
   # - name: phantomjs-prebuilt
@@ -45,3 +45,6 @@ npm_packages:
   # - name: xlsx
   # - name: webfont-dl
   # - name: diff-so-fancy
+
+yarn_gpg_key_url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+yarn_repo_url: "https://dl.yarnpkg.com/debian/ stable main"

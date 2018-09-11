@@ -9,22 +9,22 @@ git_packages:
   - git-extras
 
 # Default git user.
-git_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+git_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 
 # Default git home.
-git_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+git_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Github/BitBucket Keys
-git_github_user: "{{ mimetic_github_user | default('') }}"
-git_github_password: "{{ mimetic_github_password | default('') }}"
-git_bitbucket_user: "{{ mimetic_bitbucket_user | default('') }}"
-git_bitbucket_password: "{{ mimetic_bitbucket_password | default('') }}"
+git_github_user: "{{ config_github_user | default('') }}"
+git_github_password: "{{ config_github_password | default('') }}"
+git_bitbucket_user: "{{ config_bitbucket_user | default('') }}"
+git_bitbucket_password: "{{ config_bitbucket_password | default('') }}"
 
 # Gitconfig user name.
-git_config_name: "{{ mimetic_name | default(null) }}"
+git_config_name: "{{ config_name | default(null) }}"
 
 # Gitconfig user email.
-git_config_email: "{{ mimetic_email | default(null) }}"
+git_config_email: "{{ config_email | default(null) }}"
 
 # Gitconfig editor
 git_config_editor: nano

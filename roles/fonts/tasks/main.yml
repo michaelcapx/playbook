@@ -1,0 +1,13 @@
+---
+# tasks file for fonts
+
+- name: Copy font files
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ fonts_path }}/{{ item }}"
+  with_items: "{{ fonts_files | default([]) }}"
+
+- name: Refresh font list
+  become: yes
+  shell: fc-cache -fv

@@ -2,13 +2,16 @@
 # defaults file for admin
 
 # Default admin user.
-admin_user: "{{ mimetic_user | default(ansible_env.SUDO_USER) }}"
+admin_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
+
+# Default admin password
+admin_password: "{{ config_password | default(admin_user) | default(omit) }}"
 
 # Default admin home.
-admin_home: "{{ mimetic_home | default(ansible_env.HOME) }}"
+admin_home: "{{ config_home | default(ansible_env.HOME) }}"
 
 # Default admin full name.
-admin_fullname: "{{ mimetic_name | default(ansible_user_gecos.split(',')[0]) }}"
+admin_fullname: "{{ config_name | default(ansible_user_gecos.split(',')[0]) }}"
 
 # Default admin user group.
 admin_group: "{{ admin_user }}"

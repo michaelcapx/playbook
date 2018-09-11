@@ -1,7 +1,8 @@
 ---
+vault_user: Username
+vault_password: yourpassword
 vault_name: Your Name
 vault_email: youremail@email.com
-vault_username: gitusername
 vault_github_user: githubusername
 vault_github_password: githubpassword
 vault_bitbucket_user: bitbucketusername

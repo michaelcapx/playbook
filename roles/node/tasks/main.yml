@@ -116,3 +116,24 @@
     NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
     NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm | default(false) }}"
   with_items: "{{ npm_packages }}"
+
+# Yarn installation
+- name: Import YARN APT key
+  become: yes
+  apt_key:
+    url: "{{ yarn_gpg_key_url }}"
+    state: present
+
+- name: Install YARN APT repo
+  become: yes
+  apt_repository:
+    repo: "deb {{ yarn_repo_url }}"
+    filename: "yarn"
+    state: present
+    update_cache: yes
+
+- name: Install YARN package manager
+  become: yes
+  package:
+    name: yarn
+    state: latest

@@ -1,6 +1,10 @@
-# Ansible Role: Sublime
+# Ansible Role: Sublime Text
 
-Installs [Sublime Text](https://www.sublimetext.com/) text editor for GalliumOS.
+Installs [Sublime Text](https://www.sublimetext.com/) text editor.
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 
@@ -16,11 +20,3 @@ This role takes inspiration from the following Ansible roles:
 - [jdauphant.sublimetext](https://github.com/jdauphant/ansible-role-sublimetext)
 - [igor_mukhin.sublimetext3_packagecontrol](https://github.com/ansible-roles/ansible-role-sublimetext3_packagecontrol)
 - [KeyboardInterrupt.sublime-text-3](https://github.com/KeyboardInterrupt/ansible-role-sublime-text-3)
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

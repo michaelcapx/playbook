@@ -2,6 +2,10 @@
 
 Installs and configures a variety of Ubuntu/Xfce desktop packages.
 
+## Requirements
+
+No requirements.
+
 ## Dependencies
 
 No dependencies.
@@ -14,7 +18,6 @@ This role takes inspiration from the following Ansible roles:
 - [rjordan.ubuntu-updates](https://github.com/rjordan/role.ubuntu-updates)
 - [mrlesmithjr.ansible-apt-sources](https://github.com/mrlesmithjr/ansible-apt-sources)
 - [PeterMosmans.customize-gnome](https://github.com/PeterMosmans/ansible-role-customize-gnome)
-- [mlangry.ubuntu-restore-privacy](https://github.com/mlangry/ansible-role-ubuntu-restore-privacy)
 - [theNewFlesh.conky](https://github.com/theNewFlesh/ansible-role-conky)
 - [gabethecabbage.traditional-desktop](https://github.com/gabethecabbage/ansible-role-traditional-desktop)
 - [fabschurt.ubuntu-base](https://github.com/fabschurt/ansible-role-ubuntu-base)
@@ -29,12 +32,3 @@ This role takes inspiration from the following Ansible roles:
 - [danieljaouen.base-ubuntu](https://github.com/danieljaouen/ansible-base-ubuntu)
 - [ansibl3.ubuntu_laptop](https://github.com/ansibl3/ubuntu_laptop)
 - [f500.ubuntu](https://github.com/f500/ansible-ubuntu)
-
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

@@ -1,0 +1,15 @@
+---
+# LibreOffice installation
+
+- name: Add LibreOffice PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:libreoffice/ppa"
+    state: present
+
+- name: Ensure LibreOffice packages are installed
+  become: yes
+  apt:
+    name: libreoffice
+    state: present
+    update_cache: yes

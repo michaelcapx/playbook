@@ -1,0 +1,15 @@
+---
+# Transmission installation
+
+- name: Add Transmission PPA repository
+  become: yes
+  apt_repository:
+    repo: "ppa:transmissionbt/ppa"
+    state: present
+
+- name: Ensure Transmission packages are installed
+  become: yes
+  apt:
+    name: transmission
+    state: present
+    update_cache: yes

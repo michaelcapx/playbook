@@ -1,0 +1,24 @@
+---
+# Bleachbit installation
+
+- name: Check if Bleachbit is installed
+  command: dpkg-query -W bleachbit
+  register: apps_bleachbit_check_deb
+  failed_when: apps_bleachbit_check_deb.rc > 1
+  changed_when: apps_bleachbit_check_deb.rc == 1
+
+- name: Download Bleachbit
+  get_url:
+    url: "https://download.bleachbit.org/bleachbit_2.0_all_ubuntu1604.deb"
+    dest: "{{ apps_tmp_path }}/bleachbit.deb"
+  when: apps_bleachbit_check_deb.rc == 1
+
+- name: Install Bleachbit
+  apt:
+    deb: "{{ apps_tmp_path }}/bleachbit.deb"
+  when: apps_bleachbit_check_deb.rc == 1
+
+- name: Clean Bleachbit deb file
+  file:
+    path: "{{ apps_tmp_path }}/bleachbit.deb"
+    state: absent

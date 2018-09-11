@@ -1,6 +1,10 @@
 # Ansible Role: Chromium
 
-Installs the [Google Chromium browser](https://www.chromium.org/Home).
+Installs and configures the [Google Chromium browser](https://www.chromium.org/Home) web browser.
+
+## Requirements
+
+No requirements.
 
 ## Dependencies
 
@@ -23,11 +27,3 @@ This role takes inspiration from the following Ansible roles:
 - [sourcejedi.google-chrome](https://github.com/sourcejedi/ansible-google-chrome)
 - [morbidick.kiosk](https://github.com/morbidick/ansible-role-kiosk)
 - [escalate.google-chrome](https://github.com/escalate/ansible-google-chrome)
-
-## License
-
-This software package is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](./LICENSE) file for details.
-
-## Author Information
-
-This role was created in 2017 by [Polymimetic](https://github.com/polymimetic).

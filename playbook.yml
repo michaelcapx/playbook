@@ -7,15 +7,10 @@
 
   pre_tasks:
 
-    - name: Warn users if the server's Linux distribution is not GalliumOS 2.1
-      pause:
-        prompt: "GalliumOS is the only officially supported distribution; the setup will probably fail. Press Enter if you still want to continue."
-      when: ansible_distribution != "GalliumOS" or ansible_distribution_version != "16.04" or ansible_lsb.description.split(' ')[0] != "GalliumOS"
-
     - name: Run configured pre-provision shell scripts
       script: "{{ item }}"
-      with_items: "{{ mimetic_pre_provision_scripts | default([]) }}"
-      when: mimetic_pre_provision_scripts | length
+      with_items: "{{ config_pre_provision_scripts | default([]) }}"
+      when: config_pre_provision_scripts | length
 
     - name: Include optional configuration files
       include_vars: "{{ item }}"
@@ -57,7 +52,9 @@
     # Desktop roles
     - { role: desktop,     tags: ['desktop'] }
     - { role: themes,      tags: ['desktop'] }
+    - { role: fonts,       tags: ['desktop'] }
     - { role: xfce,        tags: ['desktop'] }
+    - { role: apps,        tags: ['desktop'] }
 
     # Virtualization roles
     # - { role: docker,      tags: ['virtualization'] }
@@ -65,19 +62,16 @@
 
     # Server roles
     # - { role: mysql,      tags: ['server'] }
+    # - { role: sqlite,     tags: ['server'] }
     # - { role: php,        tags: ['server'] }
     # - { role: composer,   tags: ['server'] }
-
-    # Extra roles
-    # - { role: dotfiles,    tags: ['extras'] }
-    # - { role: projects,    tags: ['extras'] }
 
   tasks:
 
     - name: Run configured post-provision shell scripts
       script: "{{ item }}"
-      with_items: "{{ mimetic_post_provision_scripts | default([]) }}"
-      when: mimetic_post_provision_scripts | length
+      with_items: "{{ config_post_provision_scripts | default([]) }}"
+      when: config_post_provision_scripts | length
 
     - name: Cleanup installation
       become: yes
