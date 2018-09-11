@@ -147,6 +147,7 @@
   with_items:
     - "AlignTab.sublime-settings"
     - "ColorHighlighter.sublime-settings"
+    - "GitGutter.sublime-settings"
     - "Side Bar.sublime-settings"
 
 - name: Ensure AlignTab directory exists

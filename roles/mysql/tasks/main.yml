@@ -16,7 +16,7 @@
   become: yes
   lineinfile:
     dest: "{{ mysql_conf }}"
-    regexp: "default_password_lifetime\s*=.*"
+    regexp: 'default_password_lifetime\s*=.*'
     line: "default_password_lifetime = 0"
     state: present
     backrefs: yes
@@ -25,7 +25,7 @@
   become: yes
   lineinfile:
     dest: "{{ mysql_conf }}"
-    regexp: "bind-address\s*=.*"
+    regexp: 'bind-address\s*=.*'
     line: "bind-address = {{ mysql_bind_address }}"
     state: present
     backrefs: yes
