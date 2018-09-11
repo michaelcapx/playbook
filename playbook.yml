@@ -31,11 +31,11 @@
   roles:
 
     # Base roles
-    - { role: common,      tags: ['base'] }
-    - { role: admin,       tags: ['base'] }
-    - { role: ssh,         tags: ['base'] }
-    - { role: git,         tags: ['base'] }
-    - { role: shell,       tags: ['base'] }
+    # - { role: common,      tags: ['base'] }
+    # - { role: admin,       tags: ['base'] }
+    # - { role: ssh,         tags: ['base'] }
+    # - { role: git,         tags: ['base'] }
+    # - { role: shell,       tags: ['base'] }
 
     # Language roles
     # - { role: python,      tags: ['languages'] }

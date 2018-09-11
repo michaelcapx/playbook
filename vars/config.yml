@@ -7,7 +7,7 @@ config_pre_provision_scripts: []
 config_post_provision_scripts: []
 
 # The main provision user.
-config_user: "{{ vault_user | ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
+config_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
 config_password: "{{ vault_password | default(config_user) | default(none) }}"
 config_home: "/home/{{ config_user }}"
 config_name: "{{ vault_name | default(none) }}"
