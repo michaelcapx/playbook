@@ -47,9 +47,9 @@
     url: https://raw.githubusercontent.com/b4b4r07/ssh-keyreg/master/bin/ssh-keyreg
     dest: /usr/local/bin/ssh-keyreg
     timeout: 30
-    mode: 0555
+    mode: 0755
   register: download_ssh_keyreg
-  until: download_ssh_keyreg | succeeded
+  until: download_ssh_keyreg is succeeded
   retries: 10
   delay: 5
 

@@ -70,6 +70,7 @@
     regexp: "^XDG_{{ item.name }}_DIR="
     line: "XDG_{{ item.name }}_DIR=\"{{ item.path }}\""
   with_items : "{{ admin_xdg_directories }}"
+  register: configure_xdg
 
 - name: Build XDG directories
   file:
@@ -85,3 +86,4 @@
   shell: xdg-user-dirs-update
   become: true
   become_user: "{{ admin_user }}"
+  when: configure_xdg.changed == True
