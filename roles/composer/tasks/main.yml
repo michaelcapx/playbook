@@ -67,20 +67,20 @@
     group: "{{ composer_group }}"
     state: directory
 
-- name: Add composer_home_path bin directory to global $PATH.
-  become: yes
-  template:
-    src: composer.sh.j2
-    dest: /etc/profile.d/composer.sh
-    mode: 0644
-
-# - name: Add composer_home_path bin directory to global $PATH
+# - name: Add composer_home_path bin directory to global $PATH.
 #   become: yes
-#   become_user: "{{ composer_user }}"
-#   copy:
-#     dest: "{{ composer_home }}/.bash_path"
-#     content: "export PATH={{ composer_home_path }}/vendor/bin:$PATH"
-#     mode: 0664
+#   template:
+#     src: composer.sh.j2
+#     dest: /etc/profile.d/composer.sh
+#     mode: 0644
+
+- name: Add composer_home_path bin directory to global $PATH
+  become: yes
+  become_user: "{{ composer_user }}"
+  copy:
+    dest: "{{ composer_home }}/.bash_path"
+    content: "export PATH={{ composer_home_path }}/vendor/bin:$PATH"
+    mode: 0664
 
 # Composer global require
 - name: Install configured globally-required packages
@@ -100,11 +100,11 @@
 - name: Install Laravel Valet
   shell: valet install
   become: yes
-  become_user: "{{ composer_user }}"
+  # become_user: "{{ composer_user }}"
 
 - name: Park sites
   shell: valet park
   args:
     chdir: "{{ composer_park }}"
   become: yes
-  become_user: "{{ composer_user }}"
+  # become_user: "{{ composer_user }}"
