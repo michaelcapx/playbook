@@ -100,11 +100,11 @@
 - name: Install Laravel Valet
   shell: "{{ composer_home_path }}/vendor/bin/valet install"
   become: yes
-  become_user: "{{ composer_user }}"
+  # become_user: "{{ composer_user }}"
 
 - name: Park sites
   shell: "{{ composer_home_path }}/vendor/bin/valet park"
   args:
     chdir: "{{ composer_park }}"
   become: yes
-  become_user: "{{ composer_user }}"
+  # become_user: "{{ composer_user }}"

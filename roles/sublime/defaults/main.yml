@@ -24,7 +24,7 @@ sublime_packages:
   # - "Laravel 5 Snippets"
   - "Laravel Blade Highlighter"
   - "LESS"
-  - "Markdown​Highlighting"
+  # - "Markdown​Highlighting"
   - "Material Theme"
   - "nginx"
   - "Nodejs"

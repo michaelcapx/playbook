@@ -2,23 +2,27 @@
 # DBeaver installation
 
 - name: Check if DBeaver is installed
+  become: yes
   command: dpkg-query -W dbeaver
   register: apps_dbeaver_check_deb
   failed_when: apps_dbeaver_check_deb.rc > 1
   changed_when: apps_dbeaver_check_deb.rc == 1
 
 - name: Download DBeaver
+  become: yes
   get_url:
     url: "https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb"
     dest: "{{ apps_tmp_path }}/download-dbeaver-latest.deb"
   when: apps_dbeaver_check_deb.rc == 1
 
 - name: Install DBeaver
+  become: yes
   apt:
     deb: "{{ apps_tmp_path }}/download-dbeaver-latest.deb"
   when: apps_dbeaver_check_deb.rc == 1
 
 - name: Clean DBeaver deb file
+  become: yes
   file:
     path: "{{ apps_tmp_path }}/download-dbeaver-latest.deb"
     state: absent

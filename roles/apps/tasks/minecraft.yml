@@ -9,6 +9,7 @@
   changed_when: apps_check_java.rc == 1
 
 - name: Ensure Java is installed
+  become: yes
   apt:
     name: default-jre
     state: present
@@ -48,17 +49,20 @@
 
 # Local Copy
 - name: Copy Minecraft launcher
+  become: yes
   copy:
     src: Minecraft.jar
     dest: /usr/local/bin/Minecraft.jar
 
 # Desktop Setup
 - name: Copy Minecraft icon
+  become: yes
   copy:
     src: minecraft.png
     dest: /usr/share/pixmaps/minecraft.png
 
 - name: Create Minecraft desktop file
+  become: yes
   copy:
     src: minecraft.desktop
     dest: /usr/local/share/applications/minecraft.desktop
@@ -68,6 +72,7 @@
 # Amidst Install
 
 - name: Ensure Amidst present
+  become: yes
   get_url:
     url: https://github.com/toolbox4minecraft/amidst/releases/download/v4.3-beta4/amidst-v4-3-beta4.jar
     dest: /usr/local/bin/Amidst.jar
@@ -81,11 +86,13 @@
   delay: 5
 
 - name: Copy Amidst icon
+  become: yes
   copy:
     src: amidst-128x128.png
     dest: /usr/share/pixmaps/amidst.png
 
 - name: Create Amidst desktop file
+  become: yes
   copy:
     src: amidst.desktop
     dest: /usr/local/share/applications/amidst.desktop
