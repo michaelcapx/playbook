@@ -21,7 +21,7 @@ fi
 ###########################################################################
 
 readonly GIT_REPO="https://github.com/michaelcapx/playbook.git"
-readonly GIT_BRANCH="v4"
+readonly GIT_BRANCH="master"
 readonly GIT_DEST="$HOME/Downloads/playbook"
 
 ###########################################################################
