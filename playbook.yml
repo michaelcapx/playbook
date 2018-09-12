@@ -31,11 +31,11 @@
   roles:
 
     # Base roles
-    - { role: common,      tags: ['base'] }
-    - { role: admin,       tags: ['base'] }
-    - { role: ssh,         tags: ['base'] }
-    - { role: git,         tags: ['base'] }
-    - { role: shell,       tags: ['base'] }
+    # - { role: common,      tags: ['base'] }
+    # - { role: admin,       tags: ['base'] }
+    # - { role: ssh,         tags: ['base'] }
+    # - { role: git,         tags: ['base'] }
+    # - { role: shell,       tags: ['base'] }
 
     # Language roles
     # - { role: python,      tags: ['languages'] }
@@ -64,7 +64,7 @@
     # - { role: mysql,      tags: ['server'] }
     # - { role: sqlite,     tags: ['server'] }
     # - { role: php,        tags: ['server'] }
-    # - { role: composer,   tags: ['server'] }
+    - { role: composer,   tags: ['server'] }
 
   tasks:
 

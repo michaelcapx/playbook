@@ -71,17 +71,18 @@
   with_items: "{{ firefox_global_addons }}"
   ignore_errors: true
   register: dl_firefox_ext
-  until: dl_firefox_ext | succeeded
+  until: dl_firefox_ext is succeeded
   retries: 10
   delay: 5
 
 # Set System Firefox Preferences
-- name: Copy firefox system preferences
-  become: yes
-  copy:
-    src: "syspref.js"
-    dest: "{{ firefox_system_prefs }}"
-    mode: 0644
+#  FIXME
+# - name: Copy firefox system preferences
+#   become: yes
+#   copy:
+#     src: "syspref.js"
+#     dest: "{{ firefox_system_prefs }}"
+#     mode: 0644
 
 # Set Global Firefox Preferences
 # - name: Set global firefox preferences

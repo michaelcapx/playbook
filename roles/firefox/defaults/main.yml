@@ -17,7 +17,7 @@ firefox_global_addons:
   - { url: "https://addons.mozilla.org/firefox/downloads/file/784111/https_everywhere-2017.11.21-an+fx.xpi", guid: "https-everywhere@eff.org" } # HTTPS Everywhere
   - { url: "https://addons.mozilla.org/firefox/downloads/file/800645/lastpass_password_manager-4.2.3.20-an+fx.xpi", guid: "support@lastpass.com" } # Lastpass
   # - { url: "https://addons.mozilla.org/firefox/downloads/file/824837/bitwarden_free_password_manager-1.23.0-fx.xpi", guid: "{446900e4-71c2-419f-a6a7-df9c091e268b}" } # BitWarden
-  - { url: "https://addons.mozilla.org/firefox/downloads/file/759731/user_agent_switcher-0.2.0-an+fx.xpi", guid: "{75afe46a-7a50-4c6b-b866-c43a1075b071}" } # User-Agent Switcher
+  # - { url: "https://addons.mozilla.org/firefox/downloads/file/759731/user_agent_switcher-0.2.0-an+fx.xpi", guid: "{75afe46a-7a50-4c6b-b866-c43a1075b071}" } # User-Agent Switcher
   - { url: "https://addons.mozilla.org/firefox/downloads/file/782402/privacy_badger-2017.11.20-an+fx.xpi", guid: "jid1-MnnxcxisBPnSXQ@jetpack" } # Privacy Badger
   - { url: "https://addons.mozilla.org/firefox/downloads/file/774252/decentraleyes-2.0.1-an+fx.xpi", guid: "jid1-BoFifL9Vbdl2zQ@jetpack" } # Decentraleyes
   # - { url: "https://addons.mozilla.org/firefox/downloads/file/696544/google_search_link_fix-1.6.5-an+fx.xpi", guid: "jid0-XWJxt5VvCXkKzQK99PhZqAn7Xbg@jetpack" } # Google search link fix
