@@ -31,29 +31,29 @@
   roles:
 
     # Base roles
-    # - { role: common,      tags: ['base'] }
-    # - { role: admin,       tags: ['base'] }
-    # - { role: ssh,         tags: ['base'] }
-    # - { role: git,         tags: ['base'] }
-    # - { role: shell,       tags: ['base'] }
+    - { role: common,      tags: ['base'] }
+    - { role: admin,       tags: ['base'] }
+    - { role: ssh,         tags: ['base'] }
+    - { role: git,         tags: ['base'] }
+    - { role: shell,       tags: ['base'] }
 
     # Language roles
-    # - { role: python,      tags: ['languages'] }
-    # - { role: ruby,        tags: ['languages'] }
-    # - { role: node,        tags: ['languages'] }
+    - { role: python,      tags: ['languages'] }
+    - { role: ruby,        tags: ['languages'] }
+    - { role: node,        tags: ['languages'] }
 
     # Browser roles
-    # - { role: chromium,    tags: ['browser'] }
-    # - { role: firefox,     tags: ['browser'] }
+    - { role: chromium,    tags: ['browser'] }
+    - { role: firefox,     tags: ['browser'] }
 
     # Editor roles
-    # - { role: sublime,     tags: ['editor'] }
+    - { role: sublime,     tags: ['editor'] }
 
     # Desktop roles
-    # - { role: desktop,     tags: ['desktop'] }
-    # - { role: themes,      tags: ['desktop'] }
-    # - { role: fonts,       tags: ['desktop'] }
-    # - { role: xfce,        tags: ['desktop'] }
+    - { role: desktop,     tags: ['desktop'] }
+    - { role: themes,      tags: ['desktop'] }
+    - { role: fonts,       tags: ['desktop'] }
+    - { role: xfce,        tags: ['desktop'] }
     - { role: apps,        tags: ['desktop'] }
 
     # Virtualization roles
