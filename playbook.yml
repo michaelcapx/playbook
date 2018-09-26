@@ -65,6 +65,7 @@
     - { role: sqlite,     tags: ['server'] }
     - { role: php,        tags: ['server'] }
     - { role: composer,   tags: ['server'] }
+    - { role: redis,      tags: ['server'] }
 
   tasks:
 

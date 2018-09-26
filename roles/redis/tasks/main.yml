@@ -1,0 +1,23 @@
+---
+# tasks file for redis
+
+# Install redis
+- name: Install redis dependencies
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ redis_dependencies | list }}"
+  when: redis_dependencies | length
+
+- name: Install redis APT packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ redis_packages | list }}"
+  when: redis_packages | length

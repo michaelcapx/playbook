@@ -1,0 +1,11 @@
+---
+# defaults file for redis
+
+# Build dependencies for packages (will be installed with apt).
+redis_dependencies:
+  - build-essential
+  - tcl
+
+# Array of redis apt packages.
+redis_packages:
+  - redis-server
