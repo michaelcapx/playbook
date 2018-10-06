@@ -7,7 +7,7 @@ php_user: "{{ config_user | default(ansible_env.SUDO_USER) }}"
 # Default php home.
 php_home: "{{ config_home | default(ansible_env.HOME) }}"
 
-php_version: "7.1"
+php_version: "7.2"
 
 # Build dependencies for packages (will be installed with apt).
 php_packages:
